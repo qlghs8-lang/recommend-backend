@@ -4,10 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,16 +25,14 @@ public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
 
-    /**
-     * ✅ Swagger/OpenAPI는 "아예" Spring Security 필터를 안 타게 함 (가장 확실)
-     */
+    // ✅ Swagger/OpenAPI는 security filter 자체를 아예 타지 않게(가장 확실)
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().requestMatchers(
-            "/v3/api-docs",
-            "/v3/api-docs/**",
-            "/swagger-ui.html",
-            "/swagger-ui/**"
+                "/v3/api-docs",
+                "/v3/api-docs/**",
+                "/swagger-ui.html",
+                "/swagger-ui/**"
         );
     }
 
@@ -45,34 +42,22 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .sessionManagement(session ->
-                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
-            // ✅ 기본 로그인/BasicAuth 끄기 (generated security password 안 뜨게)
-            .formLogin(Customizer.withDefaults());
-        http.formLogin(form -> form.disable());
-        http.httpBasic(basic -> basic.disable());
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .httpBasic(basic -> basic.disable())
+            .formLogin(form -> form.disable());
 
         http
             .authorizeHttpRequests(auth -> auth
-
-                // 정적 리소스
                 .requestMatchers("/uploads/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/recommend/demo/**").permitAll()
-
-                // 인증 없이 접근 가능한 API
                 .requestMatchers(
-                    "/login",
-                    "/users",
-                    "/users/check-email",
-                    "/users/check-nickname",
-                    "/public/phone/**"
+                        "/login",
+                        "/users",
+                        "/users/check-email",
+                        "/users/check-nickname",
+                        "/public/phone/**"
                 ).permitAll()
-
-                // Admin API는 ADMIN만
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
-
-                // 나머지는 인증 필요
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
