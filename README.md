@@ -80,10 +80,12 @@
 ## Run
 
 ```bash
-./gradlew bootRun
+git clone https://github.com/{YOUR_ID}/recommend-backend.git
+cd recommend-backend
 
 Docker 실행
-docker-compose up -d
+docker-compose up --build
+docker-compose down
 
 Environment Variables
 SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/recommend
