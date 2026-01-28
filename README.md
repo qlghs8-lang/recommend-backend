@@ -82,10 +82,31 @@
 ```bash
 ./gradlew bootRun
 
----
+Docker 실행
+docker-compose up -d
 
-## API Example
+Environment Variables
+SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/recommend
+SPRING_DATASOURCE_USERNAME=root
+SPRING_DATASOURCE_PASSWORD=password
 
+JWT_SECRET=your-secret-key
+
+REDIS_HOST=localhost
+REDIS_PORT=6379
+
+Swagger (API 문서)
+http://localhost:8080/swagger-ui.html
+
+API Example
 GET /api/recommend/for-you
 GET /api/recommend/for-you/reason
 POST /api/recommend/click/{recommendLogId}
+
+Notes
+
+추천 로직은 서비스 레이어에서 직접 구현
+
+로그 테이블은 FK 없이 ID 기반 설계
+
+Admin 통계 API 포함
