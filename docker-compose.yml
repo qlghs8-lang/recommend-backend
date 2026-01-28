@@ -16,12 +16,14 @@ services:
   redis:
     image: redis:7
     container_name: recommend-redis
+    restart: always
     ports:
       - "6379:6379"
 
   backend:
     build: .
     container_name: recommend-backend
+    restart: unless-stopped
     depends_on:
       - mysql
       - redis
@@ -29,7 +31,6 @@ services:
       - .env
     ports:
       - "8080:8080"
-restart: unless-stopped
 
 volumes:
   mysql_data:
