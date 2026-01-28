@@ -1,15 +1,25 @@
 package com.example.recommend.controller.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Getter
-@AllArgsConstructor
-public class UserInfoResponse {
-    private String email;
-    private String nickname;
-    private LocalDateTime createdAt;
-    private String profileImageUrl;
-}
+public record UserInfoResponse(
+        String email,
+        String nickname,
+        LocalDateTime createdAt,
+        String profileImageUrl,
+        String role,
+
+        // ✅ 선택 정보
+        String realName,
+        LocalDate birthDate,
+        String gender,
+        String phone,
+        boolean phoneVerified,
+        String verifiedPhone,
+
+        // ✅ 온보딩(있으면 편함)
+        boolean onboardingDone,
+        List<String> preferredGenres
+) {}

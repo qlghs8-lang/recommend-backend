@@ -1,20 +1,29 @@
 package com.example.recommend.controller.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.*;
 
-@Getter
-@Setter
+import java.time.LocalDate;
+import java.util.Map;
+
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class RegisterRequest {
 
     private String email;
     private String password;
     private String nickname;
 
-    // STEP 3 필드 (지금은 비워둬도 됨)
     private String realName;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
+
     private String gender;
     private String phone;
+
+    // 프론트에서 넘기는 약관 동의 결과
+    private Map<String, Boolean> termsAgreements;
 }

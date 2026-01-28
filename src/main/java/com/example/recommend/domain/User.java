@@ -2,6 +2,7 @@ package com.example.recommend.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -30,7 +31,7 @@ public class User {
 
     @Column(nullable = true)
     private String realName;
-    
+
     @Column(nullable = true)
     private LocalDate birthDate;
 
@@ -40,6 +41,7 @@ public class User {
     @Column
     private String phone;
 
+    @Builder.Default
     @Column(nullable = false)
     private Boolean phoneVerified = false;
 
@@ -50,10 +52,26 @@ public class User {
     private LocalDateTime createdAt;
 
     private String profileImageUrl;
-    
+
     @Column(length = 6)
     private String phoneVerifyCode;
 
     private LocalDateTime phoneVerifyExpireAt;
 
+    /* ===== ✅ 온보딩(필수5) ===== */
+    // ex) "action,drama,thriller"
+    @Column(length = 500)
+    private String preferredGenres;
+
+    @Builder.Default
+    @Column(nullable = false)
+    private Boolean onboardingDone = false;
+
+    /* ===== 권한 =====
+       - "USER" / "ADMIN"
+       - Security에서는 "ROLE_ADMIN" 형태로 쓸 거라서 여기에는 "ADMIN"만 저장
+     */
+    @Builder.Default
+    @Column(nullable = false, length = 20)
+    private String role = "USER";
 }

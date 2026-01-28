@@ -2,6 +2,7 @@ package com.example.recommend.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
@@ -27,9 +28,8 @@ public class UserController {
     /* ================= 인증 ================= */
 
     @PostMapping("/users")
-    public ResponseEntity<?> register(@RequestBody User user) {
-        // ✅ 예외는 GlobalExceptionHandler가 처리
-        return ResponseEntity.ok(userService.register(user));
+    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+        return ResponseEntity.ok(userService.register(request));
     }
 
     @GetMapping("/users/check-email")
@@ -49,9 +49,12 @@ public class UserController {
         if (user == null) {
             return ResponseEntity.status(401).build();
         }
-
         String token = jwtUtil.generateToken(user.getEmail());
+        System.out.println("[LOGIN] email=" + request.getEmail());
+        System.out.println("[LOGIN] pwNull=" + (request.getPassword() == null));
+
         return ResponseEntity.ok(new LoginResponse(token, user.getEmail(), user.getNickname()));
+        
     }
 
     @PostMapping("/logout")
@@ -70,13 +73,30 @@ public class UserController {
         User user = userService.findByEmail(email);
         if (user == null) return ResponseEntity.notFound().build();
 
+        String role = user.getRole();
+        if (role == null || role.isBlank()) role = "USER";
+
+        // ✅ 온보딩 정보 재사용
+        var onb = userService.getOnboardingInfo(email);
+
         return ResponseEntity.ok(
-            new UserInfoResponse(
-                user.getEmail(),
-                user.getNickname(),
-                user.getCreatedAt(),
-                user.getProfileImageUrl()
-            )
+                new UserInfoResponse(
+                        user.getEmail(),
+                        user.getNickname(),
+                        user.getCreatedAt(),
+                        user.getProfileImageUrl(),
+                        role,
+
+                        user.getRealName(),
+                        user.getBirthDate(),
+                        user.getGender(),
+                        user.getPhone(),
+                        Boolean.TRUE.equals(user.getPhoneVerified()),
+                        user.getVerifiedPhone(),
+
+                        onb.onboardingDone(),
+                        onb.preferredGenres()
+                )
         );
     }
 
@@ -110,6 +130,33 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+    /* ================= ✅ 필수5: 온보딩(장르 선택) ================= */
+
+    @GetMapping("/user/onboarding")
+    public ResponseEntity<OnboardingResponse> onboarding() {
+        String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        var info = userService.getOnboardingInfo(email);
+        return ResponseEntity.ok(new OnboardingResponse(info.onboardingDone(), info.preferredGenres()));
+    }
+
+    @PutMapping("/user/onboarding/genres")
+    public ResponseEntity<Void> saveGenres(@RequestBody OnboardingGenresRequest request) {
+        String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        List<String> genres = request == null ? null : request.getGenres();
+        userService.savePreferredGenres(email, genres);
+        return ResponseEntity.ok().build();
+    }
+
+    public static class OnboardingGenresRequest {
+        private List<String> genres;
+        public List<String> getGenres() { return genres; }
+        public void setGenres(List<String> genres) { this.genres = genres; }
+    }
+
+    public record OnboardingResponse(boolean onboardingDone, List<String> preferredGenres) {}
+
     /* ================= 휴대폰 인증 ================= */
 
     @PostMapping("/user/phone/request")
@@ -128,7 +175,6 @@ public class UserController {
 
         boolean success = userService.verifyPhoneCode(email, request.getCode());
         if (!success) {
-            // ✅ 400으로 떨어지게 전역 핸들러가 처리
             throw new IllegalArgumentException("인증번호가 올바르지 않습니다.");
         }
 
