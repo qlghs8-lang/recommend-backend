@@ -23,6 +23,26 @@ public class JwtFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
 
+    // ✅ Swagger/OpenAPI + 공개 엔드포인트는 JWT 필터에서 아예 제외
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getRequestURI();
+
+        // swagger
+        if (path.equals("/v3/api-docs") || path.startsWith("/v3/api-docs/")) return true;
+        if (path.equals("/swagger-ui.html") || path.startsWith("/swagger-ui/")) return true;
+
+        // public endpoints (필요한 것만 추가)
+        if (path.startsWith("/uploads/")) return true;
+        if (path.equals("/login")) return true;
+        if (path.equals("/users")) return true;
+        if (path.equals("/users/check-email")) return true;
+        if (path.equals("/users/check-nickname")) return true;
+        if (path.startsWith("/public/phone/")) return true;
+
+        return false;
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -31,7 +51,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String authHeader = request.getHeader("Authorization");
 
-        // 토큰 없으면 다음 필터
+        // 토큰 없으면 다음 필터(= 인증 없음 상태로 진행)
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
@@ -42,19 +62,16 @@ public class JwtFilter extends OncePerRequestFilter {
         try {
             String email = jwtUtil.validateAndGetEmail(token);
 
-            // ✅ role 조회 (없으면 USER)
             User user = userRepository.findByEmail(email).orElse(null);
 
             String role = (user == null || user.getRole() == null || user.getRole().isBlank())
                     ? "USER"
                     : user.getRole().trim().toUpperCase();
 
-            // ✅ 핵심: DB에 "ROLE_ADMIN"처럼 저장된 경우 중복 접두사 제거
             if (role.startsWith("ROLE_")) {
                 role = role.substring("ROLE_".length());
             }
 
-            // hasRole("ADMIN") => 실제 권한은 "ROLE_ADMIN"
             List<SimpleGrantedAuthority> authorities =
                     List.of(new SimpleGrantedAuthority("ROLE_" + role));
 
@@ -66,13 +83,8 @@ public class JwtFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
 
         } catch (Exception e) {
-            // 토큰 문제면 인증 제거 -> 결과적으로 401/403
             SecurityContextHolder.clearContext();
-
-            // ✅ 선택(권장): 개발 중 디버깅 편하게 명시적으로 401 반환
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
         }
     }
 }
-
