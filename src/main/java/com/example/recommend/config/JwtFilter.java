@@ -23,21 +23,6 @@ public class JwtFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
 
-    // ✅ Swagger / Public endpoint는 JWT 필터 자체를 타지 않게
-    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) {
-        String path = request.getServletPath();
-
-        return path.startsWith("/v3/api-docs")
-                || path.startsWith("/swagger-ui")
-                || path.equals("/swagger-ui.html")
-                || path.startsWith("/uploads/")
-                || path.equals("/login")
-                || path.equals("/users")
-                || path.startsWith("/users/check-")
-                || path.startsWith("/public/phone/");
-    }
-
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -46,7 +31,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String authHeader = request.getHeader("Authorization");
 
-        // 토큰 없으면 다음 필터(= 익명 사용자로 진행)
+        // 토큰 없으면 다음 필터
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
@@ -57,19 +42,23 @@ public class JwtFilter extends OncePerRequestFilter {
         try {
             String email = jwtUtil.validateAndGetEmail(token);
 
+            // ✅ role 조회 (없으면 USER)
             User user = userRepository.findByEmail(email).orElse(null);
 
             String role = (user == null || user.getRole() == null || user.getRole().isBlank())
                     ? "USER"
                     : user.getRole().trim().toUpperCase();
 
+            // DB에 "ROLE_ADMIN"처럼 저장된 경우 중복 접두사 제거
             if (role.startsWith("ROLE_")) {
                 role = role.substring("ROLE_".length());
             }
 
-            var authorities = List.of(new SimpleGrantedAuthority("ROLE_" + role));
+            // hasRole("ADMIN") => 실제 권한은 "ROLE_ADMIN"
+            List<SimpleGrantedAuthority> authorities =
+                    List.of(new SimpleGrantedAuthority("ROLE_" + role));
 
-            var authentication =
+            UsernamePasswordAuthenticationToken authentication =
                     new UsernamePasswordAuthenticationToken(email, null, authorities);
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -77,10 +66,11 @@ public class JwtFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
 
         } catch (Exception e) {
-            // ✅ 여기서 401을 “직접” 찍어버리면 swagger 같은 permitAll도 막아버림.
-            // 토큰이 잘못됐으면 그냥 인증 없이 진행시키고, 최종 인가 단계에서 걸리게 하자.
+            // 토큰 문제면 인증 제거 -> 결과적으로 401/403
             SecurityContextHolder.clearContext();
-            filterChain.doFilter(request, response);
+
+            // ✅ 선택(권장): 개발 중 디버깅 편하게 명시적으로 401 반환
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
     }
 }
