@@ -7,7 +7,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,34 +23,19 @@ public class JwtFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
 
-    // ✅ 필터에서 완전히 제외할 경로들 (permitAll과 "같은 목록"으로 맞추는 게 안전)
-    private static final String[] WHITELIST = {
-            "/v3/api-docs", "/v3/api-docs/",
-            "/v3/api-docs/**",
-            "/swagger-ui.html",
-            "/swagger-ui/**",
-            "/uploads/**",
-            "/login",
-            "/users",
-            "/users/check-email",
-            "/users/check-nickname",
-            "/public/phone/**"
-    };
-
+    // ✅ Swagger / Public endpoint는 JWT 필터 자체를 타지 않게
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getServletPath();
 
-        // 아주 간단 매칭(/** 지원용)
-        for (String p : WHITELIST) {
-            if (p.endsWith("/**")) {
-                String prefix = p.substring(0, p.length() - 3);
-                if (path.startsWith(prefix)) return true;
-            } else {
-                if (path.equals(p)) return true;
-            }
-        }
-        return false;
+        return path.startsWith("/v3/api-docs")
+                || path.startsWith("/swagger-ui")
+                || path.equals("/swagger-ui.html")
+                || path.startsWith("/uploads/")
+                || path.equals("/login")
+                || path.equals("/users")
+                || path.startsWith("/users/check-")
+                || path.startsWith("/public/phone/");
     }
 
     @Override
@@ -60,9 +44,9 @@ public class JwtFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
-        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String authHeader = request.getHeader("Authorization");
 
-        // 토큰 없으면 인증 세팅 없이 다음 필터로 (permitAll은 여기서 통과해야 함)
+        // 토큰 없으면 다음 필터(= 익명 사용자로 진행)
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
@@ -83,20 +67,20 @@ public class JwtFilter extends OncePerRequestFilter {
                 role = role.substring("ROLE_".length());
             }
 
-            List<SimpleGrantedAuthority> authorities =
-                    List.of(new SimpleGrantedAuthority("ROLE_" + role));
+            var authorities = List.of(new SimpleGrantedAuthority("ROLE_" + role));
 
-            UsernamePasswordAuthenticationToken authentication =
+            var authentication =
                     new UsernamePasswordAuthenticationToken(email, null, authorities);
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        } catch (Exception e) {
-            // ✅ 여기서 401로 끊지 말고 그냥 인증 없이 진행
-            // (SecurityConfig의 anyRequest().authenticated()가 필요한 곳에서 401/403 처리함)
-            SecurityContextHolder.clearContext();
-        }
+            filterChain.doFilter(request, response);
 
-        filterChain.doFilter(request, response);
+        } catch (Exception e) {
+            // ✅ 여기서 401을 “직접” 찍어버리면 swagger 같은 permitAll도 막아버림.
+            // 토큰이 잘못됐으면 그냥 인증 없이 진행시키고, 최종 인가 단계에서 걸리게 하자.
+            SecurityContextHolder.clearContext();
+            filterChain.doFilter(request, response);
+        }
     }
 }
