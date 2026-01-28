@@ -39,7 +39,6 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(auth -> auth
 
-                // ✅ Swagger/OpenAPI: 이 조합이 가장 안전함(정확히 다 풀기)
                 .requestMatchers(
                     "/v3/api-docs",
                     "/v3/api-docs/**",
@@ -59,8 +58,6 @@ public class SecurityConfig {
                     "/users/check-nickname",
                     "/public/phone/**"
                 ).permitAll()
-
-                // ✅ (선택) 채용담당자 데모용 추천 API만 오픈
                 .requestMatchers(HttpMethod.GET,
                     "/api/recommend/for-you",
                     "/api/recommend/for-you/reason"
@@ -96,3 +93,4 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
+
