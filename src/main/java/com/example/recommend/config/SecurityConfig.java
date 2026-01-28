@@ -34,21 +34,18 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
 
                 // =========================
-                // 1) 공개(무인증) - 문서/정적/데모
+                // 공개(무인증)
                 // =========================
 
                 // 정적 리소스
                 .requestMatchers("/uploads/**").permitAll()
-
-                // Swagger (API 문서 공개)
                 .requestMatchers(
                     "/swagger-ui/**",
-                    "/v3/api-docs/**",
-                    "/swagger-ui.html"
+                    "/swagger-ui.html",
+                    "/v3/api-docs",
+                    "/v3/api-docs/**"
                 ).permitAll()
 
-                // Demo API (채용담당자 확인용 - 무인증)
-                // 예: /api/recommend/demo/for-you
                 .requestMatchers(HttpMethod.GET, "/api/recommend/demo/**").permitAll()
 
                 // 인증 없이 접근 가능한 API
@@ -60,16 +57,10 @@ public class SecurityConfig {
                     "/public/phone/**"
                 ).permitAll()
 
-                // =========================
-                // 2) 권한 제한
-                // =========================
-
-                // Admin API는 ADMIN만
+                // ✅ Admin API는 ADMIN만
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
-                // =========================
-                // 3) 그 외는 전부 JWT 인증 필요
-                // =========================
+                // 나머지는 인증 필요
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
@@ -85,7 +76,6 @@ public class SecurityConfig {
             "http://localhost:*",
             "http://127.0.0.1:*"
         ));
-
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         config.setAllowCredentials(true);
