@@ -80,7 +80,7 @@
 ## Run
 
 ```bash
-git clone https://github.com/{YOUR_ID}/recommend-backend.git
+git clone https://github.com/qlghs8-lang/recommend-backend.git
 cd recommend-backend
 
 Docker 실행
