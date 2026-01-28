@@ -3,6 +3,7 @@ package com.example.recommend.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -32,22 +33,43 @@ public class SecurityConfig {
             )
             .authorizeHttpRequests(auth -> auth
 
+                // =========================
+                // 1) 공개(무인증) - 문서/정적/데모
+                // =========================
+
                 // 정적 리소스
                 .requestMatchers("/uploads/**").permitAll()
 
-                // ✅ Admin API는 ADMIN만
-                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                // Swagger (API 문서 공개)
+                .requestMatchers(
+                    "/swagger-ui/**",
+                    "/v3/api-docs/**",
+                    "/swagger-ui.html"
+                ).permitAll()
+
+                // Demo API (채용담당자 확인용 - 무인증)
+                // 예: /api/recommend/demo/for-you
+                .requestMatchers(HttpMethod.GET, "/api/recommend/demo/**").permitAll()
 
                 // 인증 없이 접근 가능한 API
                 .requestMatchers(
-                        "/login",
-                        "/users",
-                        "/users/check-email",
-                        "/users/check-nickname",
-                        "/public/phone/**"
+                    "/login",
+                    "/users",
+                    "/users/check-email",
+                    "/users/check-nickname",
+                    "/public/phone/**"
                 ).permitAll()
 
-                // 나머지는 인증 필요
+                // =========================
+                // 2) 권한 제한
+                // =========================
+
+                // Admin API는 ADMIN만
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
+                // =========================
+                // 3) 그 외는 전부 JWT 인증 필요
+                // =========================
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
@@ -59,7 +81,11 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOrigins(List.of("http://localhost:3000"));
+        config.setAllowedOriginPatterns(List.of(
+            "http://localhost:*",
+            "http://127.0.0.1:*"
+        ));
+
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         config.setAllowCredentials(true);
