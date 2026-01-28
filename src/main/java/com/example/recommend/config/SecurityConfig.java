@@ -3,6 +3,7 @@ package com.example.recommend.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,25 +26,26 @@ public class SecurityConfig {
     private final JwtFilter jwtFilter;
 
     @Bean
+    @Order(1)
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
             .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            // ✅ 기본 로그인/BasicAuth 완전 비활성화 (generated password 제거 목적)
             .formLogin(form -> form.disable())
             .httpBasic(basic -> basic.disable());
 
         http
             .authorizeHttpRequests(auth -> auth
 
-                // ✅ Swagger / OpenAPI (채용담당자 확인용)
+                // ✅ Swagger/OpenAPI: 이 조합이 가장 안전함(정확히 다 풀기)
                 .requestMatchers(
+                    "/v3/api-docs",
+                    "/v3/api-docs/**",
                     "/swagger-ui.html",
                     "/swagger-ui/**",
-                    "/v3/api-docs",
-                    "/v3/api-docs/**"
+                    "/webjars/**"
                 ).permitAll()
 
                 // 정적 리소스
@@ -59,3 +61,38 @@ public class SecurityConfig {
                 ).permitAll()
 
                 // ✅ (선택) 채용담당자 데모용 추천 API만 오픈
+                .requestMatchers(HttpMethod.GET,
+                    "/api/recommend/for-you",
+                    "/api/recommend/for-you/reason"
+                ).permitAll()
+
+                // Admin API
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
+                // 나머지는 JWT 필요
+                .anyRequest().authenticated()
+            )
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOriginPatterns(List.of("http://localhost:*", "http://127.0.0.1:*"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        config.setAllowCredentials(true);
+        config.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+}
