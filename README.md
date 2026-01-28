@@ -81,3 +81,11 @@
 
 ```bash
 ./gradlew bootRun
+
+---
+
+## API Example
+
+GET /api/recommend/for-you
+GET /api/recommend/for-you/reason
+POST /api/recommend/click/{recommendLogId}
