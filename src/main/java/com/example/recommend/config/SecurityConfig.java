@@ -16,6 +16,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -27,26 +29,31 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
+            // ✅ API 서버면 기본 로그인/베이식은 끄는게 정답 (생성 비밀번호도 사라짐)
+            .httpBasic(h -> h.disable())
+            .formLogin(f -> f.disable())
+
             .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .sessionManagement(session ->
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
 
-            // ✅ 이거 안 끄면 기본 로그인/BasicAuth가 섞여서 이상한 401/403 체감이 생길 수 있음
-            .formLogin(form -> form.disable())
-            .httpBasic(basic -> basic.disable())
+            // ✅ 인증 실패/권한 실패 응답 명확히 (403/빈응답 꼬임 방지)
+            .exceptionHandling(e -> e
+                .authenticationEntryPoint((req, res, ex) -> res.sendError(401))
+                .accessDeniedHandler((req, res, ex) -> res.sendError(403))
+            )
 
             .authorizeHttpRequests(auth -> auth
 
-                // ✅ Swagger/OpenAPI: 무조건 공개
+                // ✅ Swagger / OpenAPI (채용담당자용 공개)
                 .requestMatchers(
                     "/v3/api-docs",
                     "/v3/api-docs/**",
                     "/swagger-ui.html",
                     "/swagger-ui/**"
                 ).permitAll()
-
-                // (선택) 헬스체크 공개하고 싶으면
-                // .requestMatchers("/actuator/health", "/actuator/health/**").permitAll()
 
                 // 정적 리소스
                 .requestMatchers("/uploads/**").permitAll()
@@ -66,6 +73,8 @@ public class SecurityConfig {
                 // 나머지는 인증 필요
                 .anyRequest().authenticated()
             )
+
+            // ✅ JWT 필터
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -75,6 +84,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
+        // 필요하면 배포 URL도 추가
         config.setAllowedOrigins(List.of("http://localhost:3000"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
