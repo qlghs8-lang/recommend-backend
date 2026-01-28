@@ -69,8 +69,8 @@ public class JwtFilter extends OncePerRequestFilter {
             // 토큰 문제면 인증 제거 -> 결과적으로 401/403
             SecurityContextHolder.clearContext();
 
-            // ✅ 선택(권장): 개발 중 디버깅 편하게 명시적으로 401 반환
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
     }
 }
+
