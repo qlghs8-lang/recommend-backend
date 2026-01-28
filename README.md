@@ -92,8 +92,8 @@ docker-compose down
 
 Environment Variables
 SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/recommend
-SPRING_DATASOURCE_USERNAME=root
-SPRING_DATASOURCE_PASSWORD=password
+SPRING_DATASOURCE_USERNAME=recommend
+SPRING_DATASOURCE_PASSWORD=recommend
 
 JWT_SECRET=your-secret-key
 
