@@ -1,85 +1,76 @@
 package com.example.recommend.config;
 
+import com.example.recommend.domain.User;
+import com.example.recommend.repository.UserRepository;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
+import java.io.IOException;
 import java.util.List;
 
-@Configuration
+@Component
 @RequiredArgsConstructor
-public class SecurityConfig {
+public class JwtFilter extends OncePerRequestFilter {
 
-    private final JwtFilter jwtFilter;
+    private final JwtUtil jwtUtil;
+    private final UserRepository userRepository;
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-            .csrf(csrf -> csrf.disable())
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .formLogin(form -> form.disable())
-            .httpBasic(basic -> basic.disable())
+    @Override
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain)
+            throws ServletException, IOException {
 
-            .authorizeHttpRequests(auth -> auth
-                // ✅ Swagger/OpenAPI 공개
-                .requestMatchers(
-                    "/swagger-ui/**",
-                    "/swagger-ui.html",
-                    "/v3/api-docs/**"
-                ).permitAll()
+        String authHeader = request.getHeader("Authorization");
 
-                // 정적 리소스
-                .requestMatchers("/uploads/**").permitAll()
+        // 토큰 없으면 다음 필터
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
-                // 인증 없이 접근 가능한 API
-                .requestMatchers(
-                    "/login",
-                    "/users",
-                    "/users/check-email",
-                    "/users/check-nickname",
-                    "/public/phone/**"
-                ).permitAll()
+        String token = authHeader.substring(7);
 
-                // (선택) 채용담당자용 공개 GET API (필요하면 추가/삭제)
-                .requestMatchers(HttpMethod.GET, "/api/recommend/**").permitAll()
+        try {
+            String email = jwtUtil.validateAndGetEmail(token);
 
-                // Admin
-                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+            // ✅ role 조회 (없으면 USER)
+            User user = userRepository.findByEmail(email).orElse(null);
 
-                .anyRequest().authenticated()
-            )
-            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+            String role = (user == null || user.getRole() == null || user.getRole().isBlank())
+                    ? "USER"
+                    : user.getRole().trim().toUpperCase();
 
-        return http.build();
-    }
+            // ✅ 핵심: DB에 "ROLE_ADMIN"처럼 저장된 경우 중복 접두사 제거
+            if (role.startsWith("ROLE_")) {
+                role = role.substring("ROLE_".length());
+            }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:3000"));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
-        config.setAllowCredentials(true);
-        config.setMaxAge(3600L);
+            // hasRole("ADMIN") => 실제 권한은 "ROLE_ADMIN"
+            List<SimpleGrantedAuthority> authorities =
+                    List.of(new SimpleGrantedAuthority("ROLE_" + role));
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-        return source;
-    }
+            UsernamePasswordAuthenticationToken authentication =
+                    new UsernamePasswordAuthenticationToken(email, null, authorities);
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            filterChain.doFilter(request, response);
+
+        } catch (Exception e) {
+            // 토큰 문제면 인증 제거 -> 결과적으로 401/403
+            SecurityContextHolder.clearContext();
+
+            // ✅ 선택(권장): 개발 중 디버깅 편하게 명시적으로 401 반환
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        }
     }
 }
