@@ -74,6 +74,9 @@
 - user_content_interactions
 - recommend_logs
 - recommend_click_logs
+- nickname_blacklist
+- phone_verifications
+- user_terms_agreements
 
 ---
 
