@@ -24,12 +24,14 @@ public class JwtFilter extends OncePerRequestFilter {
     private final UserRepository userRepository;
 
     @Override
-protected boolean shouldNotFilter(HttpServletRequest request) {
-    String path = request.getServletPath();
-    return path.startsWith("/swagger-ui")
-        || path.equals("/swagger-ui.html")
-        || path.startsWith("/v3/api-docs");
-}
+    protected boolean shouldNotFilter(jakarta.servlet.http.HttpServletRequest request) {
+        String path = request.getServletPath();
+        return path.equals("/v3/api-docs")
+            || path.startsWith("/v3/api-docs/")
+            || path.equals("/swagger-ui.html")
+            || path.startsWith("/swagger-ui/")
+            || path.startsWith("/webjars/");
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -81,5 +83,6 @@ protected boolean shouldNotFilter(HttpServletRequest request) {
         }
     }
 }
+
 
 
