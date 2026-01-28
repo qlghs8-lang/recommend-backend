@@ -13,7 +13,6 @@
 - JPA / Hibernate
 - MySQL
 - Redis (휴대폰 인증)
-- Docker
 
 ---
 
