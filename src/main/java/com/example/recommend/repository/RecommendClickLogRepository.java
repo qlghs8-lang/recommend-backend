@@ -19,7 +19,7 @@ public interface RecommendClickLogRepository extends JpaRepository<RecommendClic
 
     List<RecommendClickLog> findByRecommendLogIdIn(Collection<Long> recommendLogIds);
 
-    // ✅ NEW: 유저의 최근 클릭한 contentId (최신순)
+    // 유저의 최근 클릭한 contentId (최신순)
     @Query("""
         select rcl.contentId
         from RecommendClickLog rcl
@@ -28,3 +28,4 @@ public interface RecommendClickLogRepository extends JpaRepository<RecommendClic
     """)
     List<Long> findRecentClickedContentIds(@Param("userId") Long userId, Pageable pageable);
 }
+
