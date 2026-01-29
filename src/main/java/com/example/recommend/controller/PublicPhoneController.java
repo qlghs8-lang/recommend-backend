@@ -31,7 +31,6 @@ public class PublicPhoneController {
     public ResponseEntity<?> request(@RequestBody PhoneRequest req) {
         var pv = phoneVerificationService.request(req == null ? null : req.getPhone());
 
-        // ✅ 개발 중이면 코드도 내려줘서 Postman/프론트 테스트 편하게 (운영 전환 시 제거)
         return ResponseEntity.ok("인증번호 발송(개발코드): " + pv.getCode());
     }
 
@@ -44,3 +43,4 @@ public class PublicPhoneController {
         return ResponseEntity.ok("휴대폰 인증 완료");
     }
 }
+
