@@ -83,8 +83,6 @@ public class UserService {
         );
     }
 
-    /* ================= 회원가입 (기존 로직 유지) ================= */
-
     public User register(User user) {
 
         if (user.getEmail() == null || user.getEmail().isBlank()) {
@@ -135,10 +133,10 @@ public class UserService {
         user.setPhoneVerified(false);
         user.setProfileImageUrl("/uploads/profile/default.png");
 
-        // ✅ 필수5 기본값(온보딩)
+        // 기본값(온보딩)
         if (user.getOnboardingDone() == null) user.setOnboardingDone(false);
         
-     // ✅ 회원가입 시 phone이 들어오면: 공개 인증 완료 여부 확인 후 반영
+        // 회원가입 시 phone이 들어오면: 공개 인증 완료 여부 확인 후 반영
         if (user.getPhone() != null && !user.getPhone().isBlank()) {
             String normalized = phoneVerificationService.normalizePhone(user.getPhone());
             user.setPhone(normalized);
@@ -295,14 +293,14 @@ public class UserService {
 
         String p = phone.trim();
 
-        // ✅ 이미 인증된 번호면 재요청 금지 (핵심)
+        // 이미 인증된 번호면 재요청 금지
         if (Boolean.TRUE.equals(user.getPhoneVerified())
                 && user.getVerifiedPhone() != null
                 && user.getVerifiedPhone().equals(p)) {
             throw new IllegalStateException("이미 인증된 휴대폰 번호입니다.");
         }
 
-        // ✅ 다른 번호로 인증을 시도하는 경우에만 미인증으로 리셋
+        // 다른 번호로 인증을 시도하는 경우에만 미인증으로 리셋
         user.setPhone(p);
         user.setPhoneVerified(false);
         user.setVerifiedPhone(null);
@@ -364,10 +362,6 @@ public class UserService {
                 .ifPresent(userRepository::delete);
     }
 
-    /* =========================================================
-     * ✅ 필수5: 온보딩(장르 선택) 저장/조회
-     * ========================================================= */
-
     @Transactional(readOnly = true)
     public OnboardingInfo getOnboardingInfo(String email) {
         User user = userRepository.findByEmail(email)
@@ -426,3 +420,4 @@ public class UserService {
 
     public record OnboardingInfo(boolean onboardingDone, List<String> preferredGenres) {}
 }
+
