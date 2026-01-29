@@ -137,7 +137,7 @@ public interface RecommendLogRepository
     List<AdminSourceStatRow> countClicksBySourceSince(@Param("from") LocalDateTime from);
 
     // =========================
-    // ✅ total clicks by source (중복 클릭 포함) (레거시/대시보드용 유지)
+    // total clicks by source (중복 클릭 포함) (레거시/대시보드용 유지)
     // =========================
     @Query("""
         select new com.example.recommend.admin.dto.AdminSourceStatRow(
@@ -153,7 +153,7 @@ public interface RecommendLogRepository
     List<AdminSourceStatRow> countTotalClicksBySourceSince(@Param("from") LocalDateTime from);
 
     // =========================
-    // ✅ total clicks (중복 포함)
+    // total clicks (중복 포함)
     // =========================
     @Query("""
         select count(rcl.id)
@@ -163,7 +163,7 @@ public interface RecommendLogRepository
     long countTotalClicksSince(@Param("from") LocalDateTime from);
 
     // =========================
-    // ✅ NEW(필수5-1): 최근 노출 로그 조회 (dedupe 용)
+    // 최근 노출 로그 조회 (dedupe 용)
     // =========================
     @Query("""
         select rl
@@ -179,11 +179,6 @@ public interface RecommendLogRepository
             @Param("from") LocalDateTime from
     );
 
-    // =========================
-    // ✅ by-source "진짜 쓸모있는" 1쿼리 버전
-    // - impressions: rl.createdAt >= :from 기준
-    // - clicks: rcl.clickedAt >= :from 기준 + 동일 window의 노출(rl)만 포함
-    // =========================
     @Query("""
         select new com.example.recommend.admin.dto.AdminSourceStatsRow(
             rl.source,
@@ -202,3 +197,4 @@ public interface RecommendLogRepository
     """)
     List<AdminSourceStatsRow> findSourceStatsSince(@Param("from") LocalDateTime from);
 }
+
