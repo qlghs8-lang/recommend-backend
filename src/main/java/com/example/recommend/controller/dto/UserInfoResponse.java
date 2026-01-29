@@ -11,7 +11,7 @@ public record UserInfoResponse(
         String profileImageUrl,
         String role,
 
-        // ✅ 선택 정보
+        // 선택 정보
         String realName,
         LocalDate birthDate,
         String gender,
@@ -19,7 +19,8 @@ public record UserInfoResponse(
         boolean phoneVerified,
         String verifiedPhone,
 
-        // ✅ 온보딩(있으면 편함)
+        // 온보딩
         boolean onboardingDone,
         List<String> preferredGenres
 ) {}
+
