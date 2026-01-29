@@ -16,9 +16,6 @@ public class ContentService {
 
     private final ContentRepository contentRepository;
 
-    // =========================
-    // ✅ InteractionService가 쓰는 메서드
-    // =========================
     @Transactional(readOnly = true)
     public Content getById(Long id) {
         return contentRepository.findById(id)
@@ -31,7 +28,7 @@ public class ContentService {
     }
 
     // =========================
-    // ✅ 홈: 트렌딩/최신/평점
+    // 홈: 트렌딩/최신/평점
     // =========================
     @Transactional(readOnly = true)
     public List<Content> getTrending(int size) {
@@ -49,7 +46,7 @@ public class ContentService {
     }
 
     // =========================
-    // ✅ 홈: 검색(페이징/정렬/필터)
+    // 홈: 검색(페이징/정렬/필터)
     // =========================
     @Transactional(readOnly = true)
     public Page<Content> search(
@@ -74,11 +71,6 @@ public class ContentService {
         return contentRepository.searchContents(q, type, genre, pageable);
     }
 
-    // =========================
-    // ✅ NEW: DB 기반 장르 목록
-    // - contents.genres CSV를 split -> distinct
-    // - normalize: trim + lower
-    // =========================
     @Transactional(readOnly = true)
     public List<String> getAllGenres() {
         List<String> csvs = contentRepository.findAllGenresCsv();
@@ -101,3 +93,4 @@ public class ContentService {
                 .collect(Collectors.toList());
     }
 }
+
