@@ -11,7 +11,6 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    // 최소 32글자 이상 아무 문자열 (진짜 서비스에서는 외부 설정으로 빼야 함)
     private static final String SECRET_KEY = "my_super_secret_jwt_key_1234567890";
 
     private final Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
@@ -22,7 +21,7 @@ public class JwtUtil {
         long expiry = 1000L * 60 * 60; // 1시간
 
         return Jwts.builder()
-                .setSubject(email)          // 토큰 주인 (우리는 이메일로)
+                .setSubject(email)          // 토큰 주인
                 .setIssuedAt(new Date(now)) // 발급 시간
                 .setExpiration(new Date(now + expiry)) // 만료 시간
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -39,3 +38,4 @@ public class JwtUtil {
                 .getSubject();
     }
 }
+
