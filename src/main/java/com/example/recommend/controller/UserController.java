@@ -76,7 +76,6 @@ public class UserController {
         String role = user.getRole();
         if (role == null || role.isBlank()) role = "USER";
 
-        // ✅ 온보딩 정보 재사용
         var onb = userService.getOnboardingInfo(email);
 
         return ResponseEntity.ok(
@@ -129,8 +128,6 @@ public class UserController {
         userService.updateExtraInfo(email, request);
         return ResponseEntity.ok().build();
     }
-
-    /* ================= ✅ 필수5: 온보딩(장르 선택) ================= */
 
     @GetMapping("/user/onboarding")
     public ResponseEntity<OnboardingResponse> onboarding() {
@@ -238,3 +235,4 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 }
+
