@@ -17,16 +17,9 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
 
     List<Content> findByOrderByRatingDesc(Pageable pageable);
 
-    // ✅ 추천 결과 후보를 id로 가져오기용
+    // 추천 결과 후보를 id로 가져오기용
     List<Content> findByIdIn(Collection<Long> ids);
 
-    /**
-     * ✅ AdminContentService.list()에서 사용
-     * - q: title/overview 부분검색
-     * - type: MOVIE/TV
-     * - genre: genres CSV에서 포함 여부 (like)
-     * - pageable: 정렬/페이징
-     */
     @Query("""
         select c
         from Content c
@@ -48,10 +41,6 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
             Pageable pageable
     );
 
-    /**
-     * ✅ HomePage 검색용(= public search)
-     * - 편의상 Admin이랑 같은 조건 재사용
-     */
     @Query("""
         select c
         from Content c
@@ -73,11 +62,6 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
             Pageable pageable
     );
 
-    /**
-     * ✅ NEW: 장르 목록 생성용
-     * - contents.genres (CSV) 컬럼만 가져온다
-     * - null/blank 제외
-     */
     @Query("""
         select c.genres
         from Content c
@@ -85,3 +69,4 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
     """)
     List<String> findAllGenresCsv();
 }
+
