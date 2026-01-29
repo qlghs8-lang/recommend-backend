@@ -27,7 +27,6 @@ public class Content {
     @Column(length = 2000)
     private String overview;
 
-    // 장르: "Action,Drama" 처럼 CSV로 먼저 가자(나중에 N:M로 분리)
     @Column(length = 200)
     private String genres;
 
@@ -42,3 +41,4 @@ public class Content {
     private Long ratingCount;     // 평점 수
     private Long viewCount;       // 조회수(트렌딩)
 }
+
