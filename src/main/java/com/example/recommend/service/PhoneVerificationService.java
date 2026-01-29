@@ -15,7 +15,7 @@ public class PhoneVerificationService {
 
     private final PhoneVerificationRepository repo;
 
-    // ✅ 숫자만 남겨서 동일번호 판단 안정화
+    // 숫자만 남겨서 동일번호 판단 안정화
     public String normalizePhone(String phone) {
         if (phone == null) return "";
         return phone.replaceAll("[^0-9]", "").trim();
@@ -26,10 +26,6 @@ public class PhoneVerificationService {
         return String.valueOf(n);
     }
 
-    /**
-     * ✅ 공개: 인증번호 요청(회원가입 전)
-     * - 실제 SMS 연동 전이면: 코드 생성 후 DB 저장까지만 하고, 개발 중엔 응답에 code를 내려도 됨(선택)
-     */
     @Transactional
     public PhoneVerification request(String rawPhone) {
         String phone = normalizePhone(rawPhone);
@@ -49,7 +45,7 @@ public class PhoneVerificationService {
     }
 
     /**
-     * ✅ 공개: 인증 확인(회원가입 전)
+     * 공개: 인증 확인(회원가입 전)
      */
     @Transactional
     public void verify(String rawPhone, String rawCode) {
@@ -81,7 +77,7 @@ public class PhoneVerificationService {
     }
 
     /**
-     * ✅ 회원가입 시 검증용: "이 번호가 최근 인증 완료인지"
+     * 회원가입 시 검증용: "이 번호가 최근 인증 완료인지"
      */
     @Transactional(readOnly = true)
     public boolean isVerifiedNow(String rawPhone) {
@@ -94,3 +90,4 @@ public class PhoneVerificationService {
                 .isPresent();
     }
 }
+
