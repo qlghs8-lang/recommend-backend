@@ -35,7 +35,6 @@ public class SecurityConfig {
                 // 정적 리소스
                 .requestMatchers("/uploads/**").permitAll()
 
-                // ✅ Admin API는 ADMIN만
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
                 // 인증 없이 접근 가능한 API
@@ -75,3 +74,4 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
+
