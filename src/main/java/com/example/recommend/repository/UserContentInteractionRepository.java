@@ -34,7 +34,7 @@ public interface UserContentInteractionRepository extends JpaRepository<UserCont
                                               @Param("types") List<InteractionType> types);
 
     // =========================
-    // ✅ For You 추천용 메서드
+    // For You 추천용 메서드
     // =========================
 
     @Query("""
@@ -66,7 +66,7 @@ public interface UserContentInteractionRepository extends JpaRepository<UserCont
                                                @Param("types") List<InteractionType> types);
 
     // =========================
-    // ✅ NEW: 최근 좋아요/찜 콘텐츠 id (최신순)
+    // 최근 좋아요/찜 콘텐츠 id (최신순)
     // =========================
     @Query("""
         select u.content.id
@@ -79,3 +79,4 @@ public interface UserContentInteractionRepository extends JpaRepository<UserCont
                                                   @Param("types") List<InteractionType> types,
                                                   Pageable pageable);
 }
+
