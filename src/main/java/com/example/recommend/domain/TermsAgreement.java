@@ -23,7 +23,6 @@ public class TermsAgreement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 한 유저가 여러 약관 동의 로그를 가짐
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -38,3 +37,4 @@ public class TermsAgreement {
     @Column(nullable = false)
     private LocalDateTime agreedAt;
 }
+
