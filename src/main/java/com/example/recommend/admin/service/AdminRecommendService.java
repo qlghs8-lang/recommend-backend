@@ -94,19 +94,12 @@ public class AdminRecommendService {
         return new DashboardResponse(impressions, totalClicks, ctr, sourceCtrs);
     }
 
-    /**
-     * ✅ by-source (권장: 1쿼리로 완결)
-     * - impressions
-     * - uniqueClicks (distinct recommendLogId)
-     * - totalClicks (click log row count)
-     * - ctrUnique / ctrTotal
-     */
     public List<AdminSourceStatsRow> getBySource(int days) {
         LocalDateTime from = LocalDateTime.now().minusDays(days);
 
         List<AdminSourceStatsRow> out = recommendLogRepository.findSourceStatsSince(from);
 
-        // ✅ 기본 정렬: ctrTotal 높은 순 (너 정책이 total CTR이면 이게 더 직관적)
+        // ✅ 기본 정렬: ctrTotal 높은 순
         out.sort((a, b) -> Double.compare(b.getCtrTotal(), a.getCtrTotal()));
         return out;
     }
@@ -114,3 +107,4 @@ public class AdminRecommendService {
     public record SourceCtr(String source, long impressions, long clicks, double ctr) {}
     public record DashboardResponse(long impressions, long clicks, double ctr, List<SourceCtr> bySource) {}
 }
+
