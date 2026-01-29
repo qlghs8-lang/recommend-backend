@@ -30,35 +30,22 @@ public class RecommendController {
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    // ============================
-    // ✅ 기존 API (호환 유지)
-    // ============================
     @GetMapping("/for-you")
     public List<ContentResponse> forYou(@RequestParam(defaultValue = "20") int size) {
         List<Content> contents = recommendService.forYou(currentUser(), size);
         return contents.stream().map(ContentResponse::from).toList();
     }
 
-    // ============================
-    // ✅ 신규 API: 추천 사유 + recommendLogId 포함
-    // ============================
     @GetMapping("/for-you/reason")
     public List<RecommendResponse> forYouWithReason(@RequestParam(defaultValue = "20") int size) {
         List<RecommendItem> items = recommendService.forYouWithReasons(currentUser(), size);
         return items.stream().map(RecommendResponse::from).toList();
     }
 
-    // ============================
-    // ✅ NEW: 클릭 로그 저장
-    // ============================
     @PostMapping("/click/{recommendLogId}")
     public void click(@PathVariable Long recommendLogId) {
         recommendService.logClick(currentUser(), recommendLogId);
     }
-
-    // ============================
-    // DTO
-    // ============================
 
     public record ContentResponse(
             Long id,
@@ -123,3 +110,4 @@ public class RecommendController {
         }
     }
 }
+
