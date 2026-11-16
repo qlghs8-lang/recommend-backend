@@ -11,6 +11,10 @@ import java.util.List;
 
 public interface ContentRepository extends JpaRepository<Content, Long> {
 
+    @Lock(jakarta.persistence.LockModeType.PESSIMISTIC_WRITE)
+    @Query("select c from Content c where c.id = :id")
+    java.util.Optional<Content> findByIdForUpdate(@Param("id") Long id);
+
     List<Content> findByOrderByViewCountDesc(Pageable pageable);
 
     List<Content> findByOrderByReleaseDateDesc(Pageable pageable);

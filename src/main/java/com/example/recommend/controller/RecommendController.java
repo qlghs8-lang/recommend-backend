@@ -56,6 +56,11 @@ public class RecommendController {
         recommendService.logClick(currentUser(), recommendLogId);
     }
 
+    @PostMapping("/impression/{recommendLogId}")
+    public void impression(@PathVariable Long recommendLogId) {
+        recommendService.logImpression(currentUser(), recommendLogId);
+    }
+
     // ============================
     // DTO
     // ============================

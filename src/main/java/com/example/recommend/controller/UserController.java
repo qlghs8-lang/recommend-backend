@@ -1,9 +1,6 @@
 package com.example.recommend.controller;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,12 +21,14 @@ public class UserController {
 
     private final UserService userService;
     private final JwtUtil jwtUtil;
+    private final com.example.recommend.service.ProfileImageStorage profileImages;
 
     /* ================= 인증 ================= */
 
     @PostMapping("/users")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
-        return ResponseEntity.ok(userService.register(request));
+    public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest request) {
+        User user = userService.register(request);
+        return ResponseEntity.ok(new RegisterResponse(user.getId(), user.getEmail(), user.getNickname()));
     }
 
     @GetMapping("/users/check-email")
@@ -49,16 +48,16 @@ public class UserController {
         if (user == null) {
             return ResponseEntity.status(401).build();
         }
-        String token = jwtUtil.generateToken(user.getEmail());
-        System.out.println("[LOGIN] email=" + request.getEmail());
-        System.out.println("[LOGIN] pwNull=" + (request.getPassword() == null));
+        String token = jwtUtil.generateToken(user.getEmail(), user.getId(), user.getTokenVersion());
 
         return ResponseEntity.ok(new LoginResponse(token, user.getEmail(), user.getNickname()));
-        
+
     }
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout() {
+        String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        userService.logout(email);
         SecurityContextHolder.clearContext();
         return ResponseEntity.ok().build();
     }
@@ -160,12 +159,12 @@ public class UserController {
     /* ================= 휴대폰 인증 ================= */
 
     @PostMapping("/user/phone/request")
-    public ResponseEntity<Void> requestPhoneVerification(@RequestBody PhoneVerificationRequest request) {
+    public ResponseEntity<com.example.recommend.service.PhoneVerificationService.RequestResult> requestPhoneVerification(
+            @RequestBody PhoneVerificationRequest request, jakarta.servlet.http.HttpServletRequest http) {
 
         String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        userService.requestPhoneVerification(email, request.getPhone());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(userService.requestPhoneVerification(email, request.getPhone(), http.getRemoteAddr()));
     }
 
     @PostMapping("/user/phone/verify")
@@ -173,10 +172,7 @@ public class UserController {
 
         String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        boolean success = userService.verifyPhoneCode(email, request.getCode());
-        if (!success) {
-            throw new IllegalArgumentException("인증번호가 올바르지 않습니다.");
-        }
+        userService.verifyPhoneCode(email, request.getPhone(), request.getChallengeId(), request.getCode());
 
         return ResponseEntity.ok("휴대폰 인증 완료");
     }
@@ -193,48 +189,27 @@ public class UserController {
     /* ================= 프로필 이미지 ================= */
 
     @PostMapping("/user/profile-image")
-    public ResponseEntity<String> uploadProfileImage(@RequestParam("file") MultipartFile file) throws IOException {
-
-        if (file.isEmpty()) {
-            throw new IllegalArgumentException("파일이 비어 있습니다.");
-        }
-
+    public ResponseEntity<String> uploadProfileImage(@RequestParam("file") MultipartFile file) {
         String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        String uploadDir = "C:/upload/profile";
-        File dir = new File(uploadDir);
-        if (!dir.exists()) dir.mkdirs();
-
-        String ext = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-        String fileName = UUID.randomUUID() + ext;
-
-        File saveFile = new File(dir, fileName);
-        file.transferTo(saveFile);
-
-        String imageUrl = "/uploads/profile/" + fileName;
-        userService.updateProfileImage(email, imageUrl);
-
+        if (userService.findByEmail(email) == null) return ResponseEntity.notFound().build();
+        String imageUrl = profileImages.store(file);
+        try {
+            userService.updateProfileImage(email, imageUrl);
+        } catch (RuntimeException e) {
+            profileImages.deleteManaged(imageUrl);
+            throw e;
+        }
         return ResponseEntity.ok(imageUrl);
     }
 
     @DeleteMapping("/user/profile-image")
     public ResponseEntity<Void> deleteProfileImage() {
-
         String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         User user = userService.findByEmail(email);
         if (user == null) return ResponseEntity.notFound().build();
-
-        String imageUrl = user.getProfileImageUrl();
-
-        if (imageUrl != null && !imageUrl.contains("default.png")) {
-            String filePath = "C:/upload/profile/" + imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
-
-            File file = new File(filePath);
-            if (file.exists()) file.delete();
-        }
-
+        String previous = user.getProfileImageUrl();
         userService.updateProfileImage(email, null);
+        profileImages.deleteManaged(previous);
         return ResponseEntity.ok().build();
     }
 }

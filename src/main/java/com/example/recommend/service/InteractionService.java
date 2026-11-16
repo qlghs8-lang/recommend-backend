@@ -3,6 +3,9 @@ package com.example.recommend.service;
 import com.example.recommend.domain.*;
 import com.example.recommend.repository.UserContentInteractionRepository;
 import jakarta.transaction.Transactional;
+import com.example.recommend.repository.UserRepository;
+import com.example.recommend.repository.ContentRepository;
+import com.example.recommend.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +18,20 @@ public class InteractionService {
 
     private final UserContentInteractionRepository interactionRepo;
     private final ContentService contentService;
+    private final UserRepository userRepository;
+    private final ContentRepository contentRepository;
+
+    // Same lock order as recommendations and deletion; also protects absent state rows.
+    private Content lockTargets(User user, Long contentId) {
+        userRepository.findByIdForUpdate(user.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        return contentRepository.findByIdForUpdate(contentId)
+                .orElseThrow(() -> new IllegalArgumentException("Content not found: " + contentId));
+    }
 
     @Transactional
     public InteractionStateResponse view(User user, Long contentId) {
-        Content content = contentService.getById(contentId);
+        Content content = lockTargets(user, contentId);
 
         interactionRepo.save(UserContentInteraction.builder()
                 .user(user)
@@ -36,7 +49,7 @@ public class InteractionService {
 
     @Transactional
     public InteractionStateResponse like(User user, Long contentId) {
-        Content content = contentService.getById(contentId);
+        Content content = lockTargets(user, contentId);
 
         // LIKE 누르면 DISLIKE 삭제
         interactionRepo.deleteByUserIdAndContentIdAndEventType(user.getId(), contentId, InteractionType.DISLIKE);
@@ -55,7 +68,7 @@ public class InteractionService {
 
     @Transactional
     public InteractionStateResponse dislike(User user, Long contentId) {
-        Content content = contentService.getById(contentId);
+        Content content = lockTargets(user, contentId);
 
         // DISLIKE 누르면 LIKE 삭제
         interactionRepo.deleteByUserIdAndContentIdAndEventType(user.getId(), contentId, InteractionType.LIKE);
@@ -74,7 +87,7 @@ public class InteractionService {
 
     @Transactional
     public InteractionStateResponse toggleBookmark(User user, Long contentId) {
-        Content content = contentService.getById(contentId);
+        Content content = lockTargets(user, contentId);
 
         var existing = interactionRepo.findByUser_IdAndContent_IdAndEventType(
                 user.getId(), contentId, InteractionType.BOOKMARK

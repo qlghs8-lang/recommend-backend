@@ -7,6 +7,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+    private final com.example.recommend.service.ProfileImageStorage images;
+
+    public WebConfig(com.example.recommend.service.ProfileImageStorage images) { this.images = images; }
 
     // 🔥 CORS 설정 (기존 기능 유지)
     @Override
@@ -21,8 +24,8 @@ public class WebConfig implements WebMvcConfigurer {
     // 🔥 이미지 정적 리소스 설정 (새 기능)
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:/C:/upload/");
+        registry.addResourceHandler("/uploads/profile/**")
+                .addResourceLocations(images.resourceLocation());
     }
 
 }

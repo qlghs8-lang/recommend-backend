@@ -25,6 +25,11 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    // Only the atomic repository update may advance this value.
+    @Builder.Default
+    @Column(nullable = false, updatable = false)
+    private long tokenVersion = 0;
+
     /* ===== 프로필 ===== */
     @Column(nullable = false, unique = true)
     private String nickname;

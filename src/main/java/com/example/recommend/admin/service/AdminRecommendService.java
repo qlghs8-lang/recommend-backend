@@ -1,7 +1,6 @@
 package com.example.recommend.admin.service;
 
 import com.example.recommend.admin.dto.AdminRecommendLogRow;
-import com.example.recommend.admin.dto.AdminSourceStatRow;
 import com.example.recommend.admin.dto.AdminSourceStatsRow;
 import com.example.recommend.repository.RecommendLogRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -51,47 +49,14 @@ public class AdminRecommendService {
     public DashboardResponse getDashboard(int days) {
         LocalDateTime from = LocalDateTime.now().minusDays(days);
 
-        long impressions = recommendLogRepository.countByCreatedAtGreaterThanEqual(from);
-
-        // ✅ total clicks 기준
-        long totalClicks = recommendLogRepository.countTotalClicksSince(from);
-
-        double ctr = impressions == 0 ? 0.0 : (double) totalClicks / impressions;
-
-        Map<String, Long> impBySource = recommendLogRepository
-                .countImpressionsBySourceSince(from)
-                .stream()
-                .collect(Collectors.toMap(
-                        AdminSourceStatRow::getSource,
-                        AdminSourceStatRow::getCount
-                ));
-
-        Map<String, Long> clkBySource = recommendLogRepository
-                .countTotalClicksBySourceSince(from)
-                .stream()
-                .collect(Collectors.toMap(
-                        AdminSourceStatRow::getSource,
-                        AdminSourceStatRow::getCount
-                ));
-
-        List<SourceCtr> sourceCtrs = new ArrayList<>();
-
-        Set<String> sources = new HashSet<>();
-        sources.addAll(impBySource.keySet());
-        sources.addAll(clkBySource.keySet());
-
-        for (String s : sources) {
-            long imp = impBySource.getOrDefault(s, 0L);
-            long clk = clkBySource.getOrDefault(s, 0L);
-
-            double sCtr = imp == 0 ? 0.0 : (double) clk / imp;
-
-            sourceCtrs.add(new SourceCtr(s, imp, clk, sCtr));
-        }
-
-        sourceCtrs.sort((a, b) -> Double.compare(b.ctr(), a.ctr()));
-
-        return new DashboardResponse(impressions, totalClicks, ctr, sourceCtrs);
+        List<AdminSourceStatsRow> stats = recommendLogRepository.findSourceStatsSince(from);
+        long impressions = stats.stream().mapToLong(AdminSourceStatsRow::getImpressions).sum();
+        long uniqueClicks = stats.stream().mapToLong(AdminSourceStatsRow::getUniqueClicks).sum();
+        long totalClicks = stats.stream().mapToLong(AdminSourceStatsRow::getTotalClicks).sum();
+        List<SourceCtr> bySource = stats.stream().map(s -> new SourceCtr(s.getSource(),
+                s.getImpressions(), s.getUniqueClicks(), s.getCtrUnique(), s.getTotalClicks())).toList();
+        return new DashboardResponse(impressions, uniqueClicks,
+                impressions == 0 ? 0 : (double) uniqueClicks / impressions, bySource, totalClicks);
     }
 
     /**
@@ -106,11 +71,12 @@ public class AdminRecommendService {
 
         List<AdminSourceStatsRow> out = recommendLogRepository.findSourceStatsSince(from);
 
-        // ✅ 기본 정렬: ctrTotal 높은 순 (너 정책이 total CTR이면 이게 더 직관적)
-        out.sort((a, b) -> Double.compare(b.getCtrTotal(), a.getCtrTotal()));
+        // Rank by unique CTR; repeated clicks remain a separate volume metric.
+        out = new ArrayList<>(out);
+        out.sort((a, b) -> Double.compare(b.getCtrUnique(), a.getCtrUnique()));
         return out;
     }
 
-    public record SourceCtr(String source, long impressions, long clicks, double ctr) {}
-    public record DashboardResponse(long impressions, long clicks, double ctr, List<SourceCtr> bySource) {}
+    public record SourceCtr(String source, long impressions, long clicks, double ctr, long totalClicks) {}
+    public record DashboardResponse(long impressions, long clicks, double ctr, List<SourceCtr> bySource, long totalClicks) {}
 }

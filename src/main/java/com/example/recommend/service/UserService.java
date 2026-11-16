@@ -1,6 +1,9 @@
 package com.example.recommend.service;
 
 import com.example.recommend.controller.dto.RegisterRequest;
+import com.example.recommend.exception.ConflictException;
+import com.example.recommend.exception.ForbiddenException;
+import com.example.recommend.exception.ResourceNotFoundException;
 import com.example.recommend.domain.NicknameBlacklist;
 import com.example.recommend.domain.TermsAgreement;
 import com.example.recommend.domain.User;
@@ -27,6 +30,7 @@ public class UserService {
     private final NicknameBlacklistRepository nicknameBlacklistRepository;
     private final TermsAgreementRepository termsAgreementRepository;
     private final PhoneVerificationService phoneVerificationService;
+    private final RelatedDataDeletion relatedDataDeletion;
 
     /* ================= 회원가입 (프론트 요청 DTO) ================= */
 
@@ -48,10 +52,7 @@ public class UserService {
                 .phone(request.getPhone())
                 .build();
 
-        // 2) 기존 회원가입 로직 재사용 (검증/중복/암호화/기본값/저장)
-        User saved = register(user);
-
-        // 3) 약관 동의 저장 + 필수 동의 서버 강제
+        // Validate terms before consuming the one-use phone ticket.
         Map<String, Boolean> t = request.getTermsAgreements();
         if (t == null) t = Map.of();
 
@@ -63,6 +64,8 @@ public class UserService {
         if (!service || !privacy || !age14) {
             throw new IllegalArgumentException("필수 약관에 동의해야 가입할 수 있습니다.");
         }
+
+        User saved = register(user, request.getPhoneVerificationTicket(), request.getPhoneRequesterToken());
 
         saveTerms(saved, "service", service);
         saveTerms(saved, "privacy", privacy);
@@ -86,6 +89,10 @@ public class UserService {
     /* ================= 회원가입 (기존 로직 유지) ================= */
 
     public User register(User user) {
+        return register(user, null, null);
+    }
+
+    private User register(User user, String ticket, String requesterToken) {
 
         if (user.getEmail() == null || user.getEmail().isBlank()) {
             throw new IllegalArgumentException("이메일은 필수입니다.");
@@ -95,15 +102,7 @@ public class UserService {
             throw new IllegalArgumentException("이메일 형식이 올바르지 않습니다.");
         }
 
-        if (user.getPassword() == null || user.getPassword().isBlank()) {
-            throw new IllegalArgumentException("비밀번호는 필수입니다.");
-        }
-
-        if (!user.getPassword().matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")) {
-            throw new IllegalArgumentException(
-                    "비밀번호는 영문과 숫자를 포함한 8자리 이상이어야 합니다."
-            );
-        }
+        PasswordPolicy.validate(user.getPassword());
 
         if (user.getNickname() == null || user.getNickname().isBlank()) {
             throw new IllegalArgumentException("닉네임은 필수입니다.");
@@ -121,11 +120,11 @@ public class UserService {
         validateNicknameBlacklist(nickname);
 
         if (userRepository.existsByEmail(email)) {
-            throw new IllegalStateException("이미 사용 중인 이메일입니다.");
+            throw new ConflictException("이미 사용 중인 이메일입니다.");
         }
 
         if (userRepository.existsByNickname(nickname)) {
-            throw new IllegalStateException("이미 사용 중인 닉네임입니다.");
+            throw new ConflictException("이미 사용 중인 닉네임입니다.");
         }
 
         user.setEmail(email);
@@ -137,25 +136,19 @@ public class UserService {
 
         // ✅ 필수5 기본값(온보딩)
         if (user.getOnboardingDone() == null) user.setOnboardingDone(false);
-        
-     // ✅ 회원가입 시 phone이 들어오면: 공개 인증 완료 여부 확인 후 반영
+
+        user.setVerifiedPhone(null);
         if (user.getPhone() != null && !user.getPhone().isBlank()) {
             String normalized = phoneVerificationService.normalizePhone(user.getPhone());
+            if (userRepository.existsByVerifiedPhone(normalized))
+                throw new ConflictException("이미 인증된 휴대폰 번호입니다.");
+            phoneVerificationService.consume(ticket, normalized,
+                    phoneVerificationService.registrationOwner(requesterToken));
             user.setPhone(normalized);
-
-            boolean ok = phoneVerificationService.isVerifiedNow(normalized);
-            if (!ok) {
-                // 정책 선택:
-                // 1) phone을 넣었으면 인증 필수로 강제
-                throw new IllegalArgumentException("휴대폰 인증이 필요합니다. 인증 완료 후 가입해주세요.");
-
-                // 2) 아니면 phone만 저장하고 미인증으로 남겨도 됨(원하면 이 방식으로 바꿔줄게)
-                // user.setPhoneVerified(false);
-                // user.setVerifiedPhone(null);
-            }
-
             user.setPhoneVerified(true);
             user.setVerifiedPhone(normalized);
+        } else {
+            user.setPhone(null);
         }
 
         return userRepository.save(user);
@@ -228,11 +221,11 @@ public class UserService {
         validateNicknameBlacklist(trimmed);
 
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));
+                .orElseThrow(() -> new ResourceNotFoundException("사용자 없음"));
 
         if (!trimmed.equals(user.getNickname())
                 && userRepository.existsByNickname(trimmed)) {
-            throw new IllegalStateException("이미 사용 중인 닉네임입니다.");
+            throw new ConflictException("이미 사용 중인 닉네임입니다.");
         }
 
         user.setNickname(trimmed);
@@ -250,32 +243,46 @@ public class UserService {
         }
     }
 
+    @Transactional
     public boolean changePassword(String email, String currentPassword, String newPassword) {
-        User user = userRepository.findByEmail(email).orElse(null);
+        User user = userRepository.findByEmailForUpdate(email).orElse(null);
         if (user == null) return false;
 
         if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
             return false;
         }
 
+        PasswordPolicy.validate(newPassword);
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
+        userRepository.revokeTokens(user.getId());
         return true;
+    }
+
+    @Transactional
+    public void logout(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("사용자 없음"));
+        userRepository.revokeTokens(user.getId());
     }
 
     @Transactional
     public void updateExtraInfo(String email, UserExtraInfoRequest request) {
 
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));
+                .orElseThrow(() -> new ResourceNotFoundException("사용자 없음"));
 
         user.setRealName(request.getRealName());
         user.setBirthDate(request.getBirthDate());
         user.setGender(request.getGender());
-        if (request.getPhone() != null && !request.getPhone().isBlank()) {
-            user.setPhone(request.getPhone());
+        String phone = phoneVerificationService.normalizePhone(request.getPhone());
+        String oldPhone = user.getPhone() == null ? "" : user.getPhone().replaceAll("[\\s-]", "");
+        user.setPhone(phone.isEmpty() ? null : phone);
+        if (!phone.equals(oldPhone)) {
             user.setPhoneVerified(false);
             user.setVerifiedPhone(null);
+            user.setPhoneVerifyCode(null);
+            user.setPhoneVerifyExpireAt(null);
         }
 
         userRepository.save(user);
@@ -283,70 +290,41 @@ public class UserService {
 
     /* ================= 휴대폰 인증 ================= */
 
-    @Transactional
-    public void requestPhoneVerification(String email, String phone) {
-
-        if (phone == null || phone.isBlank()) {
-            throw new IllegalArgumentException("휴대폰 번호를 입력해주세요.");
-        }
-
+    public PhoneVerificationService.RequestResult requestPhoneVerification(String email, String phone, String remoteAddress) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));
-
-        String p = phone.trim();
-
-        // ✅ 이미 인증된 번호면 재요청 금지 (핵심)
-        if (Boolean.TRUE.equals(user.getPhoneVerified())
-                && user.getVerifiedPhone() != null
-                && user.getVerifiedPhone().equals(p)) {
-            throw new IllegalStateException("이미 인증된 휴대폰 번호입니다.");
-        }
-
-        // ✅ 다른 번호로 인증을 시도하는 경우에만 미인증으로 리셋
-        user.setPhone(p);
-        user.setPhoneVerified(false);
-        user.setVerifiedPhone(null);
-
-        String code = String.valueOf((int) (Math.random() * 900000) + 100000);
-
-        user.setPhoneVerifyCode(code);
-        user.setPhoneVerifyExpireAt(LocalDateTime.now().plusMinutes(3));
+                .orElseThrow(() -> new ResourceNotFoundException("사용자 없음"));
+        return phoneVerificationService.request(phone, "user:" + user.getId(), remoteAddress);
     }
 
     @Transactional
-    public boolean verifyPhoneCode(String email, String code) {
-
+    public void verifyPhoneCode(String email, String phone, String challengeId, String code) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));
-
-        if (user.getPhoneVerifyCode() == null) return false;
-        if (user.getPhoneVerifyExpireAt().isBefore(LocalDateTime.now())) return false;
-        if (!user.getPhoneVerifyCode().equals(code)) return false;
-
-        if (userRepository.existsByVerifiedPhone(user.getPhone())) {
-            throw new IllegalStateException("이미 인증된 휴대폰 번호입니다.");
-        }
-
+                .orElseThrow(() -> new ResourceNotFoundException("사용자 없음"));
+        String normalized = phoneVerificationService.normalizePhone(phone);
+        String owner = "user:" + user.getId();
+        var result = phoneVerificationService.verify(challengeId, normalized, code, owner);
+        phoneVerificationService.consume(result.verificationTicket(), normalized, owner);
+        if (!normalized.equals(user.getVerifiedPhone()) && userRepository.existsByVerifiedPhone(normalized))
+            throw new ConflictException("이미 인증된 휴대폰 번호입니다.");
+        user.setPhone(normalized);
         user.setPhoneVerified(true);
-        user.setVerifiedPhone(user.getPhone());
-
+        user.setVerifiedPhone(normalized);
         user.setPhoneVerifyCode(null);
         user.setPhoneVerifyExpireAt(null);
-
-        return true;
+        userRepository.save(user);
     }
 
     private void validatePhoneVerified(User user) {
         if (!Boolean.TRUE.equals(user.getPhoneVerified())) {
-            throw new IllegalStateException("휴대폰 인증이 필요합니다.");
+            throw new ForbiddenException("휴대폰 인증이 필요합니다.");
         }
     }
 
     /* ================= 프로필 이미지 ================= */
 
     public void updateProfileImage(String email, String imageUrl) {
-        User user = userRepository.findByEmail(email).orElse(null);
-        if (user == null) return;
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("사용자를 찾을 수 없습니다."));
 
         user.setProfileImageUrl(
                 imageUrl != null
@@ -359,9 +337,13 @@ public class UserService {
 
     /* ================= 탈퇴 ================= */
 
+    @Transactional
     public void deleteByEmail(String email) {
-        userRepository.findByEmail(email)
-                .ifPresent(userRepository::delete);
+        userRepository.findByEmailForUpdate(email).ifPresent(user -> {
+            relatedDataDeletion.forUser(user.getId());
+            userRepository.delete(user);
+            userRepository.flush();
+        });
     }
 
     /* =========================================================
@@ -371,7 +353,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public OnboardingInfo getOnboardingInfo(String email) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));
+                .orElseThrow(() -> new ResourceNotFoundException("사용자 없음"));
 
         List<String> genres = parseGenresCsv(user.getPreferredGenres());
         boolean done = Boolean.TRUE.equals(user.getOnboardingDone());
@@ -382,7 +364,7 @@ public class UserService {
     @Transactional
     public void savePreferredGenres(String email, List<String> genres) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));
+                .orElseThrow(() -> new ResourceNotFoundException("사용자 없음"));
 
         List<String> cleaned = normalizeGenres(genres);
 
@@ -422,7 +404,7 @@ public class UserService {
                 .distinct()
                 .toList();
     }
-    
+
 
     public record OnboardingInfo(boolean onboardingDone, List<String> preferredGenres) {}
 }

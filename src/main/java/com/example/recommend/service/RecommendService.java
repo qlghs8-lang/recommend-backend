@@ -23,6 +23,7 @@ public class RecommendService {
 
     private final RecommendLogRepository recommendLogRepository;
     private final RecommendClickLogRepository recommendClickLogRepository;
+    private final com.example.recommend.repository.UserRepository userRepository;
 
     private static final List<InteractionType> POSITIVE = List.of(InteractionType.LIKE, InteractionType.BOOKMARK);
 
@@ -35,8 +36,6 @@ public class RecommendService {
     private static final double CLICK_GENRE_WEIGHT = 2.0;
     private static final double VIEW_PENALTY = 0.35;
 
-    // ✅ 필수5-1: 노출(impression) 중복 방지 윈도우 (권장: 24h)
-    private static final int IMPRESSION_DEDUPE_HOURS = 24;
 
     // ✅ 필수5-2: 온보딩(preferredGenres) 기반 콜드스타트 가중치
     private static final double ONBOARDING_GENRE_WEIGHT = 1.5;
@@ -51,6 +50,7 @@ public class RecommendService {
     // =========================
     @Transactional
     public List<Content> forYou(User user, int size) {
+        validateSize(size);
         return forYouInternal(user, size).contents;
     }
 
@@ -80,6 +80,8 @@ public class RecommendService {
 
     @Transactional
     public List<RecommendItem> forYouWithReasons(User user, int size) {
+        validateSize(size);
+        lockUser(user);
         ForYouInternalResult internal = forYouInternal(user, size);
 
         // ✅ anchors: 좋아요/찜한 콘텐츠가 없으면 빈 리스트
@@ -134,8 +136,14 @@ public class RecommendService {
             }
         }
 
-        // ✅ impression dedupe + recommendLogId 재사용
-        List<RecommendLog> logsAligned = saveImpressionLogsWithDedupe(user.getId(), drafts);
+        // Lock parents before logs, in stable ID order. A deleted candidate is omitted.
+        Set<Long> existing = new HashSet<>();
+        drafts.stream().map(d -> d.content().getId()).distinct().sorted().forEach(id -> {
+            if (contentRepository.findByIdForUpdate(id).isPresent()) existing.add(id);
+        });
+        drafts.removeIf(d -> !existing.contains(d.content().getId()));
+        // Candidates are not impressions until visibility is reported.
+        List<RecommendLog> logsAligned = saveCandidates(user.getId(), drafts);
 
         List<RecommendItem> items = new ArrayList<>();
         int n = Math.min(drafts.size(), logsAligned.size());
@@ -151,73 +159,52 @@ public class RecommendService {
         return items;
     }
 
+    private void validateSize(int size) {
+        if (size < 1 || size > 100) throw new IllegalArgumentException("size must be between 1 and 100");
+    }
+
     private String buildLogSource(RecommendSource base, boolean explore) {
         return base.name() + "_" + (explore ? "EXPLORE" : "EXPLOIT");
     }
 
-    /**
-     * ✅ impression 로그 중복 방지 + 재사용
-     * - 같은 userId + contentId가 최근 N시간 내 존재하면 새 로그를 만들지 않고 그 로그를 재사용
-     * - 반환 리스트는 drafts 순서와 1:1로 맞춘다
-     */
-    private List<RecommendLog> saveImpressionLogsWithDedupe(Long userId, List<Draft> drafts) {
+    private List<RecommendLog> saveCandidates(Long userId, List<Draft> drafts) {
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime from = now.minusHours(IMPRESSION_DEDUPE_HOURS);
+        return recommendLogRepository.saveAll(drafts.stream().map(d -> RecommendLog.builder()
+                .userId(userId).contentId(d.content().getId()).source(d.logSource())
+                .reason(d.reason()).createdAt(now).build()).toList());
+    }
 
-        List<Long> contentIds = drafts.stream()
-                .map(d -> d.content() == null ? null : d.content().getId())
-                .filter(Objects::nonNull)
-                .distinct()
-                .toList();
-
-        Map<Long, RecommendLog> latestByContentId = new HashMap<>();
-        if (!contentIds.isEmpty()) {
-            // ✅ 너가 이미 정의했다는 메서드
-            List<RecommendLog> recent = recommendLogRepository.findRecentLogsSince(userId, contentIds, from);
-
-            for (RecommendLog rl : recent) {
-                if (rl == null || rl.getContentId() == null) continue;
-                latestByContentId.putIfAbsent(rl.getContentId(), rl);
-            }
+    private RecommendLog ownedLog(User user, Long id) {
+        if (id == null || id <= 0) throw new IllegalArgumentException("Invalid recommendation ID");
+        lockUser(user);
+        // Read metadata first, then acquire locks in user -> content -> log order.
+        RecommendLog candidate = recommendLogRepository.findById(id)
+                .orElseThrow(() -> new com.example.recommend.exception.ResourceNotFoundException("Recommendation not found"));
+        if (!Objects.equals(candidate.getUserId(), user.getId())) {
+            throw new com.example.recommend.exception.ForbiddenException("Not your recommendation");
         }
-
-        List<RecommendLog> aligned = new ArrayList<>(Collections.nCopies(drafts.size(), null));
-
-        List<RecommendLog> toInsert = new ArrayList<>();
-        List<Integer> insertPositions = new ArrayList<>();
-
-        for (int i = 0; i < drafts.size(); i++) {
-            Draft d = drafts.get(i);
-            Content c = d.content();
-            if (c == null || c.getId() == null) continue;
-
-            RecommendLog reuse = latestByContentId.get(c.getId());
-            if (reuse != null) {
-                aligned.set(i, reuse);
-                continue;
-            }
-
-            RecommendLog fresh = RecommendLog.builder()
-                    .userId(userId)
-                    .contentId(c.getId())
-                    .source(d.logSource())      // ✅ EXPLOIT/EXPLORE suffix 저장
-                    .reason(d.reason())
-                    .createdAt(now)
-                    .build();
-
-            toInsert.add(fresh);
-            insertPositions.add(i);
+        contentRepository.findByIdForUpdate(candidate.getContentId())
+                .orElseThrow(() -> new com.example.recommend.exception.ResourceNotFoundException("Content not found"));
+        RecommendLog log = recommendLogRepository.findLockedById(id)
+                .orElseThrow(() -> new com.example.recommend.exception.ResourceNotFoundException("Recommendation not found"));
+        if (!Objects.equals(log.getUserId(), user.getId())) {
+            throw new com.example.recommend.exception.ForbiddenException("Not your recommendation");
         }
+        return log;
+    }
 
-        if (!toInsert.isEmpty()) {
-            List<RecommendLog> saved = recommendLogRepository.saveAll(toInsert);
-            for (int k = 0; k < saved.size(); k++) {
-                int pos = insertPositions.get(k);
-                aligned.set(pos, saved.get(k));
-            }
+    private void lockUser(User user) {
+        userRepository.findByIdForUpdate(user.getId())
+                .orElseThrow(() -> new com.example.recommend.exception.ResourceNotFoundException("User not found"));
+    }
+
+    @Transactional
+    public void logImpression(User user, Long id) {
+        RecommendLog log = ownedLog(user, id);
+        if (log.getExposedAt() == null) {
+            log.setExposedAt(LocalDateTime.now());
+            recommendLogRepository.save(log);
         }
-
-        return aligned;
     }
 
     // =========================
@@ -225,13 +212,9 @@ public class RecommendService {
     // =========================
     @Transactional
     public void logClick(User user, Long recommendLogId) {
-        if (recommendLogId == null) throw new RuntimeException("recommendLogId is null");
-
-        RecommendLog log = recommendLogRepository.findById(recommendLogId)
-                .orElseThrow(() -> new RuntimeException("RecommendLog not found: " + recommendLogId));
-
-        if (!Objects.equals(log.getUserId(), user.getId())) {
-            throw new RuntimeException("Forbidden: not your recommend log");
+        RecommendLog log = ownedLog(user, recommendLogId);
+        if (log.getExposedAt() == null) {
+            throw new IllegalArgumentException("Recommendation has not been exposed");
         }
 
         recommendClickLogRepository.save(RecommendClickLog.builder()
@@ -297,6 +280,7 @@ public class RecommendService {
             Map<String, Double> onboardingPref = genrePrefFromPreferredGenres(user);
             if (onboardingPref.isEmpty()) {
                 List<Content> cold = all.stream()
+                        .filter(c -> c.getId() != null && !exclude.contains(c.getId()) && !disliked.contains(c.getId()))
                         .sorted(Comparator.comparing((Content c) -> Optional.ofNullable(c.getViewCount()).orElse(0L)).reversed())
                         .limit(size)
                         .toList();
@@ -305,11 +289,11 @@ public class RecommendService {
                 return new ForYouInternalResult(cold, Map.of(), Set.of(), Set.of(), Set.of());
             }
 
-            long maxView = all.stream()
+            long maxView = Math.max(1L, all.stream()
                     .map(Content::getViewCount)
                     .filter(Objects::nonNull)
                     .max(Long::compareTo)
-                    .orElse(1L);
+                    .orElse(1L));
 
             Map<Long, Double> scoreA = new HashMap<>();
             for (Content c : all) {
@@ -413,13 +397,13 @@ public class RecommendService {
                 PageRequest.of(0, RECENT_CLICK_LIMIT)
         );
 
-        Map<String, Double> genrePref = buildGenrePreference(positiveContentIds, recentClickedContentIds);
+        Map<String, Double> genrePref = buildGenrePreference(positiveContentIds, recentClickedContentIds, all);
 
-        long maxView = all.stream()
+        long maxView = Math.max(1L, all.stream()
                 .map(Content::getViewCount)
                 .filter(Objects::nonNull)
                 .max(Long::compareTo)
-                .orElse(1L);
+                .orElse(1L));
 
         Map<Long, Double> scoreA = new HashMap<>();
 
@@ -617,9 +601,10 @@ public class RecommendService {
     // ✅ Warm start: 장르 선호 생성 (좋아요/찜 + 클릭)
     // =========================
     private Map<String, Double> buildGenrePreference(List<Long> positiveContentIds,
-                                                     List<Long> recentClickedContentIds) {
+                                                     List<Long> recentClickedContentIds,
+                                                     List<Content> all) {
 
-        Map<Long, Content> byId = contentRepository.findAll().stream()
+        Map<Long, Content> byId = all.stream()
                 .filter(c -> c.getId() != null)
                 .collect(Collectors.toMap(Content::getId, c -> c, (a, b) -> a));
 
@@ -690,14 +675,13 @@ public class RecommendService {
         );
         if (similarUserIds.isEmpty()) return List.of();
 
-        List<Long> candidates = interactionRepository.findContentIdsByUserIdsAndTypes(similarUserIds, POSITIVE);
+        var candidates = interactionRepository.countSupportersByContent(similarUserIds, POSITIVE);
 
-        Map<Long, Integer> freq = new HashMap<>();
-        for (Long cid : candidates) {
-            if (cid == null) continue;
-            if (exclude.contains(cid)) continue;
-            if (disliked.contains(cid)) continue;
-            freq.put(cid, freq.getOrDefault(cid, 0) + 1);
+        Map<Long, Long> freq = new HashMap<>();
+        for (var candidate : candidates) {
+            Long cid = candidate.getContentId();
+            if (cid == null || exclude.contains(cid) || disliked.contains(cid)) continue;
+            freq.put(cid, candidate.getSupporterCount());
         }
 
         Map<Long, Content> byId = all.stream()
@@ -706,14 +690,15 @@ public class RecommendService {
 
         return freq.entrySet().stream()
                 .sorted((e1, e2) -> {
-                    int cmp = Integer.compare(e2.getValue(), e1.getValue());
+                    int cmp = Long.compare(e2.getValue(), e1.getValue());
                     if (cmp != 0) return cmp;
 
                     Content c1 = byId.get(e1.getKey());
                     Content c2 = byId.get(e2.getKey());
                     long v1 = c1 == null || c1.getViewCount() == null ? 0L : c1.getViewCount();
                     long v2 = c2 == null || c2.getViewCount() == null ? 0L : c2.getViewCount();
-                    return Long.compare(v2, v1);
+                    int byViews = Long.compare(v2, v1);
+                    return byViews != 0 ? byViews : Long.compare(e1.getKey(), e2.getKey());
                 })
                 .map(Map.Entry::getKey)
                 .limit(sizeB)

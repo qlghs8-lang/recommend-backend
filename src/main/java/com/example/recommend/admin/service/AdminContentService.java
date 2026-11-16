@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AdminContentService {
 
     private final ContentRepository contentRepository;
+    private final com.example.recommend.service.RelatedDataDeletion relatedDataDeletion;
 
     @Transactional(readOnly = true)
     public Page<AdminContentResponse> list(
@@ -71,7 +72,7 @@ public class AdminContentService {
     public AdminContentResponse update(Long id, AdminContentRequest req) {
         validate(req);
 
-        Content c = contentRepository.findById(id)
+        Content c = contentRepository.findByIdForUpdate(id)
                 .orElseThrow(() -> new IllegalArgumentException("Content not found: " + id));
 
         c.setType(normType(req.getType()));
@@ -90,10 +91,12 @@ public class AdminContentService {
 
     @Transactional
     public void delete(Long id) {
-        if (!contentRepository.existsById(id)) {
+        if (contentRepository.findByIdForUpdate(id).isEmpty()) {
             throw new IllegalArgumentException("Content not found: " + id);
         }
+        relatedDataDeletion.forContent(id);
         contentRepository.deleteById(id);
+        contentRepository.flush();
     }
 
     private void validate(AdminContentRequest req) {

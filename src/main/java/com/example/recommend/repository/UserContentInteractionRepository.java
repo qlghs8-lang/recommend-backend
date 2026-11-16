@@ -56,14 +56,19 @@ public interface UserContentInteractionRepository extends JpaRepository<UserCont
                                              @Param("contentIds") Collection<Long> contentIds,
                                              @Param("types") List<InteractionType> types);
 
+    interface ContentSupport {
+        Long getContentId();
+        Long getSupporterCount();
+    }
+
     @Query("""
-        select distinct u.content.id
+        select u.content.id as contentId, count(distinct u.user.id) as supporterCount
         from UserContentInteraction u
-        where u.user.id in :userIds
-          and u.eventType in :types
+        where u.user.id in :userIds and u.eventType in :types
+        group by u.content.id
     """)
-    List<Long> findContentIdsByUserIdsAndTypes(@Param("userIds") Collection<Long> userIds,
-                                               @Param("types") List<InteractionType> types);
+    List<ContentSupport> countSupportersByContent(@Param("userIds") Collection<Long> userIds,
+                                                @Param("types") List<InteractionType> types);
 
     // =========================
     // ✅ NEW: 최근 좋아요/찜 콘텐츠 id (최신순)

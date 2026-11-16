@@ -12,7 +12,8 @@ import java.time.LocalDateTime;
                 @Index(name = "idx_rl_user", columnList = "userId"),
                 @Index(name = "idx_rl_content", columnList = "contentId"),
                 @Index(name = "idx_rl_source", columnList = "source"),
-                @Index(name = "idx_rl_created_at", columnList = "createdAt")
+                @Index(name = "idx_rl_created_at", columnList = "createdAt"),
+                @Index(name = "idx_rl_exposed_at", columnList = "exposedAt")
         }
 )
 @Getter @Setter
@@ -41,4 +42,7 @@ public class RecommendLog {
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
+
+    // Null until the client reports this recommendation as visible.
+    private LocalDateTime exposedAt;
 }

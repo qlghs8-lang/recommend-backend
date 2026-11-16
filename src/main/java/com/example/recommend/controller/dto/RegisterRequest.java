@@ -23,6 +23,8 @@ public class RegisterRequest {
 
     private String gender;
     private String phone;
+    private String phoneRequesterToken;
+    private String phoneVerificationTicket;
 
     // 프론트에서 넘기는 약관 동의 결과
     private Map<String, Boolean> termsAgreements;

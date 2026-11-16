@@ -15,6 +15,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
+import io.jsonwebtoken.JwtException;
 
 @Component
 @RequiredArgsConstructor
@@ -59,32 +61,44 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String token = authHeader.substring(7);
 
+        String email;
+        Long userId;
+        Long tokenVersion;
         try {
-            String email = jwtUtil.validateAndGetEmail(token);
-
-            User user = userRepository.findByEmail(email).orElse(null);
-
-            String role = (user == null || user.getRole() == null || user.getRole().isBlank())
-                    ? "USER"
-                    : user.getRole().trim().toUpperCase();
-
-            if (role.startsWith("ROLE_")) {
-                role = role.substring("ROLE_".length());
-            }
-
-            List<SimpleGrantedAuthority> authorities =
-                    List.of(new SimpleGrantedAuthority("ROLE_" + role));
-
-            UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(email, null, authorities);
-
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            filterChain.doFilter(request, response);
-
-        } catch (Exception e) {
+            var claims = jwtUtil.validateAndGetClaims(token);
+            email = claims.getSubject();
+            userId = claims.get("uid", Long.class);
+            tokenVersion = claims.get("ver", Long.class);
+        } catch (JwtException | IllegalArgumentException e) {
             SecurityContextHolder.clearContext();
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
         }
+        User user = email == null || email.isBlank() ? null : userRepository.findByEmail(email).orElse(null);
+        if (user == null || userId == null || tokenVersion == null
+                || !userId.equals(user.getId()) || tokenVersion != user.getTokenVersion()) {
+            SecurityContextHolder.clearContext();
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
+
+        String role = (user.getRole() == null || user.getRole().isBlank())
+                ? "USER"
+                : user.getRole().trim().toUpperCase(Locale.ROOT);
+
+        if (role.startsWith("ROLE_")) {
+            role = role.substring("ROLE_".length());
+        }
+
+        List<SimpleGrantedAuthority> authorities =
+                List.of(new SimpleGrantedAuthority("ROLE_" + role));
+
+        UsernamePasswordAuthenticationToken authentication =
+                new UsernamePasswordAuthenticationToken(email, null, authorities);
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        filterChain.doFilter(request, response);
+
     }
 }

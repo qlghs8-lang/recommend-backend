@@ -3,6 +3,7 @@ package com.example.recommend.admin.controller;
 import com.example.recommend.admin.dto.AdminRecommendLogRow;
 import com.example.recommend.admin.dto.AdminSourceStatsRow;
 import com.example.recommend.admin.service.AdminRecommendService;
+import com.example.recommend.admin.service.RecommendLogCleanupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,15 @@ import java.util.List;
 public class AdminRecommendController {
 
     private final AdminRecommendService adminRecommendService;
+    private final RecommendLogCleanupService cleanupService;
+
+    @PostMapping("/recommend-logs/cleanup")
+    public RecommendLogCleanupService.Result cleanup(
+            @RequestParam(defaultValue = "90") int retentionDays,
+            @RequestParam(defaultValue = "100") int limit,
+            @RequestParam(defaultValue = "true") boolean dryRun) {
+        return cleanupService.cleanup(retentionDays, limit, dryRun);
+    }
 
     @GetMapping("/recommend-logs")
     public Page<AdminRecommendLogRow> recommendLogs(

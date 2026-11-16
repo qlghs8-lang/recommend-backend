@@ -6,4 +6,6 @@ import lombok.Setter;
 @Getter @Setter
 public class PhoneVerificationConfirmRequest {
     private String code;
+    private String phone;
+    private String challengeId;
 }

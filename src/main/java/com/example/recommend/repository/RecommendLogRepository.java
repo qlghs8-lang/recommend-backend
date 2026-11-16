@@ -15,6 +15,27 @@ import java.util.List;
 public interface RecommendLogRepository
         extends org.springframework.data.jpa.repository.JpaRepository<RecommendLog, Long> {
 
+    @Query("""
+        select rl.id from RecommendLog rl
+        where rl.createdAt < :cutoff and rl.exposedAt is null
+          and not exists (select 1 from RecommendClickLog c where c.recommendLogId = rl.id)
+        order by rl.id
+        """)
+    List<Long> findCleanupCandidates(@Param("cutoff") LocalDateTime cutoff, Pageable pageable);
+
+    // Recheck eligibility in the write statement, after acquiring the tracking row lock.
+    @org.springframework.data.jpa.repository.Modifying(flushAutomatically = true, clearAutomatically = true)
+    @Query("""
+        delete from RecommendLog rl where rl.id = :id
+          and rl.createdAt < :cutoff and rl.exposedAt is null
+          and not exists (select 1 from RecommendClickLog c where c.recommendLogId = rl.id)
+        """)
+    int deleteCleanupCandidate(@Param("id") Long id, @Param("cutoff") LocalDateTime cutoff);
+
+    @org.springframework.data.jpa.repository.Lock(jakarta.persistence.LockModeType.PESSIMISTIC_WRITE)
+    @Query("select rl from RecommendLog rl where rl.id = :id")
+    java.util.Optional<RecommendLog> findLockedById(@Param("id") Long id);
+
     // =========================================================
     // Admin: 추천 로그 테이블 (필터 + clicked 포함)
     // =========================================================
@@ -27,7 +48,7 @@ public interface RecommendLogRepository
                     c.title,
                     rl.source,
                     rl.reason,
-                    rl.createdAt,
+                    rl.exposedAt,
                     case when exists (
                         select 1 from RecommendClickLog rcl
                         where rcl.recommendLogId = rl.id
@@ -36,7 +57,7 @@ public interface RecommendLogRepository
                 from RecommendLog rl
                 left join Content c on c.id = rl.contentId
                 where
-                    (:from is null or rl.createdAt >= :from)
+                    rl.exposedAt is not null and (:from is null or rl.exposedAt >= :from)
                     and (
                         :source is null
                         or trim(:source) = ''
@@ -55,13 +76,13 @@ public interface RecommendLogRepository
                             where rcl3.recommendLogId = rl.id
                         ))
                     )
-                order by rl.createdAt desc
+                order by rl.exposedAt desc
             """,
             countQuery = """
-                select count(rl.id)
+                select count(distinct rl.id)
                 from RecommendLog rl
                 where
-                    (:from is null or rl.createdAt >= :from)
+                    rl.exposedAt is not null and (:from is null or rl.exposedAt >= :from)
                     and (
                         :source is null
                         or trim(:source) = ''
@@ -94,7 +115,7 @@ public interface RecommendLogRepository
     // =========================
     // Dashboard: impressions
     // =========================
-    long countByCreatedAtGreaterThanEqual(LocalDateTime from);
+    long countByExposedAtGreaterThanEqual(LocalDateTime from);
 
     // =========================
     // Dashboard: clicks (distinct recommendLogId 기준)
@@ -102,7 +123,8 @@ public interface RecommendLogRepository
     @Query("""
         select count(distinct rcl.recommendLogId)
         from RecommendClickLog rcl
-        where rcl.clickedAt >= :from
+        join RecommendLog rl on rl.id = rcl.recommendLogId
+        where rl.exposedAt >= :from
     """)
     long countDistinctClicksSince(@Param("from") LocalDateTime from);
 
@@ -112,10 +134,10 @@ public interface RecommendLogRepository
     @Query("""
         select new com.example.recommend.admin.dto.AdminSourceStatRow(
             rl.source,
-            count(rl.id)
+            count(distinct rl.id)
         )
         from RecommendLog rl
-        where rl.createdAt >= :from
+        where rl.exposedAt >= :from
         group by rl.source
     """)
     List<AdminSourceStatRow> countImpressionsBySourceSince(@Param("from") LocalDateTime from);
@@ -131,7 +153,7 @@ public interface RecommendLogRepository
         from RecommendClickLog rcl
         join RecommendLog rl
             on rl.id = rcl.recommendLogId
-        where rcl.clickedAt >= :from
+        where rl.exposedAt >= :from
         group by rl.source
     """)
     List<AdminSourceStatRow> countClicksBySourceSince(@Param("from") LocalDateTime from);
@@ -147,7 +169,7 @@ public interface RecommendLogRepository
         from RecommendClickLog rcl
         join RecommendLog rl
             on rl.id = rcl.recommendLogId
-        where rcl.clickedAt >= :from
+        where rl.exposedAt >= :from
         group by rl.source
     """)
     List<AdminSourceStatRow> countTotalClicksBySourceSince(@Param("from") LocalDateTime from);
@@ -158,46 +180,29 @@ public interface RecommendLogRepository
     @Query("""
         select count(rcl.id)
         from RecommendClickLog rcl
-        where rcl.clickedAt >= :from
+        join RecommendLog rl on rl.id = rcl.recommendLogId
+        where rl.exposedAt >= :from
     """)
     long countTotalClicksSince(@Param("from") LocalDateTime from);
 
     // =========================
-    // ✅ NEW(필수5-1): 최근 노출 로그 조회 (dedupe 용)
-    // =========================
-    @Query("""
-        select rl
-        from RecommendLog rl
-        where rl.userId = :userId
-          and rl.contentId in :contentIds
-          and rl.createdAt >= :from
-        order by rl.createdAt desc
-    """)
-    List<RecommendLog> findRecentLogsSince(
-            @Param("userId") Long userId,
-            @Param("contentIds") List<Long> contentIds,
-            @Param("from") LocalDateTime from
-    );
-
-    // =========================
     // ✅ by-source "진짜 쓸모있는" 1쿼리 버전
-    // - impressions: rl.createdAt >= :from 기준
-    // - clicks: rcl.clickedAt >= :from 기준 + 동일 window의 노출(rl)만 포함
+    // - Cohort: impressions exposed since from, with all clicks on those impressions.
+    // - Repeated clicks affect totalClicks only, not impressions or uniqueClicks.
     // =========================
     @Query("""
         select new com.example.recommend.admin.dto.AdminSourceStatsRow(
             rl.source,
-            count(rl.id),
+            count(distinct rl.id),
             count(distinct rcl.recommendLogId),
             count(rcl.id),
-            case when count(rl.id) = 0 then 0.0 else (count(distinct rcl.recommendLogId) * 1.0 / count(rl.id)) end,
-            case when count(rl.id) = 0 then 0.0 else (count(rcl.id) * 1.0 / count(rl.id)) end
+            case when count(distinct rl.id) = 0 then 0.0 else (count(distinct rcl.recommendLogId) * 1.0 / count(distinct rl.id)) end,
+            case when count(distinct rl.id) = 0 then 0.0 else (count(rcl.id) * 1.0 / count(distinct rl.id)) end
         )
         from RecommendLog rl
         left join RecommendClickLog rcl
             on rcl.recommendLogId = rl.id
-            and rcl.clickedAt >= :from
-        where rl.createdAt >= :from
+        where rl.exposedAt >= :from
         group by rl.source
     """)
     List<AdminSourceStatsRow> findSourceStatsSince(@Param("from") LocalDateTime from);

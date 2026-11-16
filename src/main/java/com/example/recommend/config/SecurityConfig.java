@@ -32,6 +32,7 @@ public class SecurityConfig {
             // ✅ API 서버면 기본 로그인/베이식은 끄는게 정답 (생성 비밀번호도 사라짐)
             .httpBasic(h -> h.disable())
             .formLogin(f -> f.disable())
+            .logout(l -> l.disable())
 
             .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))

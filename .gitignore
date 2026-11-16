@@ -31,3 +31,20 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Local secrets
+.env
+.env.*
+!.env.example
+
+/uploads/
+
+# Local database backups (contain private data)
+/.local-db-backups/
+
+# Local IDE state, temporary artifacts and verification logs
+/.metadata/
+/tmp/
+/pre-push-tests.log
+__pycache__/
+*.pyc
