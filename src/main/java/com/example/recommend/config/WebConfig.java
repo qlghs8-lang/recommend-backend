@@ -11,7 +11,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     public WebConfig(com.example.recommend.service.ProfileImageStorage images) { this.images = images; }
 
-    // 🔥 CORS 설정 (기존 기능 유지)
+    // CORS
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
@@ -21,7 +21,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowCredentials(true);
     }
 
-    // 🔥 이미지 정적 리소스 설정 (새 기능)
+    // 이미지 정적 리소스 설정
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/uploads/profile/**")

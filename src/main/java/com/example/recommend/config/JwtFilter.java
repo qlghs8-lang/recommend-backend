@@ -25,24 +25,12 @@ public class JwtFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
 
-    // ✅ Swagger/OpenAPI + 공개 엔드포인트는 JWT 필터에서 아예 제외
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
-
-        // swagger
-        if (path.equals("/v3/api-docs") || path.startsWith("/v3/api-docs/")) return true;
-        if (path.equals("/swagger-ui.html") || path.startsWith("/swagger-ui/")) return true;
-
-        // public endpoints (필요한 것만 추가)
-        if (path.startsWith("/uploads/")) return true;
-        if (path.equals("/login")) return true;
-        if (path.equals("/users")) return true;
-        if (path.equals("/users/check-email")) return true;
-        if (path.equals("/users/check-nickname")) return true;
-        if (path.startsWith("/public/phone/")) return true;
-
-        return false;
+        return path.startsWith("/uploads/") || path.equals("/login")
+                || path.equals("/users") || path.equals("/users/check-email")
+                || path.equals("/users/check-nickname") || path.startsWith("/public/phone/");
     }
 
     @Override
@@ -53,7 +41,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String authHeader = request.getHeader("Authorization");
 
-        // 토큰 없으면 다음 필터(= 인증 없음 상태로 진행)
+        // 토큰 없으면 다음 필터
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;

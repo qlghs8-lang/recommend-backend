@@ -26,7 +26,6 @@ public class RecommendLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // FK를 굳이 강제하지 않고 id로만 저장(로그 테이블은 이게 실무에서 더 안전/단순)
     @Column(nullable = false)
     private Long userId;
 

@@ -86,8 +86,6 @@ public class UserService {
         );
     }
 
-    /* ================= 회원가입 (기존 로직 유지) ================= */
-
     public User register(User user) {
         return register(user, null, null);
     }
@@ -134,7 +132,7 @@ public class UserService {
         user.setPhoneVerified(false);
         user.setProfileImageUrl("/uploads/profile/default.png");
 
-        // ✅ 필수5 기본값(온보딩)
+        // 기본값(온보딩)
         if (user.getOnboardingDone() == null) user.setOnboardingDone(false);
 
         user.setVerifiedPhone(null);
@@ -345,10 +343,6 @@ public class UserService {
             userRepository.flush();
         });
     }
-
-    /* =========================================================
-     * ✅ 필수5: 온보딩(장르 선택) 저장/조회
-     * ========================================================= */
 
     @Transactional(readOnly = true)
     public OnboardingInfo getOnboardingInfo(String email) {

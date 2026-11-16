@@ -59,13 +59,6 @@ public class AdminRecommendService {
                 impressions == 0 ? 0 : (double) uniqueClicks / impressions, bySource, totalClicks);
     }
 
-    /**
-     * ✅ by-source (권장: 1쿼리로 완결)
-     * - impressions
-     * - uniqueClicks (distinct recommendLogId)
-     * - totalClicks (click log row count)
-     * - ctrUnique / ctrTotal
-     */
     public List<AdminSourceStatsRow> getBySource(int days) {
         LocalDateTime from = LocalDateTime.now().minusDays(days);
 

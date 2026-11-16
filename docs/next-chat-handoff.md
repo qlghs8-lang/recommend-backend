@@ -1,5 +1,13 @@
 # 다음 채팅 작업 인계
 
+## GitHub 통합 및 README 정리 — 2026-11-16
+
+- recommend-backend와 recommend-front의 누적 작업을 검토하고 README에 기능·실행 설정·검증 범위를 정리했다. 아래 이전 날짜 기록의 미완료·커밋 여부는 당시 상태다.
+- 원격 main의 주석 정리 및 Docker 설정 삭제를 통합하면서 로컬 인증 강화·토큰 폐기·휴대폰 티켓·추천 노출 기능을 보존했다. 병합 과정에서 빠진 보안 활성화와 401/403 처리를 복구했다.
+- 최종 일반 백엔드 테스트 60개 통과, 선택형 MySQL/Redis 35개 건너뜀. 프런트 6개 스위트/27개 테스트와 production build 통과. MySQL/Redis 선택형 검증은 이번에 재실행하지 않았다.
+- 임시 이미지, IDE 메타데이터, Python 캐시, 검증 로그 및 기존 비밀 파일/DB 백업은 Git 제외. 운영 DB 변경·배포·브라우저 E2E는 수행하지 않았다.
+- 이번 작업은 Git 저장소 recommend-backend 기준이다. 별도 Eclipse 실행 프로젝트에는 이번 병합 결과를 복사하지 않았다.
+
 ## Eclipse 실제 사용 경로 반영 및 로그아웃 해결 — 2026-11-13
 
 - 향후 백엔드 작업 기준은 `C:/Users/jaehyeon/eclipse-workspace/recommend`이다. 기존 `C:/Users/jaehyeon/recommend-backend`에서 진행한 소스·테스트·Maven 설정을 실제 Eclipse 프로젝트에 반영했다. 프런트는 `C:/Users/jaehyeon/recommend-front`를 사용한다.

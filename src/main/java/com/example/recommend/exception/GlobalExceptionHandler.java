@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(413).contentType(TEXT_UTF8).body("이미지는 5MB 이하여야 합니다.");
     }
 
-    // ✅ 잘못된 입력/검증 실패 -> 400
+    // 잘못된 입력/검증 실패 -> 400
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException e) {
         return ResponseEntity.badRequest().contentType(TEXT_UTF8).body(e.getMessage());

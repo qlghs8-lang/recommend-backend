@@ -31,23 +31,20 @@ public class RecommendService {
     private static final List<InteractionType> EXCLUDE_TYPES =
             List.of(InteractionType.LIKE, InteractionType.DISLIKE, InteractionType.BOOKMARK);
 
-    // ✅ 필수2: 클릭/조회 신호 반영 파라미터
+    //  클릭/조회 신호 반영 파라미터
     private static final int RECENT_CLICK_LIMIT = 60;
     private static final double CLICK_GENRE_WEIGHT = 2.0;
     private static final double VIEW_PENALTY = 0.35;
 
 
-    // ✅ 필수5-2: 온보딩(preferredGenres) 기반 콜드스타트 가중치
+    //  온보딩(preferredGenres) 기반 콜드스타트 가중치
     private static final double ONBOARDING_GENRE_WEIGHT = 1.5;
 
-    // ✅ 필수4-3: 탐색/다양성 파라미터
+    // 탐색/다양성 파라미터
     private static final double EXPLORE_RATIO = 0.20;   // 20% 탐색
     private static final int EXPLORE_POOL_MULT = 6;     // 탐색 후보 풀 = exploreCount * N
     private static final long DIVERSITY_SEED_WINDOW_HOURS = 6; // 같은 시간대 결과 안정성(선택)
 
-    // =========================
-    // ✅ 기존 유지 (프론트 호환)
-    // =========================
     @Transactional
     public List<Content> forYou(User user, int size) {
         validateSize(size);
@@ -55,7 +52,7 @@ public class RecommendService {
     }
 
     // =========================
-    // ✅ reason 포함 추천
+    // reason 포함 추천
     // =========================
     public enum RecommendSource {
         CONTENT_BASED,
@@ -66,11 +63,10 @@ public class RecommendService {
     public record RecommendItem(
             Content content,
             String reason,
-            RecommendSource source,   // ✅ 응답용(기존 유지)
+            RecommendSource source,
             Long recommendLogId
     ) {}
 
-    // ✅ 로그용 source(Exploit/Explore suffix 포함)를 따로 가진다
     private static record Draft(
             Content content,
             String reason,
@@ -84,7 +80,7 @@ public class RecommendService {
         lockUser(user);
         ForYouInternalResult internal = forYouInternal(user, size);
 
-        // ✅ anchors: 좋아요/찜한 콘텐츠가 없으면 빈 리스트
+        // anchors: 좋아요/찜한 콘텐츠가 없으면 빈 리스트
         List<Content> anchors = loadRecentPositiveAnchors(user.getId(), 2);
 
         List<String> topUserGenres = internal.genrePref.entrySet().stream()
@@ -108,8 +104,6 @@ public class RecommendService {
                 ));
 
             } else if (internal.fromAExplore.contains(id)) {
-                // ✅ explore도 content-based지만 source suffix만 EXPLORE로 남김
-                // reason은 동일하게 두거나, 아래처럼 탐색 문구를 살짝 섞어도 됨
                 String reason = buildContentBasedReason(c, anchors, topUserGenres, internal.genrePref);
                 drafts.add(new Draft(
                         c,
@@ -152,7 +146,6 @@ public class RecommendService {
             RecommendLog log = logsAligned.get(i);
             if (log == null) continue;
 
-            // ✅ 응답은 baseSource 유지 (프론트 호환)
             items.add(new RecommendItem(d.content(), d.reason(), d.baseSource(), log.getId()));
         }
 
@@ -208,7 +201,7 @@ public class RecommendService {
     }
 
     // =========================
-    // ✅ 클릭 로그 저장 (토탈 클릭 정책과 호환)
+    // 클릭 로그 저장 (토탈 클릭 정책과 호환)
     // =========================
     @Transactional
     public void logClick(User user, Long recommendLogId) {
@@ -232,7 +225,7 @@ public class RecommendService {
         List<Content> contents;
         Map<String, Double> genrePref;
 
-        // ✅ A를 exploit/explore로 분리해서 태깅
+        // A를 exploit/explore로 분리해서 태깅
         Set<Long> fromAExploit;
         Set<Long> fromAExplore;
 
@@ -272,9 +265,7 @@ public class RecommendService {
 
         List<Content> all = contentRepository.findAll();
 
-        // =====================================================
-        // ✅ 콜드스타트 분기 (preferredGenres)
-        // =====================================================
+        // 콜드스타트 분기 (preferredGenres)
         if (positiveContentIds.isEmpty()) {
 
             Map<String, Double> onboardingPref = genrePrefFromPreferredGenres(user);
@@ -320,7 +311,6 @@ public class RecommendService {
                 scoreA.put(c.getId(), s);
             }
 
-            // ✅ rankedA 만들고, 거기서 exploit/explore 섞기
             List<Long> rankedA = scoreA.entrySet().stream()
                     .sorted(Map.Entry.<Long, Double>comparingByValue().reversed())
                     .map(Map.Entry::getKey)
@@ -340,7 +330,6 @@ public class RecommendService {
             merged.addAll(exploitIds);
             merged.addAll(exploreIds);
 
-            // 부족하면 트렌딩으로 채움(기존 정책)
             if (merged.size() < size) {
                 List<Long> fallback1 = all.stream()
                         .sorted(Comparator.comparing((Content c) -> Optional.ofNullable(c.getViewCount()).orElse(0L)).reversed())
@@ -389,9 +378,6 @@ public class RecommendService {
             );
         }
 
-        // =====================================================
-        // Warm start
-        // =====================================================
         List<Long> recentClickedContentIds = recommendClickLogRepository.findRecentClickedContentIds(
                 user.getId(),
                 PageRequest.of(0, RECENT_CLICK_LIMIT)
@@ -433,14 +419,12 @@ public class RecommendService {
 
         int sizeA = Math.max(1, (int) Math.round(size * 0.8));
 
-        // ✅ 1) A 전체 랭킹 생성
         List<Long> rankedA = scoreA.entrySet().stream()
                 .sorted(Map.Entry.<Long, Double>comparingByValue().reversed())
                 .map(Map.Entry::getKey)
                 .filter(id -> scoreA.getOrDefault(id, 0.0) > 0)
                 .toList();
 
-        // ✅ 2) A에서 exploit/explore 섞기
         int exploreCount = (int) Math.round(sizeA * EXPLORE_RATIO);
         exploreCount = Math.max(0, Math.min(exploreCount, sizeA));
 
@@ -458,12 +442,10 @@ public class RecommendService {
                 all
         );
 
-        // A 최종 결과(순서는 exploit -> explore)
         List<Long> topA = new ArrayList<>(exploitA.size() + exploreA.size());
         topA.addAll(exploitA);
         topA.addAll(exploreA);
 
-        // ✅ B는 기존대로
         int sizeB = Math.max(1, size - topA.size());
         List<Long> topB = collaborativeIds(user.getId(), positiveContentIds, exclude, disliked, sizeB, all);
 
@@ -517,9 +499,6 @@ public class RecommendService {
         return new ForYouInternalResult(result, genrePref, fromAExploit, fromAExplore, fromB);
     }
 
-    // =========================
-    // reason 생성
-    // =========================
     private String buildContentBasedReason(Content rec,
                                           List<Content> anchors,
                                           List<String> topUserGenres,
@@ -597,9 +576,7 @@ public class RecommendService {
         return ordered;
     }
 
-    // =========================
-    // ✅ Warm start: 장르 선호 생성 (좋아요/찜 + 클릭)
-    // =========================
+    // Warm start: 장르 선호 생성 (좋아요/찜 + 클릭)
     private Map<String, Double> buildGenrePreference(List<Long> positiveContentIds,
                                                      List<Long> recentClickedContentIds,
                                                      List<Content> all) {
@@ -631,9 +608,6 @@ public class RecommendService {
         return pref;
     }
 
-    // =========================
-    // ✅ 콜드스타트: 유저 preferredGenres -> genrePref
-    // =========================
     private Map<String, Double> genrePrefFromPreferredGenres(User user) {
         if (user == null) return Map.of();
 
@@ -730,10 +704,6 @@ public class RecommendService {
         }
         return sb.toString();
     }
-
-    // =====================================================
-    // ✅ 탐색/다양성 헬퍼 (너가 이미 추가해둔 버전 그대로)
-    // =====================================================
 
     private List<Long> pickExploreFromRanked(
             Long userId,

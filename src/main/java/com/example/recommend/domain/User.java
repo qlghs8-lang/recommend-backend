@@ -63,7 +63,7 @@ public class User {
 
     private LocalDateTime phoneVerifyExpireAt;
 
-    /* ===== ✅ 온보딩(필수5) ===== */
+    /* ===== 온보딩 ===== */
     // ex) "action,drama,thriller"
     @Column(length = 500)
     private String preferredGenres;
@@ -72,10 +72,6 @@ public class User {
     @Column(nullable = false)
     private Boolean onboardingDone = false;
 
-    /* ===== 권한 =====
-       - "USER" / "ADMIN"
-       - Security에서는 "ROLE_ADMIN" 형태로 쓸 거라서 여기에는 "ADMIN"만 저장
-     */
     @Builder.Default
     @Column(nullable = false, length = 20)
     private String role = "USER";

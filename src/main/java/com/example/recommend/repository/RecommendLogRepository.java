@@ -159,7 +159,7 @@ public interface RecommendLogRepository
     List<AdminSourceStatRow> countClicksBySourceSince(@Param("from") LocalDateTime from);
 
     // =========================
-    // ✅ total clicks by source (중복 클릭 포함) (레거시/대시보드용 유지)
+    // total clicks by source (중복 클릭 포함) (레거시/대시보드용 유지)
     // =========================
     @Query("""
         select new com.example.recommend.admin.dto.AdminSourceStatRow(
@@ -175,7 +175,7 @@ public interface RecommendLogRepository
     List<AdminSourceStatRow> countTotalClicksBySourceSince(@Param("from") LocalDateTime from);
 
     // =========================
-    // ✅ total clicks (중복 포함)
+    // total clicks (중복 포함)
     // =========================
     @Query("""
         select count(rcl.id)
