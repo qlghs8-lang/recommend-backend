@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "purpose": "Recorded synthetic plan versus frozen v1 oracle through H2 services; not a new model evaluation or replacement oracle.",
+  "sourceCorpusResource": "/chat/conversation-quality-v1.json",
+  "sourceCorpusSha256": "44f9cb9533dfb6bf6fe74a16069a1bceedfcc67f305b6a29e9a71c77467b1926",
+  "sourceRun": {
+    "file": "target/chat-quality/live-20261119083452431595400.json",
+    "sha256": "7ca9c018018569a675e28249b0986853b1cc364bf32ad1803a4b31ac2ec643b9",
+    "model": "gpt-6-luna",
+    "productionMaxOutputTokens": 800,
+    "classificationMaxOutputTokens": 544,
+    "timeoutSeconds": 20
+  },
+  "cases": [
+    {
+      "id": "rec-tv",
+      "question": "짧게 볼 만한 시리즈 있을까?",
+      "providerTrace": [
+        {
+          "status": "completed",
+          "inputTokens": 4160,
+          "outputTokens": 506,
+          "outputChars": 104,
+          "syntheticOutput": "{\"composition\":{\"requests\":[{\"route\":\"CLARIFY\"}],\"comparison\":false,\"splitAfter\":null},\"constraints\":[]}"
+        }
+      ],
+      "recordedActualPlan": {
+        "requests": [
+          {
+            "route": "CLARIFY",
+            "media": "ANY",
+            "title": null,
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false,
+        "constraints": []
+      }
+    },
+    {
+      "id": "detail-missing",
+      "question": "없는 작품 XYZ의 줄거리 알려줘",
+      "providerTrace": [
+        {
+          "status": "completed",
+          "inputTokens": 4154,
+          "outputTokens": 189,
+          "outputChars": 213,
+          "syntheticOutput": "{\"composition\":{\"requests\":[{\"route\":\"DETAIL\",\"media\":\"ANY\",\"title\":\"XYZ\",\"contentId\":null,\"releaseYear\":null,\"referenceTurn\":null,\"referencePosition\":null}],\"comparison\":false,\"splitAfter\":null},\"constraints\":[]}"
+        }
+      ],
+      "recordedActualPlan": {
+        "requests": [
+          {
+            "route": "DETAIL",
+            "media": "ANY",
+            "title": "XYZ",
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false,
+        "constraints": []
+      }
+    },
+    {
+      "id": "clarify-ranking",
+      "question": "달빛 항해와 숲의 기록 중 더 뛰어난 연출의 작품은 뭐야?",
+      "providerTrace": [
+        {
+          "status": "completed",
+          "inputTokens": 4207,
+          "outputTokens": 370,
+          "outputChars": 108,
+          "syntheticOutput": "{\"composition\":{\"requests\":[{\"route\":\"UNSUPPORTED\"}],\"comparison\":false,\"splitAfter\":null},\"constraints\":[]}"
+        }
+      ],
+      "recordedActualPlan": {
+        "requests": [
+          {
+            "route": "UNSUPPORTED",
+            "media": "ANY",
+            "title": null,
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false,
+        "constraints": []
+      }
+    }
+  ]
+}

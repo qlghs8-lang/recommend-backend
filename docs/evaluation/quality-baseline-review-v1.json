@@ -1,0 +1,228 @@
+{
+  "version": 1,
+  "status": "BASELINE_PILOT_INCOMPLETE",
+  "pilotSha256": "d32f339ab407bd7736705ea17dc429e8736925df1fb3dd5f00264204a731122c",
+  "source": "target/quality-baseline-20261125/pilot-20261125082720913747800.json",
+  "independentHumanReview": "NOT_DONE",
+  "recall": "NOT_MEASURED",
+  "turnDiagnostics": [
+    {
+      "caseId": "D01",
+      "primaryDiagnostic": "NO_EVIDENCE_IN_REVIEW_SCOPE",
+      "explanation": "요리 단서와 영화 조건의 교집합0. 전체 의미상 요리 작품 부재는 미확정.",
+      "actualStatus": "NO_RECOMMENDATION_REVIEW_REQUIRED",
+      "assessment": "CODEX_PROVISIONAL_NOT_INDEPENDENT_HUMAN_GOLD"
+    },
+    {
+      "caseId": "D02",
+      "primaryDiagnostic": "RETRIEVAL_FILTER",
+      "explanation": "선수/훈련/팀에 합류/자리 얻기라는 실제 TOPIC이 프로 리그/스포츠로 서술된 근거 작품390을 탈락시킴.",
+      "actualStatus": "NO_RECOMMENDATION_REVIEW_REQUIRED",
+      "assessment": "CODEX_PROVISIONAL_NOT_INDEPENDENT_HUMAN_GOLD",
+      "provisionalWitnessId": 390,
+      "witnessInLiteralEligibleSet": false,
+      "witnessInInitialCandidates": false
+    },
+    {
+      "caseId": "D03",
+      "primaryDiagnostic": "RETRIEVAL_FILTER",
+      "explanation": "실제 가수의 꿈/가족의 기대/진로 갈등이라는 구절이 코코의 음악/뮤지션/집안 서술과 일치하지 않아 후보0.",
+      "actualStatus": "NO_RECOMMENDATION_REVIEW_REQUIRED",
+      "assessment": "CODEX_PROVISIONAL_NOT_INDEPENDENT_HUMAN_GOLD",
+      "provisionalWitnessId": 41,
+      "witnessInLiteralEligibleSet": false,
+      "witnessInInitialCandidates": false
+    },
+    {
+      "caseId": "D04",
+      "primaryDiagnostic": "INTERPRETATION_UNVERIFIABLE",
+      "explanation": "병원만 배경인 작품을 피하라는 의미 구분을 UNVERIFIABLE로 변환해 검색 전에 중단.443은 실제 나머지 조건의 SQL집합에는 있음.",
+      "actualStatus": "NO_RECOMMENDATION_REVIEW_REQUIRED",
+      "assessment": "CODEX_PROVISIONAL_NOT_INDEPENDENT_HUMAN_GOLD",
+      "provisionalWitnessId": 443,
+      "witnessInLiteralEligibleSet": true,
+      "witnessInInitialCandidates": false
+    },
+    {
+      "caseId": "D05",
+      "primaryDiagnostic": "RETURNED_PROVISIONAL_FIT",
+      "explanation": "후보72 포함,선정72. 줄거리의 법조인 성공·원칙 갈등과 요청이 연결됨.",
+      "actualStatus": "RETURNED_REVIEW_REQUIRED",
+      "assessment": "CODEX_PROVISIONAL_NOT_INDEPENDENT_HUMAN_GOLD",
+      "provisionalWitnessId": 72,
+      "witnessInLiteralEligibleSet": true,
+      "witnessInInitialCandidates": true
+    },
+    {
+      "caseId": "D06",
+      "primaryDiagnostic": "RETRIEVAL_FILTER",
+      "explanation": "인류가 떠난 세계/무인 세계/폐허와 외로움/교감/연결/유대 교집합0.월E의 다른 표현이 필터에서 탈락.",
+      "actualStatus": "NO_RECOMMENDATION_REVIEW_REQUIRED",
+      "assessment": "CODEX_PROVISIONAL_NOT_INDEPENDENT_HUMAN_GOLD",
+      "provisionalWitnessId": 49,
+      "witnessInLiteralEligibleSet": false,
+      "witnessInInitialCandidates": false
+    },
+    {
+      "caseId": "D07",
+      "primaryDiagnostic": "RETURNED_PROVISIONAL_FIT",
+      "explanation": "13개 적격 후보 중 초기12개에117이 포함되고 선정됨.",
+      "actualStatus": "RETURNED_REVIEW_REQUIRED",
+      "assessment": "CODEX_PROVISIONAL_NOT_INDEPENDENT_HUMAN_GOLD",
+      "provisionalWitnessId": 117,
+      "witnessInLiteralEligibleSet": true,
+      "witnessInInitialCandidates": true
+    },
+    {
+      "caseId": "D08",
+      "primaryDiagnostic": "RETURNED_PROVISIONAL_FIT",
+      "explanation": "다큐멘터리+맨몸 암벽 단서로47을 검색·선정.",
+      "actualStatus": "RETURNED_REVIEW_REQUIRED",
+      "assessment": "CODEX_PROVISIONAL_NOT_INDEPENDENT_HUMAN_GOLD",
+      "provisionalWitnessId": 47,
+      "witnessInLiteralEligibleSet": true,
+      "witnessInInitialCandidates": true
+    },
+    {
+      "caseId": "D09",
+      "primaryDiagnostic": "INTERPRETATION_TOPIC_DROPPED",
+      "explanation": "가족 축이 실제 계획에서 빠지고 이해/소통/공감/화해만 남음.돌아온 세 작품은 전체 가족 중심 요청의 적합성을 충분히 뒷받침하지 못함.",
+      "actualStatus": "RETURNED_REVIEW_REQUIRED",
+      "assessment": "CODEX_PROVISIONAL_NOT_INDEPENDENT_HUMAN_GOLD",
+      "provisionalWitnessId": 41,
+      "witnessInLiteralEligibleSet": false,
+      "witnessInInitialCandidates": false
+    },
+    {
+      "caseId": "D10",
+      "primaryDiagnostic": "REQUEST_SCHEMA_REJECTED",
+      "explanation": "추천 생성 단계HTTP400 invalid_json_schema.앱에서는AI_UNAVAILABLE로매핑.16번째요청 후중단,모델의빈선택/카탈로그부재가아님.",
+      "actualStatus": "AI_UNAVAILABLE",
+      "assessment": "CODEX_PROVISIONAL_NOT_INDEPENDENT_HUMAN_GOLD"
+    },
+    {
+      "caseId": "D11",
+      "primaryDiagnostic": "NOT_RUN",
+      "explanation": "앞선 오류 뒤중단정책으로미실행.실패원인/점수를추정하지않음.",
+      "actualStatus": "NOT_RUN",
+      "assessment": "CODEX_PROVISIONAL_NOT_INDEPENDENT_HUMAN_GOLD"
+    },
+    {
+      "caseId": "D12",
+      "primaryDiagnostic": "NOT_RUN",
+      "explanation": "앞선 오류 뒤중단정책으로미실행.실패원인/점수를추정하지않음.",
+      "actualStatus": "NOT_RUN",
+      "assessment": "CODEX_PROVISIONAL_NOT_INDEPENDENT_HUMAN_GOLD"
+    }
+  ],
+  "provisionalSelectedWorkReview": [
+    {
+      "caseId": "D05",
+      "contentId": 72,
+      "title": "베터 콜 사울",
+      "provisionalRelevance": 2,
+      "reason": "법조인의 성공과 정직 갈등",
+      "reviewer": "CODEX_NOT_INDEPENDENT_HUMAN"
+    },
+    {
+      "caseId": "D07",
+      "contentId": 117,
+      "title": "마스크",
+      "provisionalRelevance": 2,
+      "reason": "소심한 은행원의 가면 이후 변화",
+      "reviewer": "CODEX_NOT_INDEPENDENT_HUMAN"
+    },
+    {
+      "caseId": "D08",
+      "contentId": 47,
+      "title": "프리 솔로",
+      "provisionalRelevance": 2,
+      "reason": "맨몸 암벽 도전의 다큐멘터리",
+      "reviewer": "CODEX_NOT_INDEPENDENT_HUMAN"
+    },
+    {
+      "caseId": "D09",
+      "contentId": 352,
+      "title": "대도시의 사랑법",
+      "provisionalRelevance": 0,
+      "reason": "동거하는 두 사람의 이해이며 가족 중심 근거 없음",
+      "reviewer": "CODEX_NOT_INDEPENDENT_HUMAN"
+    },
+    {
+      "caseId": "D09",
+      "contentId": 397,
+      "title": "슬기로운 감빵생활",
+      "provisionalRelevance": 0,
+      "reason": "수용자·동료 이해가 중심이고 가족 걱정은 부수적",
+      "reviewer": "CODEX_NOT_INDEPENDENT_HUMAN"
+    },
+    {
+      "caseId": "D09",
+      "contentId": 152,
+      "title": "식스 센스",
+      "provisionalRelevance": 1,
+      "reason": "어머니·아이의 걱정은 나오나 제시된 중심은 심리학자와 아이의 관계;가족 상호이해 근거 불충분",
+      "reviewer": "CODEX_NOT_INDEPENDENT_HUMAN"
+    }
+  ],
+  "automaticPublicChecks": [
+    {
+      "caseId": "D05",
+      "contentId": 72,
+      "candidateMembership": true,
+      "explicitStoredFieldConditions": true,
+      "quoteExactInVisiblePublicSource": true,
+      "quote": "충돌하기 시작한다. 전직 경찰 마이크와 범죄자들을 만나며 지미의 일은 법"
+    },
+    {
+      "caseId": "D07",
+      "contentId": 117,
+      "candidateMembership": true,
+      "explicitStoredFieldConditions": true,
+      "quoteExactInVisiblePublicSource": true,
+      "quote": "소심한 은행원 스탠리는 직장에서도 거리에서도 만만한 사람 취급을 받지만,"
+    },
+    {
+      "caseId": "D08",
+      "contentId": 47,
+      "candidateMembership": true,
+      "explicitStoredFieldConditions": true,
+      "quoteExactInVisiblePublicSource": true,
+      "quote": "암벽등반의 한 획을 그은 프리 솔로(Free Solo, 장비 없이 맨몸으"
+    },
+    {
+      "caseId": "D09",
+      "contentId": 352,
+      "candidateMembership": true,
+      "explicitStoredFieldConditions": true,
+      "quoteExactInVisiblePublicSource": true,
+      "quote": "이해할 수 있는 모먼트가 있다는 것을. 남들이 만들어내는 무성한 소문을"
+    },
+    {
+      "caseId": "D09",
+      "contentId": 397,
+      "candidateMembership": true,
+      "explicitStoredFieldConditions": true,
+      "quoteExactInVisiblePublicSource": true,
+      "quote": "이해하며 담장 안의 하루하루를 살아내야 한다."
+    },
+    {
+      "caseId": "D09",
+      "contentId": 152,
+      "candidateMembership": true,
+      "explicitStoredFieldConditions": true,
+      "quoteExactInVisiblePublicSource": true,
+      "quote": "이해하려는 말콤의 노력에도 콜은 마음을 쉽게 열지 않고, 혼자 아들을 키"
+    }
+  ],
+  "schemaDiagnostic": {
+    "caseId": "D10",
+    "observedHttpStatus": 400,
+    "observedCode": "invalid_json_schema",
+    "parameter": "text.format.schema",
+    "localDifference": "Only D10 reconstructed schema among six generation schemas has newline in a quote enum (candidate404).",
+    "causeConfirmed": false,
+    "schemaAcceptanceRetested": false,
+    "extraProviderCalls": 0
+  }
+}

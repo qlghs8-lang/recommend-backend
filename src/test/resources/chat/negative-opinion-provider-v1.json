@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "origin": "negative-opinion-20261119044004935878700.json",
+  "id": "opinion-english",
+  "repetition": 3,
+  "classificationMaxOutputTokens": 544,
+  "providerTrace": [
+    {
+      "status": "completed",
+      "inputTokens": 3648,
+      "outputTokens": 534,
+      "outputChars": 104,
+      "syntheticOutput": "{\"requests\":[{\"route\":\"CLARIFY\"}],\"composition\":{\"comparison\":false,\"splitAfter\":null},\"constraints\":[]}"
+    }
+  ]
+}

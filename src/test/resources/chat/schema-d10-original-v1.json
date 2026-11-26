@@ -1,0 +1,458 @@
+{
+  "type" : "object",
+  "properties" : {
+    "recommendations" : {
+      "maxItems" : 3,
+      "items" : {
+        "anyOf" : [ {
+          "required" : [ "contentId", "evidence", "interpretation" ],
+          "additionalProperties" : false,
+          "properties" : {
+            "interpretation" : {
+              "maxLength" : 100,
+              "minLength" : 1,
+              "type" : "string"
+            },
+            "evidence" : {
+              "minItems" : 1,
+              "maxItems" : 1,
+              "type" : "array",
+              "items" : {
+                "anyOf" : [ {
+                  "required" : [ "field", "quote" ],
+                  "additionalProperties" : false,
+                  "properties" : {
+                    "field" : {
+                      "type" : "string",
+                      "enum" : [ "TITLE" ]
+                    },
+                    "quote" : {
+                      "type" : "string",
+                      "enum" : [ "위기의 주부들" ]
+                    }
+                  },
+                  "type" : "object"
+                } ]
+              }
+            },
+            "contentId" : {
+              "type" : "integer",
+              "enum" : [ 444 ]
+            }
+          },
+          "type" : "object"
+        }, {
+          "required" : [ "contentId", "evidence", "interpretation" ],
+          "additionalProperties" : false,
+          "properties" : {
+            "interpretation" : {
+              "maxLength" : 100,
+              "minLength" : 1,
+              "type" : "string"
+            },
+            "evidence" : {
+              "minItems" : 1,
+              "maxItems" : 1,
+              "type" : "array",
+              "items" : {
+                "anyOf" : [ {
+                  "required" : [ "field", "quote" ],
+                  "additionalProperties" : false,
+                  "properties" : {
+                    "field" : {
+                      "type" : "string",
+                      "enum" : [ "OVERVIEW" ]
+                    },
+                    "quote" : {
+                      "type" : "string",
+                      "enum" : [ "동료들과 함께 수많은 혈귀를 물리치며 강인한 검사로 성장해 왔다. 다가올", "위기를 감지하고 달려온 탄지로와 주들은 무잔을 노리지만, 오히려 그의 술" ]
+                    }
+                  },
+                  "type" : "object"
+                } ]
+              }
+            },
+            "contentId" : {
+              "type" : "integer",
+              "enum" : [ 344 ]
+            }
+          },
+          "type" : "object"
+        }, {
+          "required" : [ "contentId", "evidence", "interpretation" ],
+          "additionalProperties" : false,
+          "properties" : {
+            "interpretation" : {
+              "maxLength" : 100,
+              "minLength" : 1,
+              "type" : "string"
+            },
+            "evidence" : {
+              "minItems" : 1,
+              "maxItems" : 1,
+              "type" : "array",
+              "items" : {
+                "anyOf" : [ {
+                  "required" : [ "field", "quote" ],
+                  "additionalProperties" : false,
+                  "properties" : {
+                    "field" : {
+                      "type" : "string",
+                      "enum" : [ "OVERVIEW" ]
+                    },
+                    "quote" : {
+                      "type" : "string",
+                      "enum" : [ "극복해 나가는 성장 스토리" ]
+                    }
+                  },
+                  "type" : "object"
+                } ]
+              }
+            },
+            "contentId" : {
+              "type" : "integer",
+              "enum" : [ 323 ]
+            }
+          },
+          "type" : "object"
+        }, {
+          "required" : [ "contentId", "evidence", "interpretation" ],
+          "additionalProperties" : false,
+          "properties" : {
+            "interpretation" : {
+              "maxLength" : 100,
+              "minLength" : 1,
+              "type" : "string"
+            },
+            "evidence" : {
+              "minItems" : 1,
+              "maxItems" : 1,
+              "type" : "array",
+              "items" : {
+                "anyOf" : [ {
+                  "required" : [ "field", "quote" ],
+                  "additionalProperties" : false,
+                  "properties" : {
+                    "field" : {
+                      "type" : "string",
+                      "enum" : [ "OVERVIEW" ]
+                    },
+                    "quote" : {
+                      "type" : "string",
+                      "enum" : [ "동료 킴과 어깨를 나란히 하고 싶어도, 법조계의 문은 쉽게 열리지 않는다" ]
+                    }
+                  },
+                  "type" : "object"
+                } ]
+              }
+            },
+            "contentId" : {
+              "type" : "integer",
+              "enum" : [ 72 ]
+            }
+          },
+          "type" : "object"
+        }, {
+          "required" : [ "contentId", "evidence", "interpretation" ],
+          "additionalProperties" : false,
+          "properties" : {
+            "interpretation" : {
+              "maxLength" : 100,
+              "minLength" : 1,
+              "type" : "string"
+            },
+            "evidence" : {
+              "minItems" : 1,
+              "maxItems" : 1,
+              "type" : "array",
+              "items" : {
+                "anyOf" : [ {
+                  "required" : [ "field", "quote" ],
+                  "additionalProperties" : false,
+                  "properties" : {
+                    "field" : {
+                      "type" : "string",
+                      "enum" : [ "OVERVIEW" ]
+                    },
+                    "quote" : {
+                      "type" : "string",
+                      "enum" : [ "동료가 된다. 다음 전투가 어디서 기다릴지 모르는 이들에게 끝까지 함께" ]
+                    }
+                  },
+                  "type" : "object"
+                } ]
+              }
+            },
+            "contentId" : {
+              "type" : "integer",
+              "enum" : [ 40 ]
+            }
+          },
+          "type" : "object"
+        }, {
+          "required" : [ "contentId", "evidence", "interpretation" ],
+          "additionalProperties" : false,
+          "properties" : {
+            "interpretation" : {
+              "maxLength" : 100,
+              "minLength" : 1,
+              "type" : "string"
+            },
+            "evidence" : {
+              "minItems" : 1,
+              "maxItems" : 1,
+              "type" : "array",
+              "items" : {
+                "anyOf" : [ {
+                  "required" : [ "field", "quote" ],
+                  "additionalProperties" : false,
+                  "properties" : {
+                    "field" : {
+                      "type" : "string",
+                      "enum" : [ "OVERVIEW" ]
+                    },
+                    "quote" : {
+                      "type" : "string",
+                      "enum" : [ "동료인 스킵스(예티)를 항상 화나게 만들어 해고의 위협을 받지만 천진난만" ]
+                    }
+                  },
+                  "type" : "object"
+                } ]
+              }
+            },
+            "contentId" : {
+              "type" : "integer",
+              "enum" : [ 437 ]
+            }
+          },
+          "type" : "object"
+        }, {
+          "required" : [ "contentId", "evidence", "interpretation" ],
+          "additionalProperties" : false,
+          "properties" : {
+            "interpretation" : {
+              "maxLength" : 100,
+              "minLength" : 1,
+              "type" : "string"
+            },
+            "evidence" : {
+              "minItems" : 1,
+              "maxItems" : 1,
+              "type" : "array",
+              "items" : {
+                "anyOf" : [ {
+                  "required" : [ "field", "quote" ],
+                  "additionalProperties" : false,
+                  "properties" : {
+                    "field" : {
+                      "type" : "string",
+                      "enum" : [ "OVERVIEW" ]
+                    },
+                    "quote" : {
+                      "type" : "string",
+                      "enum" : [ "동료들이 닌자가 되기 위한 모험을 떠나는 흥미진진한 작품.  닌자 마을" ]
+                    }
+                  },
+                  "type" : "object"
+                } ]
+              }
+            },
+            "contentId" : {
+              "type" : "integer",
+              "enum" : [ 399 ]
+            }
+          },
+          "type" : "object"
+        }, {
+          "required" : [ "contentId", "evidence", "interpretation" ],
+          "additionalProperties" : false,
+          "properties" : {
+            "interpretation" : {
+              "maxLength" : 100,
+              "minLength" : 1,
+              "type" : "string"
+            },
+            "evidence" : {
+              "minItems" : 1,
+              "maxItems" : 1,
+              "type" : "array",
+              "items" : {
+                "anyOf" : [ {
+                  "required" : [ "field", "quote" ],
+                  "additionalProperties" : false,
+                  "properties" : {
+                    "field" : {
+                      "type" : "string",
+                      "enum" : [ "OVERVIEW" ]
+                    },
+                    "quote" : {
+                      "type" : "string",
+                      "enum" : [ "위기는 걷잡을 수 없이 커지고, 영로와 수호의 위태로운 사랑은 거센 시대" ]
+                    }
+                  },
+                  "type" : "object"
+                } ]
+              }
+            },
+            "contentId" : {
+              "type" : "integer",
+              "enum" : [ 170 ]
+            }
+          },
+          "type" : "object"
+        }, {
+          "required" : [ "contentId", "evidence", "interpretation" ],
+          "additionalProperties" : false,
+          "properties" : {
+            "interpretation" : {
+              "maxLength" : 100,
+              "minLength" : 1,
+              "type" : "string"
+            },
+            "evidence" : {
+              "minItems" : 1,
+              "maxItems" : 1,
+              "type" : "array",
+              "items" : {
+                "anyOf" : [ {
+                  "required" : [ "field", "quote" ],
+                  "additionalProperties" : false,
+                  "properties" : {
+                    "field" : {
+                      "type" : "string",
+                      "enum" : [ "OVERVIEW" ]
+                    },
+                    "quote" : {
+                      "type" : "string",
+                      "enum" : [ "위기로 이어지는데..." ]
+                    }
+                  },
+                  "type" : "object"
+                } ]
+              }
+            },
+            "contentId" : {
+              "type" : "integer",
+              "enum" : [ 415 ]
+            }
+          },
+          "type" : "object"
+        }, {
+          "required" : [ "contentId", "evidence", "interpretation" ],
+          "additionalProperties" : false,
+          "properties" : {
+            "interpretation" : {
+              "maxLength" : 100,
+              "minLength" : 1,
+              "type" : "string"
+            },
+            "evidence" : {
+              "minItems" : 1,
+              "maxItems" : 1,
+              "type" : "array",
+              "items" : {
+                "anyOf" : [ {
+                  "required" : [ "field", "quote" ],
+                  "additionalProperties" : false,
+                  "properties" : {
+                    "field" : {
+                      "type" : "string",
+                      "enum" : [ "OVERVIEW" ]
+                    },
+                    "quote" : {
+                      "type" : "string",
+                      "enum" : [ "위기를 다룬다. 우리는 그동안 무엇을 잃었나. 지구의 파멸을 언제까지 지" ]
+                    }
+                  },
+                  "type" : "object"
+                } ]
+              }
+            },
+            "contentId" : {
+              "type" : "integer",
+              "enum" : [ 85 ]
+            }
+          },
+          "type" : "object"
+        }, {
+          "required" : [ "contentId", "evidence", "interpretation" ],
+          "additionalProperties" : false,
+          "properties" : {
+            "interpretation" : {
+              "maxLength" : 100,
+              "minLength" : 1,
+              "type" : "string"
+            },
+            "evidence" : {
+              "minItems" : 1,
+              "maxItems" : 1,
+              "type" : "array",
+              "items" : {
+                "anyOf" : [ {
+                  "required" : [ "field", "quote" ],
+                  "additionalProperties" : false,
+                  "properties" : {
+                    "field" : {
+                      "type" : "string",
+                      "enum" : [ "OVERVIEW" ]
+                    },
+                    "quote" : {
+                      "type" : "string",
+                      "enum" : [ "동료들이 닌자가 되기 위한 모험을 떠나는 흥미진진한 작품. \n\n닌자 마을" ]
+                    }
+                  },
+                  "type" : "object"
+                } ]
+              }
+            },
+            "contentId" : {
+              "type" : "integer",
+              "enum" : [ 404 ]
+            }
+          },
+          "type" : "object"
+        }, {
+          "required" : [ "contentId", "evidence", "interpretation" ],
+          "additionalProperties" : false,
+          "properties" : {
+            "interpretation" : {
+              "maxLength" : 100,
+              "minLength" : 1,
+              "type" : "string"
+            },
+            "evidence" : {
+              "minItems" : 1,
+              "maxItems" : 1,
+              "type" : "array",
+              "items" : {
+                "anyOf" : [ {
+                  "required" : [ "field", "quote" ],
+                  "additionalProperties" : false,
+                  "properties" : {
+                    "field" : {
+                      "type" : "string",
+                      "enum" : [ "OVERVIEW" ]
+                    },
+                    "quote" : {
+                      "type" : "string",
+                      "enum" : [ "동료의 존재는 각자가 감당하던 고민을 함께 짊어질 이유가 된다. 눈앞의" ]
+                    }
+                  },
+                  "type" : "object"
+                } ]
+              }
+            },
+            "contentId" : {
+              "type" : "integer",
+              "enum" : [ 108 ]
+            }
+          },
+          "type" : "object"
+        } ]
+      },
+      "type" : "array"
+    }
+  },
+  "required" : [ "recommendations" ],
+  "additionalProperties" : false
+}

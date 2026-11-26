@@ -1,0 +1,164 @@
+{
+  "version": 1,
+  "purpose": "Separate TV duration-unit policy; does not replace the frozen conversation-quality-v1 oracle.",
+  "cases": [
+    {
+      "id": "vague-original",
+      "question": "짧게 볼 만한 시리즈 있을까?",
+      "route": "CLARIFY",
+      "reason": "TV_DURATION_UNIT",
+      "constraints": []
+    },
+    {
+      "id": "vague-time",
+      "question": "시청 시간이 짧은 시리즈 추천해줘",
+      "route": "CLARIFY",
+      "reason": "TV_DURATION_UNIT",
+      "constraints": []
+    },
+    {
+      "id": "vague-english",
+      "question": "Recommend a short TV series.",
+      "route": "CLARIFY",
+      "reason": "TV_DURATION_UNIT",
+      "constraints": []
+    },
+    {
+      "id": "vague-unsure",
+      "question": "회당 짧은 건지 전체가 짧은 건지 아직 모르겠어. 짧은 시리즈 추천해줘",
+      "route": "CLARIFY",
+      "reason": "TV_DURATION_UNIT",
+      "constraints": []
+    },
+    {
+      "id": "episode-order",
+      "question": "회당 길이가 짧은 시리즈 추천해줘",
+      "route": "RECOMMEND",
+      "reason": null,
+      "constraints": [
+        {
+          "kind": "MEDIA",
+          "value": "TV"
+        },
+        {
+          "kind": "ORDER",
+          "value": "SHORTER_EPISODE"
+        }
+      ]
+    },
+    {
+      "id": "episode-limit",
+      "question": "한 회가 20분 이하인 시리즈 추천해줘",
+      "route": "RECOMMEND",
+      "reason": null,
+      "constraints": [
+        {
+          "kind": "MEDIA",
+          "value": "TV"
+        },
+        {
+          "kind": "EPISODE_MINUTES_MAX",
+          "value": "20"
+        }
+      ]
+    },
+    {
+      "id": "series-total",
+      "question": "전체 시청 시간이 3시간 이하인 시리즈 추천해줘",
+      "route": "RECOMMEND",
+      "reason": null,
+      "constraints": [
+        {
+          "kind": "MEDIA",
+          "value": "TV"
+        },
+        {
+          "kind": "UNVERIFIABLE",
+          "value": null
+        }
+      ]
+    },
+    {
+      "id": "ordinary-series",
+      "question": "코미디 시리즈 추천해줘",
+      "route": "RECOMMEND",
+      "reason": null,
+      "constraints": [
+        {
+          "kind": "MEDIA",
+          "value": "TV"
+        },
+        {
+          "kind": "GENRE_ALL",
+          "value": "comedy"
+        }
+      ]
+    },
+    {
+      "id": "missing-reference",
+      "question": "그 영화 줄거리 알려줘",
+      "route": "CLARIFY",
+      "reason": null,
+      "constraints": []
+    },
+    {
+      "id": "required-exclusion",
+      "question": "어제 본 이름 모르는 영화는 반드시 제외하고 SF 영화 추천해줘",
+      "route": "CLARIFY",
+      "reason": null,
+      "constraints": []
+    },
+    {
+      "id": "episode-followup",
+      "history": [
+        {
+          "role": "USER",
+          "text": "짧게 볼 만한 시리즈 있을까?"
+        },
+        {
+          "role": "ASSISTANT",
+          "text": "회당 길이가 짧은 시리즈를 찾으시나요, 전체 시청 시간이 짧은 시리즈를 찾으시나요? 카탈로그에서는 대표 회당 길이를 확인할 수 있지만, 전체 시청 시간은 확인할 수 없어요."
+        }
+      ],
+      "question": "회당 길이가 짧은 걸로",
+      "route": "RECOMMEND",
+      "reason": null,
+      "constraints": [
+        {
+          "kind": "MEDIA",
+          "value": "TV"
+        },
+        {
+          "kind": "ORDER",
+          "value": "SHORTER_EPISODE"
+        }
+      ]
+    },
+    {
+      "id": "series-total-followup",
+      "history": [
+        {
+          "role": "USER",
+          "text": "짧게 볼 만한 시리즈 있을까?"
+        },
+        {
+          "role": "ASSISTANT",
+          "text": "회당 길이가 짧은 시리즈를 찾으시나요, 전체 시청 시간이 짧은 시리즈를 찾으시나요? 카탈로그에서는 대표 회당 길이를 확인할 수 있지만, 전체 시청 시간은 확인할 수 없어요."
+        }
+      ],
+      "question": "전체 시청 시간이 짧은 걸로",
+      "route": "RECOMMEND",
+      "reason": null,
+      "constraints": [
+        {
+          "kind": "MEDIA",
+          "value": "TV"
+        },
+        {
+          "kind": "UNVERIFIABLE",
+          "value": null
+        }
+      ]
+    }
+  ]
+}

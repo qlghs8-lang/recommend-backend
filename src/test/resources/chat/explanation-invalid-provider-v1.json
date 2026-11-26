@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "origin": "live-20261119081237699925900.json",
+  "id": "explain-format",
+  "status": "AI_INVALID_RESPONSE",
+  "providerTrace": [
+    {
+      "status": "completed",
+      "inputTokens": 3778,
+      "outputTokens": 129,
+      "outputChars": 103,
+      "syntheticOutput": "{\"requests\":[{\"route\":\"EXPLAIN\"}],\"composition\":{\"comparison\":true,\"splitAfter\":null},\"constraints\":[]}"
+    }
+  ]
+}

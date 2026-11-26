@@ -1,0 +1,230 @@
+{
+  "version": 1,
+  "purpose": "Fixed reason-omission diagnostic, before/after same nine cases three times; original policy unchanged.",
+  "cases": [
+    {
+      "id": "original-title",
+      "question": "없는 작품 XYZ의 줄거리 알려줘",
+      "history": [],
+      "expected": {
+        "requests": [
+          {
+            "route": "CLARIFY",
+            "media": "ANY",
+            "title": null,
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": "TITLE_BOUNDARY"
+    },
+    {
+      "id": "title-after-greeting",
+      "question": "없는 작품 XYZ의 줄거리 알려줘",
+      "history": [
+        {
+          "role": "USER",
+          "text": "안녕",
+          "contentIds": []
+        },
+        {
+          "role": "ASSISTANT",
+          "text": "안녕하세요! 영화·시리즈 추천과 카탈로그 작품 상세를 도와드릴게요.",
+          "contentIds": []
+        }
+      ],
+      "expected": {
+        "requests": [
+          {
+            "route": "CLARIFY",
+            "media": "ANY",
+            "title": null,
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": "TITLE_BOUNDARY"
+    },
+    {
+      "id": "title-after-detail",
+      "question": "없는 작품 XYZ의 줄거리 알려줘",
+      "history": [
+        {
+          "role": "USER",
+          "text": "달빛 항해의 줄거리 알려줘",
+          "contentIds": []
+        },
+        {
+          "role": "ASSISTANT",
+          "text": "달빛 항해 (ID: 42) · 영화\n카탈로그 줄거리: 낯선 별을 탐험한다.",
+          "contentIds": [
+            42
+          ]
+        }
+      ],
+      "expected": {
+        "requests": [
+          {
+            "route": "CLARIFY",
+            "media": "ANY",
+            "title": null,
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": "TITLE_BOUNDARY"
+    },
+    {
+      "id": "quoted-full-title",
+      "question": "'없는 작품 XYZ'의 줄거리 알려줘",
+      "history": [],
+      "expected": {
+        "requests": [
+          {
+            "route": "DETAIL",
+            "media": "ANY",
+            "title": "없는 작품 XYZ",
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": null
+    },
+    {
+      "id": "generic-no-history",
+      "history": [],
+      "question": "아까 그거 보여줘",
+      "expected": {
+        "requests": [
+          {
+            "route": "CLARIFY",
+            "media": "ANY",
+            "title": null,
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": null
+    },
+    {
+      "id": "generic-hidden-list",
+      "history": [
+        {
+          "role": "USER",
+          "text": "내 찜 목록 보여줘",
+          "contentIds": []
+        },
+        {
+          "role": "ASSISTANT",
+          "text": "본인 반응 목록을 서버에서 표시했어요. 목록 내용은 모델 문맥에서 제외되었어요.",
+          "contentIds": []
+        }
+      ],
+      "question": "내 찜 목록의 첫 번째 작품을 설명해줘",
+      "expected": {
+        "requests": [
+          {
+            "route": "CLARIFY",
+            "media": "ANY",
+            "title": null,
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": null
+    },
+    {
+      "id": "duration-control",
+      "question": "짧게 볼 만한 시리즈 있을까?",
+      "history": [],
+      "expected": {
+        "requests": [
+          {
+            "route": "CLARIFY",
+            "media": "ANY",
+            "title": null,
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": "TV_DURATION_UNIT"
+    },
+    {
+      "id": "qualitative-control",
+      "question": "달빛 항해와 숲의 기록 중 더 뛰어난 연출의 작품은 뭐야?",
+      "history": [],
+      "expected": {
+        "requests": [
+          {
+            "route": "CLARIFY",
+            "media": "ANY",
+            "title": null,
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": "QUALITATIVE_COMPARISON"
+    },
+    {
+      "id": "explanation-control",
+      "question": "좋은 연출을 평가할 때 어떤 기준을 보나요?",
+      "history": [],
+      "expected": {
+        "requests": [
+          {
+            "route": "EXPLAIN",
+            "media": "ANY",
+            "title": null,
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": null
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "origin": "classifier-diagnostic-20261118095440586623200.json",
+  "note": "Observed successful synthetic outputs; historical compare-polite failure raw output is unavailable. Not failed-output reproduction.",
+  "cases": [
+    {
+      "id": "compare-ids",
+      "repetition": 1,
+      "output": "{\"requests\":[{\"route\":\"DETAIL\",\"media\":\"ANY\",\"title\":null,\"contentId\":42,\"releaseYear\":null,\"referenceTurn\":null,\"referencePosition\":null},{\"route\":\"DETAIL\",\"media\":\"ANY\",\"title\":null,\"contentId\":73,\"releaseYear\":null,\"referenceTurn\":null,\"referencePosition\":null}],\"comparison\":true,\"splitAfter\":null,\"constraints\":[]}"
+    },
+    {
+      "id": "compare-titles",
+      "repetition": 1,
+      "output": "{\"requests\":[{\"route\":\"DETAIL\",\"media\":\"ANY\",\"title\":\"달빛 항해\",\"contentId\":null,\"releaseYear\":null,\"referenceTurn\":null,\"referencePosition\":null},{\"route\":\"DETAIL\",\"media\":\"ANY\",\"title\":\"숲의 기록\",\"contentId\":null,\"releaseYear\":null,\"referenceTurn\":null,\"referencePosition\":null}],\"comparison\":true,\"splitAfter\":null,\"constraints\":[]}"
+    },
+    {
+      "id": "compare-polite",
+      "repetition": 1,
+      "output": "{\"requests\":[{\"route\":\"DETAIL\",\"media\":\"ANY\",\"title\":null,\"contentId\":42,\"releaseYear\":null,\"referenceTurn\":null,\"referencePosition\":null},{\"route\":\"DETAIL\",\"media\":\"ANY\",\"title\":null,\"contentId\":73,\"releaseYear\":null,\"referenceTurn\":null,\"referencePosition\":null}],\"comparison\":true,\"splitAfter\":null,\"constraints\":[]}"
+    },
+    {
+      "id": "compare-ids",
+      "repetition": 2,
+      "output": "{\"requests\":[{\"route\":\"DETAIL\",\"media\":\"ANY\",\"title\":null,\"contentId\":42,\"releaseYear\":null,\"referenceTurn\":null,\"referencePosition\":null},{\"route\":\"DETAIL\",\"media\":\"ANY\",\"title\":null,\"contentId\":73,\"releaseYear\":null,\"referenceTurn\":null,\"referencePosition\":null}],\"comparison\":true,\"splitAfter\":null,\"constraints\":[]}"
+    },
+    {
+      "id": "compare-titles",
+      "repetition": 2,
+      "output": "{\"requests\":[{\"route\":\"DETAIL\",\"media\":\"ANY\",\"title\":\"달빛 항해\",\"contentId\":null,\"releaseYear\":null,\"referenceTurn\":null,\"referencePosition\":null},{\"route\":\"DETAIL\",\"media\":\"ANY\",\"title\":\"숲의 기록\",\"contentId\":null,\"releaseYear\":null,\"referenceTurn\":null,\"referencePosition\":null}],\"comparison\":true,\"splitAfter\":null,\"constraints\":[]}"
+    },
+    {
+      "id": "compare-polite",
+      "repetition": 2,
+      "output": "{\"requests\":[{\"route\":\"DETAIL\",\"media\":\"ANY\",\"title\":null,\"contentId\":42,\"releaseYear\":null,\"referenceTurn\":null,\"referencePosition\":null},{\"route\":\"DETAIL\",\"media\":\"ANY\",\"title\":null,\"contentId\":73,\"releaseYear\":null,\"referenceTurn\":null,\"referencePosition\":null}],\"comparison\":true,\"splitAfter\":null,\"constraints\":[]}"
+    },
+    {
+      "id": "compare-ids",
+      "repetition": 3,
+      "output": "{\"requests\":[{\"route\":\"DETAIL\",\"media\":\"ANY\",\"title\":null,\"contentId\":42,\"releaseYear\":null,\"referenceTurn\":null,\"referencePosition\":null},{\"route\":\"DETAIL\",\"media\":\"ANY\",\"title\":null,\"contentId\":73,\"releaseYear\":null,\"referenceTurn\":null,\"referencePosition\":null}],\"comparison\":true,\"splitAfter\":null,\"constraints\":[]}"
+    },
+    {
+      "id": "compare-titles",
+      "repetition": 3,
+      "output": "{\"requests\":[{\"route\":\"DETAIL\",\"media\":\"ANY\",\"title\":\"달빛 항해\",\"contentId\":null,\"releaseYear\":null,\"referenceTurn\":null,\"referencePosition\":null},{\"route\":\"DETAIL\",\"media\":\"ANY\",\"title\":\"숲의 기록\",\"contentId\":null,\"releaseYear\":null,\"referenceTurn\":null,\"referencePosition\":null}],\"comparison\":true,\"splitAfter\":null,\"constraints\":[]}"
+    },
+    {
+      "id": "compare-polite",
+      "repetition": 3,
+      "output": "{\"requests\":[{\"route\":\"DETAIL\",\"media\":\"ANY\",\"title\":null,\"contentId\":42,\"releaseYear\":null,\"referenceTurn\":null,\"referencePosition\":null},{\"route\":\"DETAIL\",\"media\":\"ANY\",\"title\":null,\"contentId\":73,\"releaseYear\":null,\"referenceTurn\":null,\"referencePosition\":null}],\"comparison\":true,\"splitAfter\":null,\"constraints\":[]}"
+    }
+  ]
+}

@@ -1,0 +1,500 @@
+{
+  "type" : "object",
+  "properties" : {
+    "recommendations" : {
+      "type" : "array",
+      "maxItems" : 3,
+      "items" : {
+        "anyOf" : [ {
+          "required" : [ "contentId", "evidence", "interpretation" ],
+          "additionalProperties" : false,
+          "properties" : {
+            "contentId" : {
+              "type" : "integer",
+              "enum" : [ 398 ]
+            },
+            "interpretation" : {
+              "type" : "string",
+              "maxLength" : 100,
+              "minLength" : 1
+            },
+            "evidence" : {
+              "items" : {
+                "anyOf" : [ {
+                  "required" : [ "field", "quote" ],
+                  "additionalProperties" : false,
+                  "properties" : {
+                    "quote" : {
+                      "type" : "string",
+                      "enum" : [ "가족" ]
+                    },
+                    "field" : {
+                      "type" : "string",
+                      "enum" : [ "TITLE" ]
+                    }
+                  },
+                  "type" : "object"
+                }, {
+                  "required" : [ "field", "quote" ],
+                  "additionalProperties" : false,
+                  "properties" : {
+                    "quote" : {
+                      "type" : "string",
+                      "enum" : [ "가족이라 우기며 10대 시절을 함께 했던 세 남녀가 10년 만에 다시 만" ]
+                    },
+                    "field" : {
+                      "type" : "string",
+                      "enum" : [ "OVERVIEW" ]
+                    }
+                  },
+                  "type" : "object"
+                } ]
+              },
+              "minItems" : 1,
+              "maxItems" : 1,
+              "type" : "array"
+            }
+          },
+          "type" : "object"
+        }, {
+          "required" : [ "contentId", "evidence", "interpretation" ],
+          "additionalProperties" : false,
+          "properties" : {
+            "contentId" : {
+              "type" : "integer",
+              "enum" : [ 331 ]
+            },
+            "interpretation" : {
+              "type" : "string",
+              "maxLength" : 100,
+              "minLength" : 1
+            },
+            "evidence" : {
+              "items" : {
+                "anyOf" : [ {
+                  "required" : [ "field", "quote" ],
+                  "additionalProperties" : false,
+                  "properties" : {
+                    "quote" : {
+                      "type" : "string",
+                      "enum" : [ "가족은 외계인" ]
+                    },
+                    "field" : {
+                      "type" : "string",
+                      "enum" : [ "TITLE" ]
+                    }
+                  },
+                  "type" : "object"
+                }, {
+                  "required" : [ "field", "quote" ],
+                  "additionalProperties" : false,
+                  "properties" : {
+                    "quote" : {
+                      "type" : "string",
+                      "enum" : [ "가족으로 위장해 살아가면 벌어지는 일들을 그리는 SF 가족 시트콤" ]
+                    },
+                    "field" : {
+                      "type" : "string",
+                      "enum" : [ "OVERVIEW" ]
+                    }
+                  },
+                  "type" : "object"
+                } ]
+              },
+              "minItems" : 1,
+              "maxItems" : 1,
+              "type" : "array"
+            }
+          },
+          "type" : "object"
+        }, {
+          "required" : [ "contentId", "evidence", "interpretation" ],
+          "additionalProperties" : false,
+          "properties" : {
+            "contentId" : {
+              "type" : "integer",
+              "enum" : [ 354 ]
+            },
+            "interpretation" : {
+              "type" : "string",
+              "maxLength" : 100,
+              "minLength" : 1
+            },
+            "evidence" : {
+              "items" : {
+                "anyOf" : [ {
+                  "required" : [ "field", "quote" ],
+                  "additionalProperties" : false,
+                  "properties" : {
+                    "quote" : {
+                      "type" : "string",
+                      "enum" : [ "가족 만세" ]
+                    },
+                    "field" : {
+                      "type" : "string",
+                      "enum" : [ "TITLE" ]
+                    }
+                  },
+                  "type" : "object"
+                } ]
+              },
+              "minItems" : 1,
+              "maxItems" : 1,
+              "type" : "array"
+            }
+          },
+          "type" : "object"
+        }, {
+          "required" : [ "contentId", "evidence", "interpretation" ],
+          "additionalProperties" : false,
+          "properties" : {
+            "contentId" : {
+              "type" : "integer",
+              "enum" : [ 325 ]
+            },
+            "interpretation" : {
+              "type" : "string",
+              "maxLength" : 100,
+              "minLength" : 1
+            },
+            "evidence" : {
+              "items" : {
+                "anyOf" : [ {
+                  "required" : [ "field", "quote" ],
+                  "additionalProperties" : false,
+                  "properties" : {
+                    "quote" : {
+                      "type" : "string",
+                      "enum" : [ "가족" ]
+                    },
+                    "field" : {
+                      "type" : "string",
+                      "enum" : [ "TITLE" ]
+                    }
+                  },
+                  "type" : "object"
+                }, {
+                  "required" : [ "field", "quote" ],
+                  "additionalProperties" : false,
+                  "properties" : {
+                    "quote" : {
+                      "type" : "string",
+                      "enum" : [ "가족. 리더인 맏며느리 '남주'를 중심으로 행동대장 장남 '준걸'과 브레" ]
+                    },
+                    "field" : {
+                      "type" : "string",
+                      "enum" : [ "OVERVIEW" ]
+                    }
+                  },
+                  "type" : "object"
+                } ]
+              },
+              "minItems" : 1,
+              "maxItems" : 1,
+              "type" : "array"
+            }
+          },
+          "type" : "object"
+        }, {
+          "required" : [ "contentId", "evidence", "interpretation" ],
+          "additionalProperties" : false,
+          "properties" : {
+            "contentId" : {
+              "type" : "integer",
+              "enum" : [ 72 ]
+            },
+            "interpretation" : {
+              "type" : "string",
+              "maxLength" : 100,
+              "minLength" : 1
+            },
+            "evidence" : {
+              "items" : {
+                "anyOf" : [ {
+                  "required" : [ "field", "quote" ],
+                  "additionalProperties" : false,
+                  "properties" : {
+                    "quote" : {
+                      "type" : "string",
+                      "enum" : [ "가족에게 품은 열등감과 킴에 대한 애정, 빨리 성공하고 싶은 욕망은 그가", "이해관계가 변호사의 선택에 끼어든다. 가족에게 품은 열등감과 킴에 대한" ]
+                    },
+                    "field" : {
+                      "type" : "string",
+                      "enum" : [ "OVERVIEW" ]
+                    }
+                  },
+                  "type" : "object"
+                } ]
+              },
+              "minItems" : 1,
+              "maxItems" : 1,
+              "type" : "array"
+            }
+          },
+          "type" : "object"
+        }, {
+          "required" : [ "contentId", "evidence", "interpretation" ],
+          "additionalProperties" : false,
+          "properties" : {
+            "contentId" : {
+              "type" : "integer",
+              "enum" : [ 434 ]
+            },
+            "interpretation" : {
+              "type" : "string",
+              "maxLength" : 100,
+              "minLength" : 1
+            },
+            "evidence" : {
+              "items" : {
+                "anyOf" : [ {
+                  "required" : [ "field", "quote" ],
+                  "additionalProperties" : false,
+                  "properties" : {
+                    "quote" : {
+                      "type" : "string",
+                      "enum" : [ "가족을 만들어, 데스몬드의 아들이 다니는 명문 학교의 친목회에 잠입하라\"", "이해가 일치하여 서로 정체를" ]
+                    },
+                    "field" : {
+                      "type" : "string",
+                      "enum" : [ "OVERVIEW" ]
+                    }
+                  },
+                  "type" : "object"
+                } ]
+              },
+              "minItems" : 1,
+              "maxItems" : 1,
+              "type" : "array"
+            }
+          },
+          "type" : "object"
+        }, {
+          "required" : [ "contentId", "evidence", "interpretation" ],
+          "additionalProperties" : false,
+          "properties" : {
+            "contentId" : {
+              "type" : "integer",
+              "enum" : [ 397 ]
+            },
+            "interpretation" : {
+              "type" : "string",
+              "maxLength" : 100,
+              "minLength" : 1
+            },
+            "evidence" : {
+              "items" : {
+                "anyOf" : [ {
+                  "required" : [ "field", "quote" ],
+                  "additionalProperties" : false,
+                  "properties" : {
+                    "quote" : {
+                      "type" : "string",
+                      "enum" : [ "가족과 헤어진 연인 지호가 그를 걱정하는 가운데, 제혁은 기약 없이 멈춰", "이해하며 담장 안의 하루하루를 살아내야 한다." ]
+                    },
+                    "field" : {
+                      "type" : "string",
+                      "enum" : [ "OVERVIEW" ]
+                    }
+                  },
+                  "type" : "object"
+                } ]
+              },
+              "minItems" : 1,
+              "maxItems" : 1,
+              "type" : "array"
+            }
+          },
+          "type" : "object"
+        }, {
+          "required" : [ "contentId", "evidence", "interpretation" ],
+          "additionalProperties" : false,
+          "properties" : {
+            "contentId" : {
+              "type" : "integer",
+              "enum" : [ 496 ]
+            },
+            "interpretation" : {
+              "type" : "string",
+              "maxLength" : 100,
+              "minLength" : 1
+            },
+            "evidence" : {
+              "items" : {
+                "anyOf" : [ {
+                  "required" : [ "field", "quote" ],
+                  "additionalProperties" : false,
+                  "properties" : {
+                    "quote" : {
+                      "type" : "string",
+                      "enum" : [ "가족의 일원으로 살며 누구도 의심하지 않는 일상을 유지한다. 그러나 지난", "이해관계와도 얽혀 있다. 집에서는 평범한 아내로 돌아가야 하는 헬렌에게," ]
+                    },
+                    "field" : {
+                      "type" : "string",
+                      "enum" : [ "OVERVIEW" ]
+                    }
+                  },
+                  "type" : "object"
+                } ]
+              },
+              "minItems" : 1,
+              "maxItems" : 1,
+              "type" : "array"
+            }
+          },
+          "type" : "object"
+        }, {
+          "required" : [ "contentId", "evidence", "interpretation" ],
+          "additionalProperties" : false,
+          "properties" : {
+            "contentId" : {
+              "type" : "integer",
+              "enum" : [ 237 ]
+            },
+            "interpretation" : {
+              "type" : "string",
+              "maxLength" : 100,
+              "minLength" : 1
+            },
+            "evidence" : {
+              "items" : {
+                "anyOf" : [ {
+                  "required" : [ "field", "quote" ],
+                  "additionalProperties" : false,
+                  "properties" : {
+                    "quote" : {
+                      "type" : "string",
+                      "enum" : [ "가족은 해변에서 거대한 유조선이 밀려오는 광경을 목격하고, 돌아온 뒤에는", "이해할 수 없는 이상 징후가 늘어나고, 익숙한 기술은 더 이상 안전을 보" ]
+                    },
+                    "field" : {
+                      "type" : "string",
+                      "enum" : [ "OVERVIEW" ]
+                    }
+                  },
+                  "type" : "object"
+                } ]
+              },
+              "minItems" : 1,
+              "maxItems" : 1,
+              "type" : "array"
+            }
+          },
+          "type" : "object"
+        }, {
+          "required" : [ "contentId", "evidence", "interpretation" ],
+          "additionalProperties" : false,
+          "properties" : {
+            "contentId" : {
+              "type" : "integer",
+              "enum" : [ 395 ]
+            },
+            "interpretation" : {
+              "type" : "string",
+              "maxLength" : 100,
+              "minLength" : 1
+            },
+            "evidence" : {
+              "items" : {
+                "anyOf" : [ {
+                  "required" : [ "field", "quote" ],
+                  "additionalProperties" : false,
+                  "properties" : {
+                    "quote" : {
+                      "type" : "string",
+                      "enum" : [ "가족도 대수롭지 않게 여기는 릭은 마음씨 착하지만 겁 많은 손자 모티를" ]
+                    },
+                    "field" : {
+                      "type" : "string",
+                      "enum" : [ "OVERVIEW" ]
+                    }
+                  },
+                  "type" : "object"
+                } ]
+              },
+              "minItems" : 1,
+              "maxItems" : 1,
+              "type" : "array"
+            }
+          },
+          "type" : "object"
+        }, {
+          "required" : [ "contentId", "evidence", "interpretation" ],
+          "additionalProperties" : false,
+          "properties" : {
+            "contentId" : {
+              "type" : "integer",
+              "enum" : [ 228 ]
+            },
+            "interpretation" : {
+              "type" : "string",
+              "maxLength" : 100,
+              "minLength" : 1
+            },
+            "evidence" : {
+              "items" : {
+                "anyOf" : [ {
+                  "required" : [ "field", "quote" ],
+                  "additionalProperties" : false,
+                  "properties" : {
+                    "quote" : {
+                      "type" : "string",
+                      "enum" : [ "가족이 자신들의 영향력을 유지하기 위해 고군분투하는 이야기를 중심으로 전" ]
+                    },
+                    "field" : {
+                      "type" : "string",
+                      "enum" : [ "OVERVIEW" ]
+                    }
+                  },
+                  "type" : "object"
+                } ]
+              },
+              "minItems" : 1,
+              "maxItems" : 1,
+              "type" : "array"
+            }
+          },
+          "type" : "object"
+        }, {
+          "required" : [ "contentId", "evidence", "interpretation" ],
+          "additionalProperties" : false,
+          "properties" : {
+            "contentId" : {
+              "type" : "integer",
+              "enum" : [ 298 ]
+            },
+            "interpretation" : {
+              "type" : "string",
+              "maxLength" : 100,
+              "minLength" : 1
+            },
+            "evidence" : {
+              "items" : {
+                "anyOf" : [ {
+                  "required" : [ "field", "quote" ],
+                  "additionalProperties" : false,
+                  "properties" : {
+                    "quote" : {
+                      "type" : "string",
+                      "enum" : [ "가족생활을 바라보는 이 작품의 유쾌하고 솔직한 시선은 아이의 건강에 상상" ]
+                    },
+                    "field" : {
+                      "type" : "string",
+                      "enum" : [ "OVERVIEW" ]
+                    }
+                  },
+                  "type" : "object"
+                } ]
+              },
+              "minItems" : 1,
+              "maxItems" : 1,
+              "type" : "array"
+            }
+          },
+          "type" : "object"
+        } ]
+      }
+    }
+  },
+  "required" : [ "recommendations" ],
+  "additionalProperties" : false
+}

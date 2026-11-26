@@ -13,6 +13,8 @@ public class RelatedDataDeletion {
     @PersistenceContext private EntityManager em;
 
     public void forUser(Long id) {
+        delete("delete from ChatMessage x where x.room.user.id = :id", id);
+        delete("delete from ChatRoom x where x.user.id = :id", id);
         logs("userId", id);
         delete("delete from UserContentInteraction x where x.user.id = :id", id);
         delete("delete from TermsAgreement x where x.user.id = :id", id);

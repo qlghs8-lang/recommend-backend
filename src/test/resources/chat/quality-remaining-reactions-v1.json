@@ -1,0 +1,32 @@
+{
+  "protocol": "SYNTHETIC_D24_REACTIONS_V1",
+  "ownerId": 9100001,
+  "otherId": 9100002,
+  "events": [
+    {
+      "userId": 9100001,
+      "contentId": 41,
+      "eventType": "LIKE"
+    },
+    {
+      "userId": 9100001,
+      "contentId": 344,
+      "eventType": "DISLIKE"
+    },
+    {
+      "userId": 9100001,
+      "contentId": 100,
+      "eventType": "VIEW"
+    },
+    {
+      "userId": 9100002,
+      "contentId": 40,
+      "eventType": "LIKE"
+    },
+    {
+      "userId": 9100002,
+      "contentId": 428,
+      "eventType": "DISLIKE"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "cases": [
+    {"id":"cooking-topic","question":"요리 주제인 영화 추천해줘","prior":null,"topicSource":"요리","topicTerms":["요리","조리","셰프","주방"],"minutes":null},
+    {"id":"cooking-related","question":"요리 관련된 영화 추천해줘","prior":null,"topicSource":"요리","topicTerms":["요리","조리","셰프","주방"],"minutes":null},
+    {"id":"named-example-explicit-topic","question":"흑백요리사 같이 조리나 요리 관련된 영화 추천해줘","prior":null,"topicSource":"조리나 요리","topicTerms":["요리","조리","셰프","주방"],"minutes":null},
+    {"id":"chef-profession","question":"셰프가 주인공인 영화 추천해줘","prior":null,"topicSource":"셰프","topicTerms":["셰프","요리사"],"minutes":null},
+    {"id":"cooking-short-followup","question":"그중 90분 이하 영화로 추천해줘","prior":"요리 관련된 영화 추천해줘","topicSource":"요리","topicTerms":["요리","조리","셰프","주방"],"minutes":90},
+    {"id":"topic-reset","question":"이전 조건 모두 잊고 우주 탐험 영화 추천해줘","prior":"요리 관련된 영화 추천해줘","topicSource":"우주 탐험","topicTerms":["우주","행성","우주선"],"minutes":null}
+  ]
+}

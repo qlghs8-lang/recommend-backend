@@ -1,0 +1,151 @@
+{
+  "version": 1,
+  "source": "https://developer.themoviedb.org/openapi/tmdb-api.json",
+  "source_sha256": "1c709375fe994e58c5a35aba7c9abfa7f28aa7103ed6c2052ea5ab0b62af081b",
+  "checked_date_kst": "2026-11-26",
+  "endpoints": {
+    "/3/movie/{movie_id}": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "original_language": {
+          "type": "string"
+        },
+        "original_title": {
+          "type": "string"
+        },
+        "overview": {
+          "type": "string"
+        },
+        "runtime": {
+          "type": "integer"
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    },
+    "/3/movie/{movie_id}/keywords": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "keywords": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer"
+              },
+              "name": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/3/movie/{movie_id}/alternative_titles": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "titles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "iso_3166_1": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/3/tv/{series_id}": {
+      "type": "object",
+      "properties": {
+        "episode_run_time": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "original_language": {
+          "type": "string"
+        },
+        "original_name": {
+          "type": "string"
+        },
+        "overview": {
+          "type": "string"
+        }
+      }
+    },
+    "/3/tv/{series_id}/keywords": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/3/tv/{series_id}/alternative_titles": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "iso_3166_1": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "origin": "classifier-diagnostic-20261118125228412745600.json",
+  "id": "compare-ids",
+  "repetition": 3,
+  "status": "AI_INVALID_RESPONSE",
+  "providerTrace": [
+    {
+      "status": "completed",
+      "inputTokens": 3612,
+      "outputTokens": 269,
+      "outputChars": 320,
+      "syntheticOutput": "{\"requests\":[{\"route\":\"DETAIL\",\"media\":\"ANY\",\"title\":null,\"contentId\":42,\"releaseYear\":null,\"referenceTurn\":null,\"referencePosition\":null},{\"route\":\"DETAIL\",\"media\":\"ANY\",\"title\":null,\"contentId\":73,\"releaseYear\":null,\"referenceTurn\":null,\"referencePosition\":null}],\"comparison\":true,\"splitAfter\":\"42와\",\"constraints\":[]}"
+    }
+  ]
+}

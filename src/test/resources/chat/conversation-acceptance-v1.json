@@ -1,0 +1,516 @@
+{
+  "version": 1,
+  "sourceCorpusSha256": "44f9cb9533dfb6bf6fe74a16069a1bceedfcc67f305b6a29e9a71c77467b1926",
+  "purpose": "Predeclared revised-policy overlay plus real persisted multi-turn service acceptance; original v1 unchanged.",
+  "overrides": {
+    "rec-tv": "TV_DURATION_UNIT",
+    "detail-missing": "TITLE_BOUNDARY",
+    "clarify-ranking": "QUALITATIVE_COMPARISON"
+  },
+  "works": [
+    {
+      "key": "tv-short",
+      "title": "짧은 회차 시리즈",
+      "type": "TV",
+      "genres": "Drama",
+      "overview": "함께 보내는 일상",
+      "episodeRuntime": 10
+    },
+    {
+      "key": "tv-long",
+      "title": "긴 회차 시리즈",
+      "type": "TV",
+      "genres": "Drama",
+      "overview": "이어지는 긴 여정",
+      "episodeRuntime": 90
+    },
+    {
+      "key": "tv-unknown",
+      "title": "길이 미등록 시리즈",
+      "type": "TV",
+      "genres": "Drama",
+      "overview": "길이가 알려지지 않은 이야기"
+    },
+    {
+      "key": "movie-short",
+      "title": "짧은 영화",
+      "type": "MOVIE",
+      "genres": "Comedy",
+      "overview": "짧은 하루",
+      "runtime": 5
+    },
+    {
+      "key": "title-short",
+      "title": "XYZ",
+      "type": "MOVIE",
+      "genres": "Drama",
+      "overview": "짧은 이름의 작품만의 이야기",
+      "runtime": 70
+    },
+    {
+      "key": "title-full",
+      "title": "없는 작품 XYZ",
+      "type": "MOVIE",
+      "genres": "Comedy",
+      "overview": "긴 이름의 작품만의 이야기",
+      "runtime": 100
+    },
+    {
+      "key": "moon",
+      "title": "달빛 항해",
+      "type": "MOVIE",
+      "genres": "Science Fiction",
+      "overview": "낯선 별을 탐험한다",
+      "runtime": 90
+    },
+    {
+      "key": "forest",
+      "title": "숲의 기록",
+      "type": "MOVIE",
+      "genres": "Documentary",
+      "overview": "숲의 생태를 기록한다",
+      "runtime": 100
+    }
+  ],
+  "stories": [
+    {
+      "id": "duration-to-recommendation",
+      "steps": [
+        {
+          "id": "greeting",
+          "question": "안녕",
+          "provider": {
+            "composition": {
+              "requests": [
+                {
+                  "route": "GREETING"
+                }
+              ],
+              "comparison": false,
+              "splitAfter": null
+            },
+            "constraints": []
+          },
+          "grounded": false,
+          "ids": [],
+          "contains": [
+            "안녕하세요"
+          ],
+          "optionalConstraints": []
+        },
+        {
+          "id": "duration-unit",
+          "question": "짧게 볼 만한 시리즈 있을까?",
+          "provider": {
+            "composition": {
+              "requests": [
+                {
+                  "route": "CLARIFY",
+                  "reason": "TV_DURATION_UNIT",
+                  "source": "짧게 볼 만한"
+                }
+              ],
+              "comparison": false,
+              "splitAfter": null
+            },
+            "constraints": []
+          },
+          "grounded": false,
+          "ids": [],
+          "contains": [
+            "회당 길이",
+            "전체 시청 시간"
+          ],
+          "optionalConstraints": []
+        },
+        {
+          "id": "episode-limit",
+          "question": "회당 길이가 20분 이하인 시리즈 추천해줘",
+          "provider": {
+            "composition": {
+              "requests": [
+                {
+                  "route": "RECOMMEND",
+                  "media": "TV",
+                  "mediaSource": "시리즈"
+                }
+              ],
+              "comparison": false,
+              "splitAfter": null
+            },
+            "constraints": [
+              {
+                "kind": "EPISODE_MINUTES_MAX",
+                "value": "20",
+                "source": "회당 길이가 20분 이하",
+                "terms": []
+              }
+            ]
+          },
+          "grounded": true,
+          "ids": [
+            "tv-short"
+          ],
+          "contains": [
+            "회당 러닝타임(대표값): 10분",
+            "추천 이유(모델의 해석)"
+          ],
+          "optionalConstraints": [
+            {
+              "kind": "ORDER",
+              "value": "SHORTER_EPISODE"
+            }
+          ]
+        },
+        {
+          "id": "recommended-detail",
+          "question": "방금 추천한 작품의 줄거리 알려줘",
+          "provider": {
+            "composition": {
+              "requests": [
+                {
+                  "route": "DETAIL",
+                  "media": "ANY",
+                  "title": null,
+                  "contentId": null,
+                  "releaseYear": null,
+                  "referenceTurn": 1,
+                  "referencePosition": 0
+                }
+              ],
+              "comparison": false,
+              "splitAfter": null
+            },
+            "constraints": []
+          },
+          "grounded": true,
+          "ids": [
+            "tv-short"
+          ],
+          "contains": [
+            "짧은 회차 시리즈",
+            "함께 보내는 일상"
+          ],
+          "optionalConstraints": []
+        },
+        {
+          "id": "whole-series-total",
+          "question": "전체 시청 시간이 20분 이하인 시리즈 추천해줘",
+          "provider": {
+            "composition": {
+              "requests": [
+                {
+                  "route": "RECOMMEND",
+                  "media": "TV",
+                  "mediaSource": "시리즈"
+                }
+              ],
+              "comparison": false,
+              "splitAfter": null
+            },
+            "constraints": [
+              {
+                "kind": "UNVERIFIABLE",
+                "value": "series total",
+                "source": "전체 시청 시간이 20분 이하",
+                "terms": []
+              }
+            ]
+          },
+          "grounded": false,
+          "ids": [],
+          "contains": [
+            "확인하거나 보장할 수 없는 조건"
+          ],
+          "optionalConstraints": []
+        }
+      ]
+    },
+    {
+      "id": "title-collision-and-reference",
+      "steps": [
+        {
+          "id": "title-boundary",
+          "question": "없는 작품 XYZ의 줄거리 알려줘",
+          "provider": {
+            "composition": {
+              "requests": [
+                {
+                  "route": "CLARIFY",
+                  "reason": "TITLE_BOUNDARY",
+                  "source": "없는 작품 XYZ"
+                }
+              ],
+              "comparison": false,
+              "splitAfter": null
+            },
+            "constraints": []
+          },
+          "grounded": false,
+          "ids": [],
+          "contains": [
+            "정확한 제목 전체를 따옴표로"
+          ],
+          "optionalConstraints": []
+        },
+        {
+          "id": "full-title",
+          "question": "정확한 제목은 ‘없는 작품 XYZ’야. 줄거리 알려줘",
+          "provider": {
+            "composition": {
+              "requests": [
+                {
+                  "route": "DETAIL",
+                  "media": "ANY",
+                  "title": "없는 작품 XYZ",
+                  "contentId": null,
+                  "releaseYear": null,
+                  "referenceTurn": null,
+                  "referencePosition": null
+                }
+              ],
+              "comparison": false,
+              "splitAfter": null
+            },
+            "constraints": []
+          },
+          "grounded": true,
+          "ids": [
+            "title-full"
+          ],
+          "contains": [
+            "긴 이름의 작품만의 이야기"
+          ],
+          "optionalConstraints": []
+        },
+        {
+          "id": "short-title",
+          "question": "‘XYZ’의 줄거리 알려줘",
+          "provider": {
+            "composition": {
+              "requests": [
+                {
+                  "route": "DETAIL",
+                  "media": "ANY",
+                  "title": "XYZ",
+                  "contentId": null,
+                  "releaseYear": null,
+                  "referenceTurn": null,
+                  "referencePosition": null
+                }
+              ],
+              "comparison": false,
+              "splitAfter": null
+            },
+            "constraints": []
+          },
+          "grounded": true,
+          "ids": [
+            "title-short"
+          ],
+          "contains": [
+            "짧은 이름의 작품만의 이야기"
+          ],
+          "optionalConstraints": []
+        },
+        {
+          "id": "colliding-title-comparison",
+          "question": "‘없는 작품 XYZ’와 ‘XYZ’의 장르와 줄거리를 비교해줘",
+          "provider": {
+            "composition": {
+              "requests": [
+                {
+                  "route": "DETAIL",
+                  "media": "ANY",
+                  "title": "없는 작품 XYZ",
+                  "contentId": null,
+                  "releaseYear": null,
+                  "referenceTurn": null,
+                  "referencePosition": null
+                },
+                {
+                  "route": "DETAIL",
+                  "media": "ANY",
+                  "title": "XYZ",
+                  "contentId": null,
+                  "releaseYear": null,
+                  "referenceTurn": null,
+                  "referencePosition": null
+                }
+              ],
+              "comparison": true,
+              "splitAfter": null
+            },
+            "constraints": []
+          },
+          "grounded": true,
+          "ids": [
+            "title-full",
+            "title-short"
+          ],
+          "contains": [
+            "긴 이름의 작품만의 이야기",
+            "짧은 이름의 작품만의 이야기"
+          ],
+          "optionalConstraints": []
+        },
+        {
+          "id": "second-compared-detail",
+          "question": "방금 비교한 두 번째 작품의 줄거리 알려줘",
+          "provider": {
+            "composition": {
+              "requests": [
+                {
+                  "route": "DETAIL",
+                  "media": "ANY",
+                  "title": null,
+                  "contentId": null,
+                  "releaseYear": null,
+                  "referenceTurn": 1,
+                  "referencePosition": 2
+                }
+              ],
+              "comparison": false,
+              "splitAfter": null
+            },
+            "constraints": []
+          },
+          "grounded": true,
+          "ids": [
+            "title-short"
+          ],
+          "contains": [
+            "짧은 이름의 작품만의 이야기"
+          ],
+          "optionalConstraints": []
+        }
+      ]
+    },
+    {
+      "id": "qualitative-to-factual",
+      "steps": [
+        {
+          "id": "directing-winner",
+          "question": "달빛 항해와 숲의 기록 중 더 뛰어난 연출의 작품은 뭐야?",
+          "provider": {
+            "composition": {
+              "requests": [
+                {
+                  "route": "CLARIFY",
+                  "reason": "QUALITATIVE_COMPARISON",
+                  "source": "더 뛰어난 연출"
+                }
+              ],
+              "comparison": false,
+              "splitAfter": null
+            },
+            "constraints": []
+          },
+          "grounded": false,
+          "ids": [],
+          "contains": [
+            "검증된 평가 자료가 없어",
+            "장르·유형·공개일·줄거리"
+          ],
+          "optionalConstraints": []
+        },
+        {
+          "id": "factual-alternative",
+          "question": "달빛 항해와 숲의 기록의 장르와 줄거리를 비교해줘",
+          "provider": {
+            "composition": {
+              "requests": [
+                {
+                  "route": "DETAIL",
+                  "media": "ANY",
+                  "title": "달빛 항해",
+                  "contentId": null,
+                  "releaseYear": null,
+                  "referenceTurn": null,
+                  "referencePosition": null
+                },
+                {
+                  "route": "DETAIL",
+                  "media": "ANY",
+                  "title": "숲의 기록",
+                  "contentId": null,
+                  "releaseYear": null,
+                  "referenceTurn": null,
+                  "referencePosition": null
+                }
+              ],
+              "comparison": true,
+              "splitAfter": null
+            },
+            "constraints": []
+          },
+          "grounded": true,
+          "ids": [
+            "moon",
+            "forest"
+          ],
+          "contains": [
+            "낯선 별을 탐험한다",
+            "숲의 생태를 기록한다",
+            "우열은 판단하지 않아요"
+          ],
+          "optionalConstraints": []
+        },
+        {
+          "id": "second-work",
+          "question": "방금 비교한 두 번째 작품의 줄거리 알려줘",
+          "provider": {
+            "composition": {
+              "requests": [
+                {
+                  "route": "DETAIL",
+                  "media": "ANY",
+                  "title": null,
+                  "contentId": null,
+                  "releaseYear": null,
+                  "referenceTurn": 1,
+                  "referencePosition": 2
+                }
+              ],
+              "comparison": false,
+              "splitAfter": null
+            },
+            "constraints": []
+          },
+          "grounded": true,
+          "ids": [
+            "forest"
+          ],
+          "contains": [
+            "숲의 생태를 기록한다"
+          ],
+          "optionalConstraints": []
+        },
+        {
+          "id": "winner-after-detail",
+          "question": "달빛 항해와 숲의 기록 중 연기가 더 뛰어난 작품을 골라줘",
+          "provider": {
+            "composition": {
+              "requests": [
+                {
+                  "route": "CLARIFY",
+                  "reason": "QUALITATIVE_COMPARISON",
+                  "source": "연기가 더 뛰어난"
+                }
+              ],
+              "comparison": false,
+              "splitAfter": null
+            },
+            "constraints": []
+          },
+          "grounded": false,
+          "ids": [],
+          "contains": [
+            "검증된 평가 자료가 없어"
+          ],
+          "optionalConstraints": []
+        }
+      ]
+    }
+  ]
+}

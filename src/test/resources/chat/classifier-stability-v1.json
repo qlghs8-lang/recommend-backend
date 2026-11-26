@@ -1,0 +1,676 @@
+{
+  "version": 1,
+  "repeats": 3,
+  "totalOutputTokens": 2048,
+  "timeoutSeconds": 20,
+  "cases": [
+    {
+      "id": "conditions-1",
+      "history": [],
+      "question": "영화 추천해줘.",
+      "expectedRoutes": [
+        "RECOMMEND"
+      ],
+      "expectedConstraints": [
+        [
+          "MEDIA",
+          "MOVIE"
+        ]
+      ]
+    },
+    {
+      "id": "followup-1",
+      "history": [
+        {
+          "role": "USER",
+          "text": "영화 추천해줘.",
+          "contentIds": []
+        },
+        {
+          "role": "ASSISTANT",
+          "text": "합성 작품 두 편을 추천했어요.",
+          "contentIds": [
+            42,
+            73
+          ]
+        }
+      ],
+      "question": "영화 말고 시리즈로 바꿔줘",
+      "expectedRoutes": [
+        "RECOMMEND"
+      ],
+      "expectedConstraints": [
+        [
+          "MEDIA",
+          "TV"
+        ]
+      ]
+    },
+    {
+      "id": "conditions-2",
+      "history": [],
+      "question": "영화 추천해줘. 코미디 장르로 골라줘.",
+      "expectedRoutes": [
+        "RECOMMEND"
+      ],
+      "expectedConstraints": [
+        [
+          "MEDIA",
+          "MOVIE"
+        ],
+        [
+          "GENRE_ALL",
+          "comedy"
+        ]
+      ]
+    },
+    {
+      "id": "followup-2",
+      "history": [
+        {
+          "role": "USER",
+          "text": "영화 추천해줘. 코미디 장르로 골라줘.",
+          "contentIds": []
+        },
+        {
+          "role": "ASSISTANT",
+          "text": "합성 작품 두 편을 추천했어요.",
+          "contentIds": [
+            42,
+            73
+          ]
+        }
+      ],
+      "question": "코미디 대신 드라마로 바꿔줘",
+      "expectedRoutes": [
+        "RECOMMEND"
+      ],
+      "expectedConstraints": [
+        [
+          "MEDIA",
+          "MOVIE"
+        ],
+        [
+          "GENRE_ALL",
+          "drama"
+        ]
+      ]
+    },
+    {
+      "id": "conditions-3",
+      "history": [],
+      "question": "영화 추천해줘. 코미디 장르로 골라줘. 공포 장르는 제외해줘.",
+      "expectedRoutes": [
+        "RECOMMEND"
+      ],
+      "expectedConstraints": [
+        [
+          "MEDIA",
+          "MOVIE"
+        ],
+        [
+          "GENRE_ALL",
+          "comedy"
+        ],
+        [
+          "GENRE_EXCLUDE",
+          "horror"
+        ]
+      ]
+    },
+    {
+      "id": "followup-3",
+      "history": [
+        {
+          "role": "USER",
+          "text": "영화 추천해줘. 코미디 장르로 골라줘. 공포 장르는 제외해줘.",
+          "contentIds": []
+        },
+        {
+          "role": "ASSISTANT",
+          "text": "합성 작품 두 편을 추천했어요.",
+          "contentIds": [
+            42,
+            73
+          ]
+        }
+      ],
+      "question": "코미디 대신 드라마로 바꿔줘",
+      "expectedRoutes": [
+        "RECOMMEND"
+      ],
+      "expectedConstraints": [
+        [
+          "MEDIA",
+          "MOVIE"
+        ],
+        [
+          "GENRE_ALL",
+          "drama"
+        ],
+        [
+          "GENRE_EXCLUDE",
+          "horror"
+        ]
+      ]
+    },
+    {
+      "id": "conditions-4",
+      "history": [],
+      "question": "영화 추천해줘. 코미디 장르로 골라줘. 공포 장르는 제외해줘. 2010년부터 나온 작품으로 골라줘.",
+      "expectedRoutes": [
+        "RECOMMEND"
+      ],
+      "expectedConstraints": [
+        [
+          "MEDIA",
+          "MOVIE"
+        ],
+        [
+          "GENRE_ALL",
+          "comedy"
+        ],
+        [
+          "GENRE_EXCLUDE",
+          "horror"
+        ],
+        [
+          "YEAR_MIN",
+          "2010"
+        ]
+      ]
+    },
+    {
+      "id": "followup-4",
+      "history": [
+        {
+          "role": "USER",
+          "text": "영화 추천해줘. 코미디 장르로 골라줘. 공포 장르는 제외해줘. 2010년부터 나온 작품으로 골라줘.",
+          "contentIds": []
+        },
+        {
+          "role": "ASSISTANT",
+          "text": "합성 작품 두 편을 추천했어요.",
+          "contentIds": [
+            42,
+            73
+          ]
+        }
+      ],
+      "question": "코미디 대신 드라마로 바꿔줘",
+      "expectedRoutes": [
+        "RECOMMEND"
+      ],
+      "expectedConstraints": [
+        [
+          "MEDIA",
+          "MOVIE"
+        ],
+        [
+          "GENRE_ALL",
+          "drama"
+        ],
+        [
+          "GENRE_EXCLUDE",
+          "horror"
+        ],
+        [
+          "YEAR_MIN",
+          "2010"
+        ]
+      ]
+    },
+    {
+      "id": "conditions-5",
+      "history": [],
+      "question": "영화 추천해줘. 코미디 장르로 골라줘. 공포 장르는 제외해줘. 2010년부터 나온 작품으로 골라줘. 2025년까지 나온 작품으로 골라줘.",
+      "expectedRoutes": [
+        "RECOMMEND"
+      ],
+      "expectedConstraints": [
+        [
+          "MEDIA",
+          "MOVIE"
+        ],
+        [
+          "GENRE_ALL",
+          "comedy"
+        ],
+        [
+          "GENRE_EXCLUDE",
+          "horror"
+        ],
+        [
+          "YEAR_MIN",
+          "2010"
+        ],
+        [
+          "YEAR_MAX",
+          "2025"
+        ]
+      ]
+    },
+    {
+      "id": "followup-5",
+      "history": [
+        {
+          "role": "USER",
+          "text": "영화 추천해줘. 코미디 장르로 골라줘. 공포 장르는 제외해줘. 2010년부터 나온 작품으로 골라줘. 2025년까지 나온 작품으로 골라줘.",
+          "contentIds": []
+        },
+        {
+          "role": "ASSISTANT",
+          "text": "합성 작품 두 편을 추천했어요.",
+          "contentIds": [
+            42,
+            73
+          ]
+        }
+      ],
+      "question": "코미디 대신 드라마로 바꿔줘",
+      "expectedRoutes": [
+        "RECOMMEND"
+      ],
+      "expectedConstraints": [
+        [
+          "MEDIA",
+          "MOVIE"
+        ],
+        [
+          "GENRE_ALL",
+          "drama"
+        ],
+        [
+          "GENRE_EXCLUDE",
+          "horror"
+        ],
+        [
+          "YEAR_MIN",
+          "2010"
+        ],
+        [
+          "YEAR_MAX",
+          "2025"
+        ]
+      ]
+    },
+    {
+      "id": "conditions-6",
+      "history": [],
+      "question": "영화 추천해줘. 코미디 장르로 골라줘. 공포 장르는 제외해줘. 2010년부터 나온 작품으로 골라줘. 2025년까지 나온 작품으로 골라줘. 러닝타임 60분 이상으로 골라줘.",
+      "expectedRoutes": [
+        "RECOMMEND"
+      ],
+      "expectedConstraints": [
+        [
+          "MEDIA",
+          "MOVIE"
+        ],
+        [
+          "GENRE_ALL",
+          "comedy"
+        ],
+        [
+          "GENRE_EXCLUDE",
+          "horror"
+        ],
+        [
+          "YEAR_MIN",
+          "2010"
+        ],
+        [
+          "YEAR_MAX",
+          "2025"
+        ],
+        [
+          "MINUTES_MIN",
+          "60"
+        ]
+      ]
+    },
+    {
+      "id": "followup-6",
+      "history": [
+        {
+          "role": "USER",
+          "text": "영화 추천해줘. 코미디 장르로 골라줘. 공포 장르는 제외해줘. 2010년부터 나온 작품으로 골라줘. 2025년까지 나온 작품으로 골라줘. 러닝타임 60분 이상으로 골라줘.",
+          "contentIds": []
+        },
+        {
+          "role": "ASSISTANT",
+          "text": "합성 작품 두 편을 추천했어요.",
+          "contentIds": [
+            42,
+            73
+          ]
+        }
+      ],
+      "question": "코미디 대신 드라마로 바꿔줘",
+      "expectedRoutes": [
+        "RECOMMEND"
+      ],
+      "expectedConstraints": [
+        [
+          "MEDIA",
+          "MOVIE"
+        ],
+        [
+          "GENRE_ALL",
+          "drama"
+        ],
+        [
+          "GENRE_EXCLUDE",
+          "horror"
+        ],
+        [
+          "YEAR_MIN",
+          "2010"
+        ],
+        [
+          "YEAR_MAX",
+          "2025"
+        ],
+        [
+          "MINUTES_MIN",
+          "60"
+        ]
+      ]
+    },
+    {
+      "id": "conditions-7",
+      "history": [],
+      "question": "영화 추천해줘. 코미디 장르로 골라줘. 공포 장르는 제외해줘. 2010년부터 나온 작품으로 골라줘. 2025년까지 나온 작품으로 골라줘. 러닝타임 60분 이상으로 골라줘. 러닝타임 120분 이하로 골라줘.",
+      "expectedRoutes": [
+        "RECOMMEND"
+      ],
+      "expectedConstraints": [
+        [
+          "MEDIA",
+          "MOVIE"
+        ],
+        [
+          "GENRE_ALL",
+          "comedy"
+        ],
+        [
+          "GENRE_EXCLUDE",
+          "horror"
+        ],
+        [
+          "YEAR_MIN",
+          "2010"
+        ],
+        [
+          "YEAR_MAX",
+          "2025"
+        ],
+        [
+          "MINUTES_MIN",
+          "60"
+        ],
+        [
+          "MINUTES_MAX",
+          "120"
+        ]
+      ]
+    },
+    {
+      "id": "followup-7",
+      "history": [
+        {
+          "role": "USER",
+          "text": "영화 추천해줘. 코미디 장르로 골라줘. 공포 장르는 제외해줘. 2010년부터 나온 작품으로 골라줘. 2025년까지 나온 작품으로 골라줘. 러닝타임 60분 이상으로 골라줘. 러닝타임 120분 이하로 골라줘.",
+          "contentIds": []
+        },
+        {
+          "role": "ASSISTANT",
+          "text": "합성 작품 두 편을 추천했어요.",
+          "contentIds": [
+            42,
+            73
+          ]
+        }
+      ],
+      "question": "코미디 대신 드라마로 바꿔줘",
+      "expectedRoutes": [
+        "RECOMMEND"
+      ],
+      "expectedConstraints": [
+        [
+          "MEDIA",
+          "MOVIE"
+        ],
+        [
+          "GENRE_ALL",
+          "drama"
+        ],
+        [
+          "GENRE_EXCLUDE",
+          "horror"
+        ],
+        [
+          "YEAR_MIN",
+          "2010"
+        ],
+        [
+          "YEAR_MAX",
+          "2025"
+        ],
+        [
+          "MINUTES_MIN",
+          "60"
+        ],
+        [
+          "MINUTES_MAX",
+          "120"
+        ]
+      ]
+    },
+    {
+      "id": "conditions-8",
+      "history": [],
+      "question": "영화 추천해줘. 코미디 장르로 골라줘. 공포 장르는 제외해줘. 2010년부터 나온 작품으로 골라줘. 2025년까지 나온 작품으로 골라줘. 러닝타임 60분 이상으로 골라줘. 러닝타임 120분 이하로 골라줘. 기분 전환하기 좋은 분위기면 좋겠어.",
+      "expectedRoutes": [
+        "RECOMMEND"
+      ],
+      "expectedConstraints": [
+        [
+          "MEDIA",
+          "MOVIE"
+        ],
+        [
+          "GENRE_ALL",
+          "comedy"
+        ],
+        [
+          "GENRE_EXCLUDE",
+          "horror"
+        ],
+        [
+          "YEAR_MIN",
+          "2010"
+        ],
+        [
+          "YEAR_MAX",
+          "2025"
+        ],
+        [
+          "MINUTES_MIN",
+          "60"
+        ],
+        [
+          "MINUTES_MAX",
+          "120"
+        ],
+        [
+          "MOOD",
+          "*"
+        ]
+      ]
+    },
+    {
+      "id": "followup-8",
+      "history": [
+        {
+          "role": "USER",
+          "text": "영화 추천해줘. 코미디 장르로 골라줘. 공포 장르는 제외해줘. 2010년부터 나온 작품으로 골라줘. 2025년까지 나온 작품으로 골라줘. 러닝타임 60분 이상으로 골라줘. 러닝타임 120분 이하로 골라줘. 기분 전환하기 좋은 분위기면 좋겠어.",
+          "contentIds": []
+        },
+        {
+          "role": "ASSISTANT",
+          "text": "합성 작품 두 편을 추천했어요.",
+          "contentIds": [
+            42,
+            73
+          ]
+        }
+      ],
+      "question": "코미디 대신 드라마로 바꿔줘",
+      "expectedRoutes": [
+        "RECOMMEND"
+      ],
+      "expectedConstraints": [
+        [
+          "MEDIA",
+          "MOVIE"
+        ],
+        [
+          "GENRE_ALL",
+          "drama"
+        ],
+        [
+          "GENRE_EXCLUDE",
+          "horror"
+        ],
+        [
+          "YEAR_MIN",
+          "2010"
+        ],
+        [
+          "YEAR_MAX",
+          "2025"
+        ],
+        [
+          "MINUTES_MIN",
+          "60"
+        ],
+        [
+          "MINUTES_MAX",
+          "120"
+        ],
+        [
+          "MOOD",
+          "*"
+        ]
+      ]
+    },
+    {
+      "id": "audit-shorter",
+      "history": [
+        {
+          "role": "USER",
+          "text": "우울해서 기분 전환할 영화 추천해줘. 한 시간 반 이하로, 공포는 빼고",
+          "contentIds": []
+        },
+        {
+          "role": "ASSISTANT",
+          "text": "유쾌한 친구들의 이야기 두 편을 추천해요. 각각 90분과 60분이에요.",
+          "contentIds": [
+            42,
+            73
+          ]
+        }
+      ],
+      "question": "그중 더 짧은 걸로 골라줘",
+      "expectedRoutes": [
+        "RECOMMEND"
+      ],
+      "expectedConstraints": [
+        [
+          "MEDIA",
+          "MOVIE"
+        ],
+        [
+          "MOOD",
+          "*"
+        ],
+        [
+          "MINUTES_MAX",
+          "90"
+        ],
+        [
+          "GENRE_EXCLUDE",
+          "horror"
+        ],
+        [
+          "ORDER",
+          "SHORTER_MOVIE"
+        ],
+        [
+          "REFERENCE",
+          "ONLY_LAST"
+        ]
+      ]
+    },
+    {
+      "id": "compound-period",
+      "history": [],
+      "question": "내 찜 목록을 보여줘. 그리고 내 취향으로 새 영화 추천해줘",
+      "expectedRoutes": [
+        "LIST_BOOKMARK",
+        "PERSONALIZED"
+      ],
+      "expectedConstraints": [
+        [
+          "MEDIA",
+          "MOVIE"
+        ]
+      ]
+    },
+    {
+      "id": "compound-no-period",
+      "history": [],
+      "question": "내 찜 목록을 보여줘 그리고 내 취향으로 새 영화 추천해줘",
+      "expectedRoutes": [
+        "LIST_BOOKMARK",
+        "PERSONALIZED"
+      ],
+      "expectedConstraints": [
+        [
+          "MEDIA",
+          "MOVIE"
+        ]
+      ]
+    },
+    {
+      "id": "compound-joined",
+      "history": [],
+      "question": "내 찜 목록 보여주고 내 취향으로 새 영화 추천해줘",
+      "expectedRoutes": [
+        "LIST_BOOKMARK",
+        "PERSONALIZED"
+      ],
+      "expectedConstraints": [
+        [
+          "MEDIA",
+          "MOVIE"
+        ]
+      ]
+    },
+    {
+      "id": "compound-reversed",
+      "history": [],
+      "question": "내 취향으로 새 영화 추천해줘. 다음으로 내 찜 목록을 보여줘",
+      "expectedRoutes": [
+        "PERSONALIZED",
+        "LIST_BOOKMARK"
+      ],
+      "expectedConstraints": [
+        [
+          "MEDIA",
+          "MOVIE"
+        ]
+      ]
+    }
+  ]
+}

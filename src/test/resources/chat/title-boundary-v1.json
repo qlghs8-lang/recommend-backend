@@ -1,0 +1,302 @@
+{
+  "version": 1,
+  "purpose": "Separate exact-title-boundary policy; original v1 baseline is unchanged.",
+  "cases": [
+    {
+      "id": "ambiguous-original",
+      "question": "없는 작품 XYZ의 줄거리 알려줘",
+      "history": [],
+      "expected": {
+        "requests": [
+          {
+            "route": "CLARIFY",
+            "media": "ANY",
+            "title": null,
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": "TITLE_BOUNDARY"
+    },
+    {
+      "id": "ambiguous-description",
+      "question": "없는 작품 XYZ에서 어디까지가 제목인지 확실하지 않아. 줄거리 알려줘",
+      "history": [],
+      "expected": {
+        "requests": [
+          {
+            "route": "CLARIFY",
+            "media": "ANY",
+            "title": null,
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": "TITLE_BOUNDARY"
+    },
+    {
+      "id": "quoted-full-single",
+      "question": "'없는 작품 XYZ'의 줄거리 알려줘",
+      "history": [],
+      "expected": {
+        "requests": [
+          {
+            "route": "DETAIL",
+            "media": "ANY",
+            "title": "없는 작품 XYZ",
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": null
+    },
+    {
+      "id": "quoted-full-double",
+      "question": "\"없는 작품 XYZ\"의 줄거리 알려줘",
+      "history": [],
+      "expected": {
+        "requests": [
+          {
+            "route": "DETAIL",
+            "media": "ANY",
+            "title": "없는 작품 XYZ",
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": null
+    },
+    {
+      "id": "quoted-short",
+      "question": "'XYZ'의 줄거리 알려줘",
+      "history": [],
+      "expected": {
+        "requests": [
+          {
+            "route": "DETAIL",
+            "media": "ANY",
+            "title": "XYZ",
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": null
+    },
+    {
+      "id": "quoted-punctuation",
+      "question": "《XYZ: 두 번째, 이야기!》의 줄거리 알려줘",
+      "history": [],
+      "expected": {
+        "requests": [
+          {
+            "route": "DETAIL",
+            "media": "ANY",
+            "title": "XYZ: 두 번째, 이야기!",
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": null
+    },
+    {
+      "id": "quoted-apostrophe",
+      "question": "\"Schindler's List\"의 줄거리 알려줘",
+      "history": [],
+      "expected": {
+        "requests": [
+          {
+            "route": "DETAIL",
+            "media": "ANY",
+            "title": "Schindler's List",
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": null
+    },
+    {
+      "id": "ordinary-title",
+      "question": "달빛 항해 줄거리 알려줘",
+      "history": [],
+      "expected": {
+        "requests": [
+          {
+            "route": "DETAIL",
+            "media": "ANY",
+            "title": "달빛 항해",
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": null
+    },
+    {
+      "id": "explicit-title-despite-absence",
+      "question": "제목은 XYZ야. 카탈로그에 없을 수도 있는데 줄거리 조회해줘",
+      "history": [],
+      "expected": {
+        "requests": [
+          {
+            "route": "DETAIL",
+            "media": "ANY",
+            "title": "XYZ",
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": null
+    },
+    {
+      "id": "explicit-id",
+      "question": "ID 42 작품 상세 알려줘",
+      "history": [],
+      "expected": {
+        "requests": [
+          {
+            "route": "DETAIL",
+            "media": "ANY",
+            "title": null,
+            "contentId": 42,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": null
+    },
+    {
+      "id": "quoted-comparison",
+      "question": "'없는 작품 XYZ'와 '달빛 항해'의 장르와 유형을 비교해줘",
+      "history": [],
+      "expected": {
+        "requests": [
+          {
+            "route": "DETAIL",
+            "media": "ANY",
+            "title": "없는 작품 XYZ",
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          },
+          {
+            "route": "DETAIL",
+            "media": "ANY",
+            "title": "달빛 항해",
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": true
+      },
+      "reason": null
+    },
+    {
+      "id": "trusted-reference",
+      "question": "그 작품 줄거리 알려줘",
+      "history": [
+        {
+          "role": "USER",
+          "text": "'없는 작품 XYZ' 줄거리 알려줘",
+          "contentIds": []
+        },
+        {
+          "role": "ASSISTANT",
+          "text": "합성 카탈로그 작품 정보",
+          "contentIds": [
+            42
+          ]
+        }
+      ],
+      "expected": {
+        "requests": [
+          {
+            "route": "DETAIL",
+            "media": "ANY",
+            "title": null,
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": 1,
+            "referencePosition": 0,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": null
+    },
+    {
+      "id": "duration-reason-regression",
+      "question": "짧게 볼 만한 시리즈 있을까?",
+      "history": [],
+      "expected": {
+        "requests": [
+          {
+            "route": "CLARIFY",
+            "media": "ANY",
+            "title": null,
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": "TV_DURATION_UNIT"
+    }
+  ]
+}

@@ -32,6 +32,10 @@ public class Content {
 
     private LocalDate releaseDate;
 
+    // Verified public metadata only; null means unknown, never a model-estimated duration.
+    private Integer runtimeMinutes;         // MOVIE: full feature runtime
+    private Integer episodeRuntimeMinutes;  // TV: representative episode runtime, not complete-series length
+
     // 포스터/배경
     private String posterUrl;
     private String backdropUrl;

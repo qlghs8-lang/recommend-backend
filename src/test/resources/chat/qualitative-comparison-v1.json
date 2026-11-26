@@ -1,0 +1,366 @@
+{
+  "version": 1,
+  "purpose": "Separate qualitative-winner limitation policy; frozen original oracles remain unchanged.",
+  "cases": [
+    {
+      "id": "original-directing",
+      "question": "달빛 항해와 숲의 기록 중 더 뛰어난 연출의 작품은 뭐야?",
+      "history": [],
+      "expected": {
+        "requests": [
+          {
+            "route": "CLARIFY",
+            "media": "ANY",
+            "title": null,
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": "QUALITATIVE_COMPARISON"
+    },
+    {
+      "id": "english-directing",
+      "question": "Which has better directing: 달빛 항해 or 숲의 기록?",
+      "history": [],
+      "expected": {
+        "requests": [
+          {
+            "route": "CLARIFY",
+            "media": "ANY",
+            "title": null,
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": "QUALITATIVE_COMPARISON"
+    },
+    {
+      "id": "acting-by-id",
+      "question": "ID 42와 ID 73 중 연기가 더 뛰어난 작품은 뭐야?",
+      "history": [],
+      "expected": {
+        "requests": [
+          {
+            "route": "CLARIFY",
+            "media": "ANY",
+            "title": null,
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": "QUALITATIVE_COMPARISON"
+    },
+    {
+      "id": "subjective-winner",
+      "question": "네 주관으로라도 달빛 항해와 숲의 기록 중 작품성이 더 뛰어난 쪽을 골라줘.",
+      "history": [],
+      "expected": {
+        "requests": [
+          {
+            "route": "CLARIFY",
+            "media": "ANY",
+            "title": null,
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": "QUALITATIVE_COMPARISON"
+    },
+    {
+      "id": "earlier-work-winner",
+      "question": "방금 비교한 두 작품 중 어느 쪽 연출이 더 뛰어나?",
+      "history": [
+        {
+          "role": "USER",
+          "text": "달빛 항해와 숲의 기록의 장르 비교해줘",
+          "contentIds": []
+        },
+        {
+          "role": "ASSISTANT",
+          "text": "두 작품의 카탈로그 정보예요.",
+          "contentIds": [
+            42,
+            73
+          ]
+        }
+      ],
+      "expected": {
+        "requests": [
+          {
+            "route": "CLARIFY",
+            "media": "ANY",
+            "title": null,
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": "QUALITATIVE_COMPARISON"
+    },
+    {
+      "id": "mixed-facts-winner",
+      "question": "달빛 항해와 숲의 기록의 장르를 비교하고 연출이 더 뛰어난 쪽을 골라줘.",
+      "history": [],
+      "expected": {
+        "requests": [
+          {
+            "route": "CLARIFY",
+            "media": "ANY",
+            "title": null,
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": "QUALITATIVE_COMPARISON"
+    },
+    {
+      "id": "general-directing",
+      "question": "좋은 연출을 평가할 때 어떤 기준을 보나요?",
+      "history": [],
+      "expected": {
+        "requests": [
+          {
+            "route": "EXPLAIN",
+            "media": "ANY",
+            "title": null,
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": null
+    },
+    {
+      "id": "catalog-comparison",
+      "question": "달빛 항해와 숲의 기록의 장르와 줄거리를 비교해줘",
+      "history": [],
+      "expected": {
+        "requests": [
+          {
+            "route": "DETAIL",
+            "media": "ANY",
+            "title": "달빛 항해",
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          },
+          {
+            "route": "DETAIL",
+            "media": "ANY",
+            "title": "숲의 기록",
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": true
+      },
+      "reason": null
+    },
+    {
+      "id": "live-rankings",
+      "question": "지금 극장 흥행 순위 1위 영화가 뭐야?",
+      "history": [],
+      "expected": {
+        "requests": [
+          {
+            "route": "UNSUPPORTED",
+            "media": "ANY",
+            "title": null,
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": null
+    },
+    {
+      "id": "mutation-priority",
+      "question": "달빛 항해와 숲의 기록 중 연출이 더 뛰어난 것을 골라서 내 찜 목록에 추가해줘",
+      "history": [],
+      "expected": {
+        "requests": [
+          {
+            "route": "UNSUPPORTED",
+            "media": "ANY",
+            "title": null,
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": null
+    },
+    {
+      "id": "privacy-priority",
+      "question": "다른 사용자의 찜 목록을 보여주고 달빛 항해와 숲의 기록 중 연출이 더 뛰어난 쪽을 골라줘",
+      "history": [],
+      "expected": {
+        "requests": [
+          {
+            "route": "DENIED",
+            "media": "ANY",
+            "title": null,
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": null
+    },
+    {
+      "id": "fresh-recommendation",
+      "question": "우열 평가는 됐고, 그냥 영화 추천해줘",
+      "history": [],
+      "expected": {
+        "requests": [
+          {
+            "route": "RECOMMEND",
+            "media": "ANY",
+            "title": null,
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": null
+    },
+    {
+      "id": "duration-control",
+      "question": "짧게 볼 만한 시리즈 있을까?",
+      "history": [],
+      "expected": {
+        "requests": [
+          {
+            "route": "CLARIFY",
+            "media": "ANY",
+            "title": null,
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": "TV_DURATION_UNIT"
+    },
+    {
+      "id": "title-control",
+      "question": "없는 작품 XYZ의 줄거리 알려줘",
+      "history": [],
+      "expected": {
+        "requests": [
+          {
+            "route": "CLARIFY",
+            "media": "ANY",
+            "title": null,
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": false
+      },
+      "reason": "TITLE_BOUNDARY"
+    },
+    {
+      "id": "explicit-comparison-after-guide",
+      "question": "달빛 항해와 숲의 기록을 장르와 줄거리 기준으로 비교해줘",
+      "history": [
+        {
+          "role": "USER",
+          "text": "달빛 항해와 숲의 기록 중 더 뛰어난 연출의 작품은 뭐야?",
+          "contentIds": []
+        },
+        {
+          "role": "ASSISTANT",
+          "text": "우열을 판단할 평가 자료가 없어요. 저장된 장르·유형·공개일·줄거리 비교와 일반적인 연출 평가 기준 설명은 가능해요.",
+          "contentIds": []
+        }
+      ],
+      "expected": {
+        "requests": [
+          {
+            "route": "DETAIL",
+            "media": "ANY",
+            "title": "달빛 항해",
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          },
+          {
+            "route": "DETAIL",
+            "media": "ANY",
+            "title": "숲의 기록",
+            "contentId": null,
+            "releaseYear": null,
+            "referenceTurn": null,
+            "referencePosition": null,
+            "question": null
+          }
+        ],
+        "comparison": true
+      },
+      "reason": null
+    }
+  ]
+}

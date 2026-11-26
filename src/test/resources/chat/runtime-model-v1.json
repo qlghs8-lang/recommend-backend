@@ -1,0 +1,13 @@
+{
+  "version": "runtime-model-v1",
+  "steps": [
+    {"id":"movie-90","story":"movie","question":"90분 이하 영화 추천해줘","media":"MOVIE","max":90,"source":"90분 이하"},
+    {"id":"movie-shortest-followup","story":"movie","question":"그중 가장 짧은 영화로 골라줘","media":"MOVIE","max":90,"source":"90분 이하","reference":true,"shortest":true},
+    {"id":"movie-reset-strict-119","story":"movie","question":"이전 조건 모두 잊고 2시간 미만 영화 추천해줘","media":"MOVIE","max":119,"source":"2시간 미만"},
+    {"id":"episode-25","story":"episode","question":"한 회가 25분 이하인 시리즈 추천해줘","media":"TV","max":25,"source":"25분 이하"},
+    {"id":"episode-replace-24","story":"episode","question":"회당 제한을 24분 이하로 바꿔서 다시 추천해줘","media":"TV","max":24,"source":"24분 이하"},
+    {"id":"series-total-unverifiable","story":"total","question":"전체 시청 시간이 두 시간 이하인 시리즈 추천해줘","media":"TV","unverifiable":true,"source":"전체 시청 시간이 두 시간 이하"},
+    {"id":"every-episode-unverifiable","story":"every","question":"모든 회차가 25분 이하인 시리즈 추천해줘","media":"TV","unverifiable":true,"source":"모든 회차가 25분 이하"},
+    {"id":"ambiguous-tv-unit","story":"unit","question":"짧게 볼 만한 시리즈 추천해줘","media":"TV","clarify":true,"source":"짧게 볼 만한"}
+  ]
+}

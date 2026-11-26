@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "approvedDateKst": "2026-11-26",
+  "authorizationSource": "EXPLICIT_USER_REPLY_IN_THIS_CHAT",
+  "userDecision": "범위 조정: Codex 잠정 진단으로 2단계 마감, 사람 판정은 후속으로 명시",
+  "closureScope": "CODEX_PROVISIONAL_DEVELOPMENT_BASELINE_ONLY",
+  "phase2ClosedWithinAdjustedScope": true,
+  "originalV1CriteriaSatisfied": false,
+  "qualityAcceptance": "UNJUDGED",
+  "originalCriteria": {
+    "path": "docs/AI_COMPREHENSIVE_QUALITY_V1.md",
+    "sha256": "41fc8e39e7bfbd95321a85c67d2b57afc4b58d0a1a5d6a778ee6b8557034755c"
+  },
+  "deferredUncompleted": [
+    "Two independent human semantic reviews",
+    "Reserved validation 24-turn baseline and sealing",
+    "Pre-output independent review pool requirement",
+    "Repeated stability measurements",
+    "Combined actual-provider MySQL browser acceptance"
+  ],
+  "nextPhase": "STEP3_IN_NEW_USER_SESSION_ONLY",
+  "additionalPaidCallsAuthorizedByThisDecision": false
+}

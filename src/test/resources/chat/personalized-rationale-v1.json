@@ -1,0 +1,24 @@
+{
+  "version": "personalized-rationale-v1",
+  "scope": "Fixed synthetic H2 conversations; contract checks and unmet product-quality gates are separate.",
+  "questions": {
+    "initial": "내 취향에 맞는 영화 추천해줘",
+    "group": "이 영화들을 추천한 이유는 뭐야?",
+    "ordinal": "두 번째 작품은 왜 추천했어?",
+    "repeat": "방금 이유를 설명한 첫 번째 작품은 왜 추천했어?",
+    "refresh": "내 취향에 맞는 영화 추천해줘"
+  },
+  "works": [
+    {"key":"first","title":"별의 항로","type":"MOVIE","genres":"Science Fiction","overview":"우주 항해사가 별을 탐험하는 이야기.","rating":8.0},
+    {"key":"second","title":"궤도의 편지","type":"MOVIE","genres":"Science Fiction,Drama","overview":"우주 정거장에서 가족에게 편지를 보내는 이야기.","rating":7.0},
+    {"key":"third","title":"웃음의 하루","type":"MOVIE","genres":"Comedy","overview":"이웃들이 함께 웃는 하루의 이야기.","rating":9.0},
+    {"key":"ownerAnchor","title":"PRIVATE_OWNER_ANCHOR_7C2","type":"TV","genres":"Science Fiction","overview":"합성 비공개 반응 기준 작품.","rating":1.0},
+    {"key":"foreignAnchor","title":"PRIVATE_FOREIGN_ANCHOR_9D4","type":"TV","genres":"Comedy","overview":"다른 합성 계정의 반응 기준 작품.","rating":1.0}
+  ],
+  "qualityGates": {
+    "privateSnapshotsExcluded": "Provider inputs contain no private reaction anchors or server taste snapshots.",
+    "personalizedGroundsRetained": "Follow-up retains the original server-computed genre basis, explicitly labelled as the recommendation-time basis after reactions change.",
+    "originalRequestRetained": "Repeated rationale still receives the initial recommendation request, not the previous rationale question."
+  },
+  "liveBound": {"storedTurns":4,"maxProviderCalls":6,"repeats":1,"maxOutputTokens":800,"timeoutSeconds":20,"sdkRetries":0}
+}

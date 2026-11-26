@@ -1,0 +1,811 @@
+{
+  "version": 1,
+  "status": "FROZEN_UNMEASURED",
+  "split": "development",
+  "purpose": "Semantic evaluation specification; not provider schema, product tests, or achieved scores.",
+  "label_policy": "Expected semantic states; no fixed model wording/genre inference. Grounded IDs require independent plot review. Validation is reserved, not cryptographically hidden.",
+  "cases": [
+    {
+      "id": "D01",
+      "family": "cooking",
+      "tags": [
+        "cooking"
+      ],
+      "turns": [
+        {
+          "user": "요리하는 과정과 주방에서 일하는 사람이 이야기의 중심인 영화 추천해줘.",
+          "expected": {
+            "hard": {
+              "media": "MOVIE"
+            },
+            "reference": "NONE",
+            "removed": [],
+            "policy": "EVIDENCE_DEPENDENT",
+            "semantic_targets": [
+              "central:cooking_process",
+              "occupation:kitchen"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "D02",
+      "family": "sports",
+      "tags": [
+        "sports"
+      ],
+      "turns": [
+        {
+          "user": "종목은 상관없어. 팀에 끼지 못하던 선수가 훈련하고 자리를 얻는 이야기 보고 싶어.",
+          "expected": {
+            "hard": {},
+            "reference": "NONE",
+            "removed": [],
+            "policy": "EVIDENCE_DEPENDENT",
+            "semantic_targets": [
+              "central:sport",
+              "team_belonging",
+              "growth"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "D03",
+      "family": "music",
+      "tags": [
+        "music"
+      ],
+      "turns": [
+        {
+          "user": "가수가 되는 꿈과 가족의 기대 사이에서 고민하는 영화가 보고 싶어.",
+          "expected": {
+            "hard": {
+              "media": "MOVIE"
+            },
+            "reference": "NONE",
+            "removed": [],
+            "policy": "EVIDENCE_DEPENDENT",
+            "semantic_targets": [
+              "music_aspiration",
+              "family_conflict"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "D04",
+      "family": "medicine",
+      "tags": [
+        "medicine"
+      ],
+      "turns": [
+        {
+          "user": "병원만 배경으로 나오는 것 말고 의사가 선택의 대가를 치르는 시리즈 추천해줘.",
+          "expected": {
+            "hard": {
+              "media": "TV"
+            },
+            "reference": "NONE",
+            "removed": [],
+            "policy": "EVIDENCE_DEPENDENT",
+            "semantic_targets": [
+              "central:medical_choices"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "D05",
+      "family": "law",
+      "tags": [
+        "law"
+      ],
+      "turns": [
+        {
+          "user": "법조인의 성공 욕심과 양심이 충돌하는 이야기 찾아줘.",
+          "expected": {
+            "hard": {},
+            "reference": "NONE",
+            "removed": [],
+            "policy": "EVIDENCE_DEPENDENT",
+            "semantic_targets": [
+              "legal_occupation",
+              "moral_conflict"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "D06",
+      "family": "science",
+      "tags": [
+        "science"
+      ],
+      "turns": [
+        {
+          "user": "사람이 떠난 세계에서 외로운 존재가 다른 존재와 연결되는 영화가 궁금해.",
+          "expected": {
+            "hard": {
+              "media": "MOVIE"
+            },
+            "reference": "NONE",
+            "removed": [],
+            "policy": "EVIDENCE_DEPENDENT",
+            "semantic_targets": [
+              "isolation",
+              "connection",
+              "world_without_people"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "D07",
+      "family": "work",
+      "tags": [
+        "work"
+      ],
+      "turns": [
+        {
+          "user": "소심해서 늘 무시받던 직장인이 달라지는 이야기 추천해줘.",
+          "expected": {
+            "hard": {},
+            "reference": "NONE",
+            "removed": [],
+            "policy": "EVIDENCE_DEPENDENT",
+            "semantic_targets": [
+              "workplace_background",
+              "self_change"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "D08",
+      "family": "nature",
+      "tags": [
+        "nature"
+      ],
+      "turns": [
+        {
+          "user": "암벽에 맨몸으로 도전하는 사람을 다룬 다큐멘터리를 보고 싶어.",
+          "expected": {
+            "hard": {
+              "genre_all": [
+                "documentary"
+              ]
+            },
+            "reference": "NONE",
+            "removed": [],
+            "policy": "EVIDENCE_DEPENDENT",
+            "semantic_targets": [
+              "climbing_challenge"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "D09",
+      "family": "family",
+      "tags": [
+        "family"
+      ],
+      "turns": [
+        {
+          "user": "가족이 나오기만 하는 것보다 서로를 이해하는 과정이 중심인 작품이면 좋겠어.",
+          "expected": {
+            "hard": {},
+            "reference": "NONE",
+            "removed": [],
+            "policy": "EVIDENCE_DEPENDENT",
+            "semantic_targets": [
+              "central:family_understanding"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "D10",
+      "family": "friendship",
+      "tags": [
+        "friendship"
+      ],
+      "turns": [
+        {
+          "user": "서로 성격이 다른 동료가 함께 위기를 견디는 이야기 추천해줘.",
+          "expected": {
+            "hard": {},
+            "reference": "NONE",
+            "removed": [],
+            "policy": "EVIDENCE_DEPENDENT",
+            "semantic_targets": [
+              "companionship",
+              "shared_crisis"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "D11",
+      "family": "loss",
+      "tags": [
+        "loss"
+      ],
+      "turns": [
+        {
+          "user": "소중한 사람을 잃은 뒤 다시 살아갈 힘을 찾는 영화가 보고 싶어.",
+          "expected": {
+            "hard": {
+              "media": "MOVIE"
+            },
+            "reference": "NONE",
+            "removed": [],
+            "policy": "EVIDENCE_DEPENDENT",
+            "semantic_targets": [
+              "loss",
+              "recovery"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "D12",
+      "family": "warmth",
+      "tags": [
+        "warmth"
+      ],
+      "turns": [
+        {
+          "user": "마음이 지친 날 보고 나면 누군가와 이야기하고 싶어지는 걸 골라줘.",
+          "expected": {
+            "hard": {},
+            "reference": "NONE",
+            "removed": [],
+            "policy": "EVIDENCE_DEPENDENT",
+            "semantic_targets": [
+              "comfort",
+              "human_connection"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "D13",
+      "family": "fear",
+      "tags": [
+        "fear"
+      ],
+      "turns": [
+        {
+          "user": "범인이 누구인지보다 무엇을 믿어야 하는지 불안한 영화 추천해줘.",
+          "expected": {
+            "hard": {
+              "media": "MOVIE"
+            },
+            "reference": "NONE",
+            "removed": [],
+            "policy": "EVIDENCE_DEPENDENT",
+            "semantic_targets": [
+              "uncertainty",
+              "tension"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "D14",
+      "family": "history",
+      "tags": [
+        "history"
+      ],
+      "turns": [
+        {
+          "user": "전쟁에서 살아남는 것과 인간성을 지키는 것이 충돌하는 시리즈 추천해줘.",
+          "expected": {
+            "hard": {
+              "media": "TV"
+            },
+            "reference": "NONE",
+            "removed": [],
+            "policy": "EVIDENCE_DEPENDENT",
+            "semantic_targets": [
+              "war",
+              "humanity"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "D15",
+      "family": "genre",
+      "tags": [
+        "genre"
+      ],
+      "turns": [
+        {
+          "user": "SF나 판타지 영화로 골라줘. 공포 장르는 제외해.",
+          "expected": {
+            "hard": {
+              "media": "MOVIE",
+              "genre_any": [
+                "sci-fi",
+                "fantasy"
+              ],
+              "genre_exclude": [
+                "horror"
+              ]
+            },
+            "reference": "NONE",
+            "removed": [],
+            "policy": "EVIDENCE_DEPENDENT",
+            "semantic_targets": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "D16",
+      "family": "time",
+      "tags": [
+        "time"
+      ],
+      "turns": [
+        {
+          "user": "100분 이하 영화 중에서 누군가와 가까워지는 이야기 추천해줘.",
+          "expected": {
+            "hard": {
+              "media": "MOVIE",
+              "movie_minutes_max": 100
+            },
+            "reference": "NONE",
+            "removed": [],
+            "policy": "EVIDENCE_DEPENDENT",
+            "semantic_targets": [
+              "connection"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "D17",
+      "family": "episode",
+      "tags": [
+        "episode"
+      ],
+      "turns": [
+        {
+          "user": "회당 30분 이하인 시리즈로 도전과 성장 이야기 찾아줘.",
+          "expected": {
+            "hard": {
+              "media": "TV",
+              "episode_minutes_max": 30
+            },
+            "reference": "NONE",
+            "removed": [],
+            "policy": "EVIDENCE_DEPENDENT",
+            "semantic_targets": [
+              "challenge",
+              "growth"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "D18",
+      "family": "ambiguous_time",
+      "tags": [
+        "ambiguous_time"
+      ],
+      "turns": [
+        {
+          "user": "주말에 짧게 끝낼 시리즈 추천해줘.",
+          "expected": {
+            "hard": {
+              "media": "TV"
+            },
+            "reference": "NONE",
+            "removed": [],
+            "policy": "CLARIFY_TIME_UNIT",
+            "semantic_targets": [
+              "short_viewing"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "D19",
+      "family": "unsupported",
+      "tags": [
+        "unsupported"
+      ],
+      "turns": [
+        {
+          "user": "가족과 볼 건데 잔인한 장면이 절대 없고 현재 넷플릭스에서 볼 수 있는 작품만 골라줘.",
+          "expected": {
+            "hard": {
+              "zero_violence": true,
+              "current_provider": "Netflix"
+            },
+            "reference": "NONE",
+            "removed": [],
+            "policy": "UNVERIFIABLE_EXPLAIN",
+            "semantic_targets": [
+              "family_viewing"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "D20",
+      "family": "example_explicit",
+      "tags": [
+        "example_explicit"
+      ],
+      "turns": [
+        {
+          "user": "흑백요리사처럼 주방에서 요리하는 사람들이 중심인 영화 찾아줘.",
+          "expected": {
+            "hard": {
+              "media": "MOVIE"
+            },
+            "reference": "NONE",
+            "removed": [],
+            "policy": "EVIDENCE_DEPENDENT",
+            "semantic_targets": [
+              "central:cooking",
+              "example_axis:cooking_not_all_similarity"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "D21",
+      "family": "example_unspecified",
+      "tags": [
+        "example_unspecified"
+      ],
+      "turns": [
+        {
+          "user": "흑백요리사 같은 작품 추천해줘.",
+          "expected": {
+            "hard": {},
+            "reference": "NONE",
+            "removed": [],
+            "policy": "CLARIFY_EXAMPLE_AXIS",
+            "semantic_targets": [
+              "example_similarity_unspecified"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "D22",
+      "family": "compound",
+      "tags": [
+        "compound",
+        "science",
+        "law"
+      ],
+      "turns": [
+        {
+          "user": "우주 탐험 영화와 법정 시리즈를 각각 추천해줘.",
+          "expected": {
+            "hard": {
+              "operations": [
+                {
+                  "media": "MOVIE",
+                  "topic": "space_exploration"
+                },
+                {
+                  "media": "TV",
+                  "topic": "legal_court"
+                }
+              ]
+            },
+            "reference": "NONE",
+            "removed": [],
+            "policy": "EVIDENCE_DEPENDENT",
+            "semantic_targets": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "D23",
+      "family": "conflict",
+      "tags": [
+        "conflict"
+      ],
+      "turns": [
+        {
+          "user": "90분 이하이면서 120분 이상인 영화만 추천해줘.",
+          "expected": {
+            "hard": {
+              "media": "MOVIE",
+              "movie_minutes_min": 120,
+              "movie_minutes_max": 90
+            },
+            "reference": "NONE",
+            "removed": [],
+            "policy": "CONFLICT_EXPLAIN",
+            "semantic_targets": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "D24",
+      "family": "personalization",
+      "tags": [
+        "personalization"
+      ],
+      "turns": [
+        {
+          "user": "내가 싫어요 누른 작품과 이미 본 작품은 빼고, 좋아했던 장르 안에서 새로운 걸 추천해줘.",
+          "expected": {
+            "hard": {
+              "own_reactions_only": true,
+              "exclude_disliked": true,
+              "exclude_seen": true
+            },
+            "reference": "NONE",
+            "removed": [],
+            "policy": "SYNTHETIC_REACTIONS_REQUIRED",
+            "semantic_targets": [
+              "own_liked_genres",
+              "novelty"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "DC01",
+      "family": "condition_change",
+      "tags": [
+        "followup",
+        "remove",
+        "restore",
+        "negative",
+        "time"
+      ],
+      "synthetic_context": "Fresh test room; public assistant references come only from actual preceding results. No real users or conversations.",
+      "turns": [
+        {
+          "user": "우주를 배경으로 한 120분 이하 영화 추천해줘.",
+          "expected": {
+            "hard": {
+              "media": "MOVIE",
+              "movie_minutes_max": 120
+            },
+            "reference": "NONE",
+            "removed": [],
+            "policy": "EVIDENCE_DEPENDENT",
+            "semantic_targets": [
+              "space_setting"
+            ]
+          }
+        },
+        {
+          "user": "그중에서 외로운 인물과 동료의 관계가 중요한 걸로 골라줘.",
+          "expected": {
+            "hard": {
+              "media": "MOVIE",
+              "movie_minutes_max": 120
+            },
+            "reference": "ONLY_PREVIOUS_PUBLIC_IDS",
+            "removed": [],
+            "policy": "EVIDENCE_DEPENDENT",
+            "semantic_targets": [
+              "space_setting",
+              "loneliness",
+              "companionship"
+            ]
+          }
+        },
+        {
+          "user": "시간 제한만 없애고 다른 작품도 찾아줘.",
+          "expected": {
+            "hard": {
+              "media": "MOVIE"
+            },
+            "reference": "EXCLUDE_PREVIOUS_PUBLIC_IDS",
+            "removed": [
+              "movie_minutes_max"
+            ],
+            "policy": "EVIDENCE_DEPENDENT",
+            "semantic_targets": [
+              "space_setting",
+              "loneliness",
+              "companionship"
+            ]
+          }
+        },
+        {
+          "user": "처음처럼 120분 이하로 돌아가되 공포 장르는 빼줘.",
+          "expected": {
+            "hard": {
+              "media": "MOVIE",
+              "movie_minutes_max": 120,
+              "genre_exclude": [
+                "horror"
+              ]
+            },
+            "reference": "KEEP_EXCLUSIONS",
+            "removed": [],
+            "policy": "EVIDENCE_DEPENDENT",
+            "semantic_targets": [
+              "space_setting",
+              "loneliness",
+              "companionship"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "DC02",
+      "family": "feedback_reason",
+      "tags": [
+        "feedback",
+        "position",
+        "rationale",
+        "replace"
+      ],
+      "synthetic_context": "Fresh test room; public assistant references come only from actual preceding results. No real users or conversations.",
+      "turns": [
+        {
+          "user": "서로를 이해하게 되는 가족 이야기 영화 추천해줘.",
+          "expected": {
+            "hard": {
+              "media": "MOVIE"
+            },
+            "reference": "NONE",
+            "removed": [],
+            "policy": "EVIDENCE_DEPENDENT",
+            "semantic_targets": [
+              "family_understanding"
+            ]
+          }
+        },
+        {
+          "user": "두 번째는 이미 봤어. 그건 빼고 더 추천해줘.",
+          "expected": {
+            "hard": {
+              "media": "MOVIE"
+            },
+            "reference": "EXCLUDE_POSITION_2_IF_PUBLIC_ELSE_CLARIFY",
+            "removed": [],
+            "policy": "REFERENCE_DEPENDENT",
+            "semantic_targets": [
+              "family_understanding"
+            ]
+          }
+        },
+        {
+          "user": "방금 고른 작품은 왜 내 요청에 맞아?",
+          "expected": {
+            "hard": {},
+            "reference": "LAST_PUBLIC_RECOMMENDATIONS",
+            "removed": [],
+            "policy": "GROUNDED_REASON",
+            "semantic_targets": [
+              "explain_original_family_request"
+            ]
+          }
+        },
+        {
+          "user": "이제 가족 조건은 빼고 음악에 도전하는 이야기로 바꿔줘.",
+          "expected": {
+            "hard": {
+              "media": "MOVIE"
+            },
+            "reference": "NEW_SEARCH",
+            "removed": [
+              "family_understanding"
+            ],
+            "policy": "EVIDENCE_DEPENDENT",
+            "semantic_targets": [
+              "music_aspiration"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "DC03",
+      "family": "clarification_scope",
+      "tags": [
+        "clarification",
+        "media_change",
+        "time",
+        "restore"
+      ],
+      "synthetic_context": "Fresh test room; public assistant references come only from actual preceding results. No real users or conversations.",
+      "turns": [
+        {
+          "user": "짧게 볼 수 있는 시리즈를 추천해줘.",
+          "expected": {
+            "hard": {
+              "media": "TV"
+            },
+            "reference": "NONE",
+            "removed": [],
+            "policy": "CLARIFY_TIME_UNIT",
+            "semantic_targets": [
+              "short_viewing"
+            ]
+          }
+        },
+        {
+          "user": "전체 길이 말고 한 회가 30분 이하면 돼.",
+          "expected": {
+            "hard": {
+              "media": "TV",
+              "episode_minutes_max": 30
+            },
+            "reference": "NONE",
+            "removed": [
+              "ambiguous_time"
+            ],
+            "policy": "EVIDENCE_DEPENDENT",
+            "semantic_targets": []
+          }
+        },
+        {
+          "user": "영화로 바꾸고 100분 이하로 해줘.",
+          "expected": {
+            "hard": {
+              "media": "MOVIE",
+              "movie_minutes_max": 100
+            },
+            "reference": "NEW_SEARCH",
+            "removed": [
+              "media:TV",
+              "episode_minutes_max"
+            ],
+            "policy": "EVIDENCE_DEPENDENT",
+            "semantic_targets": []
+          }
+        },
+        {
+          "user": "그리고 아까 시리즈 때의 회당 조건으로 돌아가줘.",
+          "expected": {
+            "hard": {
+              "media": "TV",
+              "episode_minutes_max": 30
+            },
+            "reference": "NEW_SEARCH",
+            "removed": [
+              "media:MOVIE",
+              "movie_minutes_max"
+            ],
+            "policy": "EVIDENCE_DEPENDENT",
+            "semantic_targets": []
+          }
+        }
+      ]
+    }
+  ]
+}

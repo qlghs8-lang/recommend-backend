@@ -1,0 +1,571 @@
+{
+  "version": 1,
+  "status": "UNAPPLIED_REVIEW_ONLY",
+  "public_snapshot_sha256": "d8a241483873f940f68b29ab4d6090758ed85e3bd5bd7a2ac3f82e2a1d219a68",
+  "mapping_snapshot_sha256": "cb452f1c984c05ae1d20b7b293ce17010a4cf2c9361bb169d75b8dded3592d1f",
+  "existing_catalog_policy": "PRESERVE_468_NO_INSERT_DELETE",
+  "addition_track": "DEFERRED_SEPARATE_DISCOVERY_AND_REVIEW_NOT_AUTHORIZED_BY_THIS_PLAN",
+  "pilot_policy": "metadata-pilot-v1-14-per-media-gaps-then-lexical-groups-then-hash",
+  "pilot": [
+    {
+      "content_id": 45,
+      "media_type": "MOVIE",
+      "tmdb_id": 12,
+      "title": "니모를 찾아서",
+      "selection_reason": "lexical_probe:friendship_growth",
+      "lexical_probe_groups": [
+        "fear_tension",
+        "friendship_growth",
+        "loss_recovery",
+        "travel_nature"
+      ],
+      "expected_public_row_sha256": "b339ccaedc307680553f8b11e0caac701f9b7834609386bdc6c4677830cd7b00",
+      "proposed_requests": [
+        "/3/movie/12?language=ko-KR",
+        "/3/movie/12/keywords",
+        "/3/movie/12/alternative_titles"
+      ],
+      "review_status": "NOT_COLLECTED",
+      "approved_changes": []
+    },
+    {
+      "content_id": 47,
+      "media_type": "MOVIE",
+      "tmdb_id": 515042,
+      "title": "프리 솔로",
+      "selection_reason": "short_plot",
+      "lexical_probe_groups": [],
+      "expected_public_row_sha256": "d6dab1b90d24fa7ba2044d7449a3ae84d1df8cface26567d0e9fc16867f8be85",
+      "proposed_requests": [
+        "/3/movie/515042?language=ko-KR",
+        "/3/movie/515042/keywords",
+        "/3/movie/515042/alternative_titles"
+      ],
+      "review_status": "NOT_COLLECTED",
+      "approved_changes": []
+    },
+    {
+      "content_id": 53,
+      "media_type": "MOVIE",
+      "tmdb_id": 862,
+      "title": "토이 스토리",
+      "selection_reason": "lexical_probe:science_space",
+      "lexical_probe_groups": [
+        "friendship_growth",
+        "science_space"
+      ],
+      "expected_public_row_sha256": "369bc140a8fcfeeec40064191145246452706d2c137dd796570f23003321f4e9",
+      "proposed_requests": [
+        "/3/movie/862?language=ko-KR",
+        "/3/movie/862/keywords",
+        "/3/movie/862/alternative_titles"
+      ],
+      "review_status": "NOT_COLLECTED",
+      "approved_changes": []
+    },
+    {
+      "content_id": 59,
+      "media_type": "MOVIE",
+      "tmdb_id": 293670,
+      "title": "곡성",
+      "selection_reason": "lexical_probe:law_investigation",
+      "lexical_probe_groups": [
+        "family_care",
+        "fear_tension",
+        "law_investigation",
+        "travel_nature"
+      ],
+      "expected_public_row_sha256": "174b97ee43faeda25337e8eccd9cc2f90e59b4ba86bc70647082afc1ba0777f6",
+      "proposed_requests": [
+        "/3/movie/293670?language=ko-KR",
+        "/3/movie/293670/keywords",
+        "/3/movie/293670/alternative_titles"
+      ],
+      "review_status": "NOT_COLLECTED",
+      "approved_changes": []
+    },
+    {
+      "content_id": 76,
+      "media_type": "MOVIE",
+      "tmdb_id": 315011,
+      "title": "신 고질라",
+      "selection_reason": "lexical_probe:fear_tension",
+      "lexical_probe_groups": [
+        "fear_tension",
+        "science_space",
+        "sports",
+        "travel_nature"
+      ],
+      "expected_public_row_sha256": "4015aef250b78e9af089747dde140d1fbe7ecba8b40c8518deed83c7a9242957",
+      "proposed_requests": [
+        "/3/movie/315011?language=ko-KR",
+        "/3/movie/315011/keywords",
+        "/3/movie/315011/alternative_titles"
+      ],
+      "review_status": "NOT_COLLECTED",
+      "approved_changes": []
+    },
+    {
+      "content_id": 78,
+      "media_type": "TV",
+      "tmdb_id": 48891,
+      "title": "브루클린 나인-나인",
+      "selection_reason": "lexical_probe:law_investigation",
+      "lexical_probe_groups": [
+        "law_investigation"
+      ],
+      "expected_public_row_sha256": "9c9684fcc3f6ecb9dd748e23d5223486986bde8d4d921800b39cfaa3623438dc",
+      "proposed_requests": [
+        "/3/tv/48891?language=ko-KR",
+        "/3/tv/48891/keywords",
+        "/3/tv/48891/alternative_titles"
+      ],
+      "review_status": "NOT_COLLECTED",
+      "approved_changes": []
+    },
+    {
+      "content_id": 117,
+      "media_type": "MOVIE",
+      "tmdb_id": 854,
+      "title": "마스크",
+      "selection_reason": "lexical_probe:music_stage",
+      "lexical_probe_groups": [
+        "music_stage",
+        "work_creation"
+      ],
+      "expected_public_row_sha256": "bed47c556a5508c51b465a30c6d83df7e1ad7ff6ca2239a0f9bbe6a770323f0d",
+      "proposed_requests": [
+        "/3/movie/854?language=ko-KR",
+        "/3/movie/854/keywords",
+        "/3/movie/854/alternative_titles"
+      ],
+      "review_status": "NOT_COLLECTED",
+      "approved_changes": []
+    },
+    {
+      "content_id": 136,
+      "media_type": "MOVIE",
+      "tmdb_id": 571627,
+      "title": "사자",
+      "selection_reason": "lexical_probe:loss_recovery",
+      "lexical_probe_groups": [
+        "family_care",
+        "loss_recovery"
+      ],
+      "expected_public_row_sha256": "6c5c38cbd4a40c3c1cdad6029aca5ff2e39abc165f91e59bcdd4269770ce4e21",
+      "proposed_requests": [
+        "/3/movie/571627?language=ko-KR",
+        "/3/movie/571627/keywords",
+        "/3/movie/571627/alternative_titles"
+      ],
+      "review_status": "NOT_COLLECTED",
+      "approved_changes": []
+    },
+    {
+      "content_id": 156,
+      "media_type": "MOVIE",
+      "tmdb_id": 62439,
+      "title": "헬로우 고스트",
+      "selection_reason": "lexical_probe:medicine",
+      "lexical_probe_groups": [
+        "family_care",
+        "medicine",
+        "warmth_humor"
+      ],
+      "expected_public_row_sha256": "ef4f4c41c872c18f94c80cca570b0184bf40f32546711d69e4dec6d9eb43305f",
+      "proposed_requests": [
+        "/3/movie/62439?language=ko-KR",
+        "/3/movie/62439/keywords",
+        "/3/movie/62439/alternative_titles"
+      ],
+      "review_status": "NOT_COLLECTED",
+      "approved_changes": []
+    },
+    {
+      "content_id": 177,
+      "media_type": "MOVIE",
+      "tmdb_id": 414906,
+      "title": "더 배트맨",
+      "selection_reason": "long_plot",
+      "lexical_probe_groups": [
+        "family_care",
+        "law_investigation",
+        "loss_recovery"
+      ],
+      "expected_public_row_sha256": "e3d5b964a95b8ff0bae19804dcdbd72c617858799d71288fb99a7b8897dff384",
+      "proposed_requests": [
+        "/3/movie/414906?language=ko-KR",
+        "/3/movie/414906/keywords",
+        "/3/movie/414906/alternative_titles"
+      ],
+      "review_status": "NOT_COLLECTED",
+      "approved_changes": []
+    },
+    {
+      "content_id": 188,
+      "media_type": "TV",
+      "tmdb_id": 100565,
+      "title": "86 에이티식스",
+      "selection_reason": "lexical_probe:fear_tension",
+      "lexical_probe_groups": [
+        "fear_tension",
+        "loss_recovery"
+      ],
+      "expected_public_row_sha256": "3da2de19709abec094bea1b1873dd93b414eaa61e00f2ab01e6a571d8c3a8904",
+      "proposed_requests": [
+        "/3/tv/100565?language=ko-KR",
+        "/3/tv/100565/keywords",
+        "/3/tv/100565/alternative_titles"
+      ],
+      "review_status": "NOT_COLLECTED",
+      "approved_changes": []
+    },
+    {
+      "content_id": 190,
+      "media_type": "MOVIE",
+      "tmdb_id": 1218925,
+      "title": "극장판 체인소 맨:  레제편",
+      "selection_reason": "lexical_probe:history_society",
+      "lexical_probe_groups": [
+        "history_society",
+        "loss_recovery"
+      ],
+      "expected_public_row_sha256": "e896e27348556aa6f6f455dde3789617c679121d42b4cad40936cd1e4409c76b",
+      "proposed_requests": [
+        "/3/movie/1218925?language=ko-KR",
+        "/3/movie/1218925/keywords",
+        "/3/movie/1218925/alternative_titles"
+      ],
+      "review_status": "NOT_COLLECTED",
+      "approved_changes": []
+    },
+    {
+      "content_id": 199,
+      "media_type": "MOVIE",
+      "tmdb_id": 557,
+      "title": "스파이더맨",
+      "selection_reason": "lexical_probe:sports",
+      "lexical_probe_groups": [
+        "family_care",
+        "loss_recovery",
+        "science_space",
+        "sports"
+      ],
+      "expected_public_row_sha256": "222df2278867be54053b291436ff86fabb3be44f75b26c442fef8e1cda8d702d",
+      "proposed_requests": [
+        "/3/movie/557?language=ko-KR",
+        "/3/movie/557/keywords",
+        "/3/movie/557/alternative_titles"
+      ],
+      "review_status": "NOT_COLLECTED",
+      "approved_changes": []
+    },
+    {
+      "content_id": 205,
+      "media_type": "TV",
+      "tmdb_id": 11095,
+      "title": "머나먼 정글",
+      "selection_reason": "lexical_probe:history_society",
+      "lexical_probe_groups": [
+        "history_society"
+      ],
+      "expected_public_row_sha256": "16308a0921c9695a9310cd02ab7a913a627b5103b82f33298b93e2fc48e079db",
+      "proposed_requests": [
+        "/3/tv/11095?language=ko-KR",
+        "/3/tv/11095/keywords",
+        "/3/tv/11095/alternative_titles"
+      ],
+      "review_status": "NOT_COLLECTED",
+      "approved_changes": []
+    },
+    {
+      "content_id": 257,
+      "media_type": "MOVIE",
+      "tmdb_id": 1623125,
+      "title": "데이비드 애튼버러: 고릴라 이야기",
+      "selection_reason": "lexical_probe:travel_nature",
+      "lexical_probe_groups": [
+        "travel_nature"
+      ],
+      "expected_public_row_sha256": "098b79297844ac93625eadeb19cb4afa131edb53c15cf76dc5f55a124fa7a960",
+      "proposed_requests": [
+        "/3/movie/1623125?language=ko-KR",
+        "/3/movie/1623125/keywords",
+        "/3/movie/1623125/alternative_titles"
+      ],
+      "review_status": "NOT_COLLECTED",
+      "approved_changes": []
+    },
+    {
+      "content_id": 258,
+      "media_type": "TV",
+      "tmdb_id": 4500,
+      "title": "케빈은 열두살",
+      "selection_reason": "short_plot",
+      "lexical_probe_groups": [
+        "friendship_growth"
+      ],
+      "expected_public_row_sha256": "f8234c7799b3e560d1b0545e1e60f62ae4b94d4ead77c6d7c37e0761ff660b8d",
+      "proposed_requests": [
+        "/3/tv/4500?language=ko-KR",
+        "/3/tv/4500/keywords",
+        "/3/tv/4500/alternative_titles"
+      ],
+      "review_status": "NOT_COLLECTED",
+      "approved_changes": []
+    },
+    {
+      "content_id": 268,
+      "media_type": "MOVIE",
+      "tmdb_id": 1284046,
+      "title": "온슬로트",
+      "selection_reason": "lexical_probe:family_care",
+      "lexical_probe_groups": [
+        "family_care",
+        "history_society"
+      ],
+      "expected_public_row_sha256": "4cc3a30fdd245bc4179a2e03766b0cd55bcf21f71314cda250e2250b02f00d71",
+      "proposed_requests": [
+        "/3/movie/1284046?language=ko-KR",
+        "/3/movie/1284046/keywords",
+        "/3/movie/1284046/alternative_titles"
+      ],
+      "review_status": "NOT_COLLECTED",
+      "approved_changes": []
+    },
+    {
+      "content_id": 309,
+      "media_type": "TV",
+      "tmdb_id": 2122,
+      "title": "킹 오브 더 힐",
+      "selection_reason": "long_plot",
+      "lexical_probe_groups": [
+        "family_care",
+        "friendship_growth"
+      ],
+      "expected_public_row_sha256": "aed72ddf05f9b8d1eaf38068b7c1dda57c834e76f29d028112a49423dccb3f51",
+      "proposed_requests": [
+        "/3/tv/2122?language=ko-KR",
+        "/3/tv/2122/keywords",
+        "/3/tv/2122/alternative_titles"
+      ],
+      "review_status": "NOT_COLLECTED",
+      "approved_changes": []
+    },
+    {
+      "content_id": 322,
+      "media_type": "TV",
+      "tmdb_id": 231280,
+      "title": "굿보이",
+      "selection_reason": "lexical_probe:sports",
+      "lexical_probe_groups": [
+        "sports"
+      ],
+      "expected_public_row_sha256": "1d8d7bac72521b48c934f367dc0d81d1ffe622bf23784664c0ee5846496869df",
+      "proposed_requests": [
+        "/3/tv/231280?language=ko-KR",
+        "/3/tv/231280/keywords",
+        "/3/tv/231280/alternative_titles"
+      ],
+      "review_status": "NOT_COLLECTED",
+      "approved_changes": []
+    },
+    {
+      "content_id": 332,
+      "media_type": "TV",
+      "tmdb_id": 74313,
+      "title": "블루 플래닛 II",
+      "selection_reason": "lexical_probe:travel_nature",
+      "lexical_probe_groups": [
+        "travel_nature"
+      ],
+      "expected_public_row_sha256": "7eabc9da3ee7d04d7ac2beebf823e4861e4424c8412a0027be1eb4e3f56fbbb7",
+      "proposed_requests": [
+        "/3/tv/74313?language=ko-KR",
+        "/3/tv/74313/keywords",
+        "/3/tv/74313/alternative_titles"
+      ],
+      "review_status": "NOT_COLLECTED",
+      "approved_changes": []
+    },
+    {
+      "content_id": 359,
+      "media_type": "MOVIE",
+      "tmdb_id": 1596275,
+      "title": "드라이브 - 계약 관계",
+      "selection_reason": "missing_time",
+      "lexical_probe_groups": [],
+      "expected_public_row_sha256": "ed6712c3c899140df1f0c391a93db49a4822b767ff95da5b1ce7f75dab2aacee",
+      "proposed_requests": [
+        "/3/movie/1596275?language=ko-KR",
+        "/3/movie/1596275/keywords",
+        "/3/movie/1596275/alternative_titles"
+      ],
+      "review_status": "NOT_COLLECTED",
+      "approved_changes": []
+    },
+    {
+      "content_id": 405,
+      "media_type": "TV",
+      "tmdb_id": 245079,
+      "title": "하이퍼나이프",
+      "selection_reason": "lexical_probe:medicine",
+      "lexical_probe_groups": [
+        "medicine"
+      ],
+      "expected_public_row_sha256": "afb3333fd508b41630f22623932a34d4c0ceb311163ff7d504c9686dd1785f8f",
+      "proposed_requests": [
+        "/3/tv/245079?language=ko-KR",
+        "/3/tv/245079/keywords",
+        "/3/tv/245079/alternative_titles"
+      ],
+      "review_status": "NOT_COLLECTED",
+      "approved_changes": []
+    },
+    {
+      "content_id": 410,
+      "media_type": "TV",
+      "tmdb_id": 126824,
+      "title": "뚱이쇼",
+      "selection_reason": "lexical_probe:friendship_growth",
+      "lexical_probe_groups": [
+        "friendship_growth"
+      ],
+      "expected_public_row_sha256": "872f04418849bd6538a8a1a2cdf00087af60d22e19dd1b259095f88cecc8a9ec",
+      "proposed_requests": [
+        "/3/tv/126824?language=ko-KR",
+        "/3/tv/126824/keywords",
+        "/3/tv/126824/alternative_titles"
+      ],
+      "review_status": "NOT_COLLECTED",
+      "approved_changes": []
+    },
+    {
+      "content_id": 428,
+      "media_type": "TV",
+      "tmdb_id": 80919,
+      "title": "서른이지만 열일곱입니다",
+      "selection_reason": "lexical_probe:music_stage",
+      "lexical_probe_groups": [
+        "family_care",
+        "music_stage",
+        "warmth_humor"
+      ],
+      "expected_public_row_sha256": "35bb5504d1de120dcbe25c36ecbf86d9c244972b7ff4d05dcd51e8fd34ceefaa",
+      "proposed_requests": [
+        "/3/tv/80919?language=ko-KR",
+        "/3/tv/80919/keywords",
+        "/3/tv/80919/alternative_titles"
+      ],
+      "review_status": "NOT_COLLECTED",
+      "approved_changes": []
+    },
+    {
+      "content_id": 441,
+      "media_type": "TV",
+      "tmdb_id": 1920,
+      "title": "트윈 픽스",
+      "selection_reason": "lexical_probe:loss_recovery",
+      "lexical_probe_groups": [
+        "loss_recovery"
+      ],
+      "expected_public_row_sha256": "7a7a4807c07224e9b71ad5564a9a27b56388c6c2cf56fd56bb0be650d3faf12b",
+      "proposed_requests": [
+        "/3/tv/1920?language=ko-KR",
+        "/3/tv/1920/keywords",
+        "/3/tv/1920/alternative_titles"
+      ],
+      "review_status": "NOT_COLLECTED",
+      "approved_changes": []
+    },
+    {
+      "content_id": 456,
+      "media_type": "TV",
+      "tmdb_id": 90937,
+      "title": "비스타즈",
+      "selection_reason": "missing_time",
+      "lexical_probe_groups": [],
+      "expected_public_row_sha256": "21acf763135a663e42b9126ce5a3c70391cd3ce3930b470294075e369be461e8",
+      "proposed_requests": [
+        "/3/tv/90937?language=ko-KR",
+        "/3/tv/90937/keywords",
+        "/3/tv/90937/alternative_titles"
+      ],
+      "review_status": "NOT_COLLECTED",
+      "approved_changes": []
+    },
+    {
+      "content_id": 466,
+      "media_type": "TV",
+      "tmdb_id": 1427,
+      "title": "브로드처치",
+      "selection_reason": "lexical_probe:family_care",
+      "lexical_probe_groups": [
+        "family_care",
+        "law_investigation"
+      ],
+      "expected_public_row_sha256": "73ba251b40294e4720b808f19804db309019df4bc68b648c6b94bd4cef3b6745",
+      "proposed_requests": [
+        "/3/tv/1427?language=ko-KR",
+        "/3/tv/1427/keywords",
+        "/3/tv/1427/alternative_titles"
+      ],
+      "review_status": "NOT_COLLECTED",
+      "approved_changes": []
+    },
+    {
+      "content_id": 476,
+      "media_type": "TV",
+      "tmdb_id": 66732,
+      "title": "기묘한 이야기",
+      "selection_reason": "lexical_probe:science_space",
+      "lexical_probe_groups": [
+        "science_space"
+      ],
+      "expected_public_row_sha256": "1a66ac30da4cd0d6a83ccf513f59f5ebe077a32ad283a4a16314ab5214e3f874",
+      "proposed_requests": [
+        "/3/tv/66732?language=ko-KR",
+        "/3/tv/66732/keywords",
+        "/3/tv/66732/alternative_titles"
+      ],
+      "review_status": "NOT_COLLECTED",
+      "approved_changes": []
+    }
+  ],
+  "probe_selection_gaps": [
+    {
+      "media_type": "MOVIE",
+      "probe": "cooking",
+      "status": "NO_UNSELECTED_LEXICAL_MATCH_NOT_SEMANTIC_ABSENCE"
+    },
+    {
+      "media_type": "TV",
+      "probe": "cooking",
+      "status": "NO_UNSELECTED_LEXICAL_MATCH_NOT_SEMANTIC_ABSENCE"
+    }
+  ],
+  "proposed_limits": {
+    "titles": 28,
+    "http_attempts_max": 84,
+    "parallelism": 1,
+    "automatic_retries": 0,
+    "requests_per_second_max": 1,
+    "per_request_timeout_seconds": 10,
+    "wall_seconds_max": 900,
+    "response_bytes_max": 1048576,
+    "llm_calls": 0
+  },
+  "required_next_gates": [
+    "new_collection_request",
+    "revalidate_public_and_mapping_hashes",
+    "implement_and_test_bounded_collector",
+    "validate_official_response_shapes",
+    "manual_field_review",
+    "separate_apply_feature_and_tests"
+  ],
+  "updates": [],
+  "inserts": [],
+  "catalog_writes": 0,
+  "tmdb_data_api_calls": 0,
+  "quality_improvement": "NOT_MEASURED"
+}

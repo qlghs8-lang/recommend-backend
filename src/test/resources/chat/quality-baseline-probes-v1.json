@@ -1,0 +1,571 @@
+{
+  "version": 1,
+  "source": "docs/evaluation/quality-development-v1.json",
+  "developmentCorpusSha256": "812264884f994d24a32370b53baf8475b56ec7fa4e9f7246e187f5e0c830b687",
+  "warning": "Investigator-specified literal probe strategy, NOT an actual classifier output or exhaustive semantic oracle. Witness visibility is NOT recall. No validation questions read.",
+  "probes": [
+    {
+      "caseId": "D01",
+      "status": "CONTROLLED_RETRIEVAL",
+      "constraints": [
+        {
+          "kind": "MEDIA",
+          "value": "MOVIE",
+          "source": "영화",
+          "terms": []
+        },
+        {
+          "kind": "TOPIC",
+          "value": "조리 중심",
+          "source": "요리하는 과정",
+          "terms": [
+            "요리",
+            "조리",
+            "셰프",
+            "주방"
+          ]
+        }
+      ],
+      "developmentEvidenceSeed": null
+    },
+    {
+      "caseId": "D02",
+      "status": "CONTROLLED_RETRIEVAL",
+      "constraints": [
+        {
+          "kind": "TOPIC",
+          "value": "스포츠 성장",
+          "source": "선수가 훈련",
+          "terms": [
+            "선수",
+            "스포츠",
+            "경기",
+            "훈련"
+          ]
+        }
+      ],
+      "developmentEvidenceSeed": "S02"
+    },
+    {
+      "caseId": "D03",
+      "status": "CONTROLLED_RETRIEVAL",
+      "constraints": [
+        {
+          "kind": "MEDIA",
+          "value": "MOVIE",
+          "source": "영화",
+          "terms": []
+        },
+        {
+          "kind": "TOPIC",
+          "value": "음악",
+          "source": "가수가 되는 꿈",
+          "terms": [
+            "음악",
+            "뮤지션",
+            "가수",
+            "노래"
+          ]
+        },
+        {
+          "kind": "TOPIC",
+          "value": "가족",
+          "source": "가족의 기대",
+          "terms": [
+            "가족",
+            "집안"
+          ]
+        }
+      ],
+      "developmentEvidenceSeed": "S06"
+    },
+    {
+      "caseId": "D04",
+      "status": "CONTROLLED_RETRIEVAL",
+      "constraints": [
+        {
+          "kind": "MEDIA",
+          "value": "TV",
+          "source": "시리즈",
+          "terms": []
+        },
+        {
+          "kind": "TOPIC",
+          "value": "의료 선택",
+          "source": "의사가 선택의 대가",
+          "terms": [
+            "의사",
+            "수술",
+            "의료",
+            "병원"
+          ]
+        }
+      ],
+      "developmentEvidenceSeed": "S09"
+    },
+    {
+      "caseId": "D05",
+      "status": "CONTROLLED_RETRIEVAL",
+      "constraints": [
+        {
+          "kind": "TOPIC",
+          "value": "법조인",
+          "source": "법조인",
+          "terms": [
+            "변호사",
+            "법조",
+            "법정",
+            "재판"
+          ]
+        },
+        {
+          "kind": "MOOD",
+          "value": "윤리 갈등",
+          "source": "성공 욕심과 양심",
+          "terms": [
+            "성공",
+            "원칙",
+            "정직",
+            "양심"
+          ]
+        }
+      ],
+      "developmentEvidenceSeed": "S11"
+    },
+    {
+      "caseId": "D06",
+      "status": "CONTROLLED_RETRIEVAL",
+      "constraints": [
+        {
+          "kind": "MEDIA",
+          "value": "MOVIE",
+          "source": "영화",
+          "terms": []
+        },
+        {
+          "kind": "TOPIC",
+          "value": "고립",
+          "source": "외로운 존재",
+          "terms": [
+            "외로",
+            "혼자",
+            "사람들이 떠난",
+            "사람이 떠난"
+          ]
+        },
+        {
+          "kind": "MOOD",
+          "value": "연결",
+          "source": "연결되는",
+          "terms": [
+            "친구",
+            "함께",
+            "연결",
+            "손을"
+          ]
+        }
+      ],
+      "developmentEvidenceSeed": "S12"
+    },
+    {
+      "caseId": "D07",
+      "status": "CONTROLLED_RETRIEVAL",
+      "constraints": [
+        {
+          "kind": "TOPIC",
+          "value": "직장",
+          "source": "직장인",
+          "terms": [
+            "은행원",
+            "직장",
+            "회사원",
+            "회사"
+          ]
+        },
+        {
+          "kind": "MOOD",
+          "value": "변화",
+          "source": "달라지는",
+          "terms": [
+            "변화",
+            "무시",
+            "소심",
+            "바꿀"
+          ]
+        }
+      ],
+      "developmentEvidenceSeed": "S14"
+    },
+    {
+      "caseId": "D08",
+      "status": "CONTROLLED_RETRIEVAL",
+      "constraints": [
+        {
+          "kind": "GENRE_ALL",
+          "value": "documentary",
+          "source": "다큐멘터리",
+          "terms": []
+        },
+        {
+          "kind": "TOPIC",
+          "value": "암벽 도전",
+          "source": "암벽에 맨몸으로 도전",
+          "terms": [
+            "암벽",
+            "등반",
+            "맨몸",
+            "산에"
+          ]
+        }
+      ],
+      "developmentEvidenceSeed": "S15"
+    },
+    {
+      "caseId": "D09",
+      "status": "CONTROLLED_RETRIEVAL",
+      "constraints": [
+        {
+          "kind": "TOPIC",
+          "value": "가족",
+          "source": "가족",
+          "terms": [
+            "가족",
+            "부모",
+            "아버지",
+            "어머니"
+          ]
+        },
+        {
+          "kind": "MOOD",
+          "value": "이해",
+          "source": "서로를 이해",
+          "terms": [
+            "이해",
+            "비밀",
+            "마음",
+            "함께"
+          ]
+        }
+      ],
+      "developmentEvidenceSeed": "S16"
+    },
+    {
+      "caseId": "D10",
+      "status": "CONTROLLED_RETRIEVAL",
+      "constraints": [
+        {
+          "kind": "TOPIC",
+          "value": "동료",
+          "source": "동료",
+          "terms": [
+            "동료",
+            "전우",
+            "친구",
+            "팀원"
+          ]
+        },
+        {
+          "kind": "MOOD",
+          "value": "함께 위기",
+          "source": "함께 위기를 견디",
+          "terms": [
+            "함께",
+            "위기",
+            "전투",
+            "생명"
+          ]
+        }
+      ],
+      "developmentEvidenceSeed": null
+    },
+    {
+      "caseId": "D11",
+      "status": "CONTROLLED_RETRIEVAL",
+      "constraints": [
+        {
+          "kind": "MEDIA",
+          "value": "MOVIE",
+          "source": "영화",
+          "terms": []
+        },
+        {
+          "kind": "TOPIC",
+          "value": "상실",
+          "source": "소중한 사람을 잃은 뒤",
+          "terms": [
+            "상실",
+            "아내",
+            "죽음",
+            "잃고"
+          ]
+        },
+        {
+          "kind": "MOOD",
+          "value": "회복",
+          "source": "다시 살아갈 힘",
+          "terms": [
+            "희망",
+            "약속",
+            "새로운",
+            "함께"
+          ]
+        }
+      ],
+      "developmentEvidenceSeed": "S19"
+    },
+    {
+      "caseId": "D12",
+      "status": "CONTROLLED_RETRIEVAL",
+      "constraints": [
+        {
+          "kind": "MOOD",
+          "value": "위로와 연결",
+          "source": "마음이 지친 날",
+          "terms": [
+            "위로",
+            "따뜻",
+            "희망",
+            "친구"
+          ]
+        }
+      ],
+      "developmentEvidenceSeed": null
+    },
+    {
+      "caseId": "D13",
+      "status": "CONTROLLED_RETRIEVAL",
+      "constraints": [
+        {
+          "kind": "MEDIA",
+          "value": "MOVIE",
+          "source": "영화",
+          "terms": []
+        },
+        {
+          "kind": "MOOD",
+          "value": "불확실성",
+          "source": "무엇을 믿어야 하는지 불안",
+          "terms": [
+            "의심",
+            "불안",
+            "진실",
+            "믿을"
+          ]
+        }
+      ],
+      "developmentEvidenceSeed": "S22"
+    },
+    {
+      "caseId": "D14",
+      "status": "CONTROLLED_RETRIEVAL",
+      "constraints": [
+        {
+          "kind": "MEDIA",
+          "value": "TV",
+          "source": "시리즈",
+          "terms": []
+        },
+        {
+          "kind": "TOPIC",
+          "value": "전쟁",
+          "source": "전쟁",
+          "terms": [
+            "전쟁",
+            "전투",
+            "전장",
+            "전우"
+          ]
+        },
+        {
+          "kind": "MOOD",
+          "value": "인간성",
+          "source": "인간성을 지키는",
+          "terms": [
+            "인간성",
+            "동료",
+            "생존",
+            "살아남"
+          ]
+        }
+      ],
+      "developmentEvidenceSeed": "S23"
+    },
+    {
+      "caseId": "D15",
+      "status": "CONTROLLED_RETRIEVAL",
+      "constraints": [
+        {
+          "kind": "MEDIA",
+          "value": "MOVIE",
+          "source": "영화",
+          "terms": []
+        },
+        {
+          "kind": "GENRE_ANY",
+          "value": "sf",
+          "source": "SF",
+          "terms": []
+        },
+        {
+          "kind": "GENRE_ANY",
+          "value": "fantasy",
+          "source": "판타지",
+          "terms": []
+        },
+        {
+          "kind": "GENRE_EXCLUDE",
+          "value": "horror",
+          "source": "공포 장르는 제외",
+          "terms": []
+        }
+      ],
+      "developmentEvidenceSeed": null
+    },
+    {
+      "caseId": "D16",
+      "status": "CONTROLLED_RETRIEVAL",
+      "constraints": [
+        {
+          "kind": "MEDIA",
+          "value": "MOVIE",
+          "source": "영화",
+          "terms": []
+        },
+        {
+          "kind": "MINUTES_MAX",
+          "value": "100",
+          "source": "100분 이하",
+          "terms": []
+        },
+        {
+          "kind": "MOOD",
+          "value": "연결",
+          "source": "가까워지는",
+          "terms": [
+            "친구",
+            "함께",
+            "손을",
+            "가까"
+          ]
+        }
+      ],
+      "developmentEvidenceSeed": null
+    },
+    {
+      "caseId": "D17",
+      "status": "CONTROLLED_RETRIEVAL",
+      "constraints": [
+        {
+          "kind": "MEDIA",
+          "value": "TV",
+          "source": "시리즈",
+          "terms": []
+        },
+        {
+          "kind": "EPISODE_MINUTES_MAX",
+          "value": "30",
+          "source": "회당 30분 이하",
+          "terms": []
+        },
+        {
+          "kind": "MOOD",
+          "value": "도전과 성장",
+          "source": "도전과 성장",
+          "terms": [
+            "도전",
+            "성장",
+            "전사",
+            "여정"
+          ]
+        }
+      ],
+      "developmentEvidenceSeed": null
+    },
+    {
+      "caseId": "D18",
+      "status": "TIME_UNIT_CLARIFICATION_REQUIRED",
+      "constraints": [],
+      "developmentEvidenceSeed": null
+    },
+    {
+      "caseId": "D19",
+      "status": "UNVERIFIABLE_GUIDANCE",
+      "constraints": [
+        {
+          "kind": "UNVERIFIABLE",
+          "value": "장면과 현재 제공처 미보유",
+          "source": "잔인한 장면이 절대 없고 현재 넷플릭스에서 볼 수 있는",
+          "terms": []
+        }
+      ],
+      "developmentEvidenceSeed": null
+    },
+    {
+      "caseId": "D20",
+      "status": "CONTROLLED_RETRIEVAL",
+      "constraints": [
+        {
+          "kind": "MEDIA",
+          "value": "MOVIE",
+          "source": "영화",
+          "terms": []
+        },
+        {
+          "kind": "TOPIC",
+          "value": "조리 중심",
+          "source": "주방에서 요리",
+          "terms": [
+            "요리",
+            "조리",
+            "셰프",
+            "주방"
+          ]
+        }
+      ],
+      "developmentEvidenceSeed": null
+    },
+    {
+      "caseId": "D21",
+      "status": "EXAMPLE_AXIS_CLARIFICATION_REQUIRED",
+      "constraints": [],
+      "developmentEvidenceSeed": null
+    },
+    {
+      "caseId": "D22",
+      "status": "TWO_RECOMMENDATIONS_OUTSIDE_CURRENT_PLAN_CONTRACT",
+      "constraints": [],
+      "developmentEvidenceSeed": null
+    },
+    {
+      "caseId": "D23",
+      "status": "CONFLICT_GUIDANCE",
+      "constraints": [
+        {
+          "kind": "MEDIA",
+          "value": "MOVIE",
+          "source": "영화",
+          "terms": []
+        },
+        {
+          "kind": "MINUTES_MAX",
+          "value": "90",
+          "source": "90분 이하",
+          "terms": []
+        },
+        {
+          "kind": "MINUTES_MIN",
+          "value": "120",
+          "source": "120분 이상",
+          "terms": []
+        }
+      ],
+      "developmentEvidenceSeed": null
+    },
+    {
+      "caseId": "D24",
+      "status": "SYNTHETIC_REACTION_FIXTURE_REQUIRED",
+      "constraints": [],
+      "developmentEvidenceSeed": null
+    }
+  ]
+}
